@@ -1,0 +1,17 @@
+D:\Projects C#\WebCourseManagement_API\WebCourseManagement_Models\bin\Debug\net6.0\WebCourseManagement_Models.deps.json
+D:\Projects C#\WebCourseManagement_API\WebCourseManagement_Models\bin\Debug\net6.0\WebCourseManagement_Models.runtimeconfig.json
+D:\Projects C#\WebCourseManagement_API\WebCourseManagement_Models\bin\Debug\net6.0\WebCourseManagement_Models.dll
+D:\Projects C#\WebCourseManagement_API\WebCourseManagement_Models\bin\Debug\net6.0\WebCourseManagement_Models.pdb
+D:\Projects C#\WebCourseManagement_API\WebCourseManagement_Models\bin\Debug\net6.0\WebCourseManagement_Commons.dll
+D:\Projects C#\WebCourseManagement_API\WebCourseManagement_Models\bin\Debug\net6.0\WebCourseManagement_Commons.pdb
+D:\Projects C#\WebCourseManagement_API\WebCourseManagement_Models\obj\Debug\net6.0\WebCourseManagement_Models.csproj.AssemblyReference.cache
+D:\Projects C#\WebCourseManagement_API\WebCourseManagement_Models\obj\Debug\net6.0\WebCourseManagement_Models.GeneratedMSBuildEditorConfig.editorconfig
+D:\Projects C#\WebCourseManagement_API\WebCourseManagement_Models\obj\Debug\net6.0\WebCourseManagement_Models.AssemblyInfoInputs.cache
+D:\Projects C#\WebCourseManagement_API\WebCourseManagement_Models\obj\Debug\net6.0\WebCourseManagement_Models.AssemblyInfo.cs
+D:\Projects C#\WebCourseManagement_API\WebCourseManagement_Models\obj\Debug\net6.0\WebCourseManagement_Models.csproj.CoreCompileInputs.cache
+D:\Projects C#\WebCourseManagement_API\WebCourseManagement_Models\obj\Debug\net6.0\WebCourseManagement_Models.csproj.CopyComplete
+D:\Projects C#\WebCourseManagement_API\WebCourseManagement_Models\obj\Debug\net6.0\WebCourseManagement_Models.dll
+D:\Projects C#\WebCourseManagement_API\WebCourseManagement_Models\obj\Debug\net6.0\refint\WebCourseManagement_Models.dll
+D:\Projects C#\WebCourseManagement_API\WebCourseManagement_Models\obj\Debug\net6.0\WebCourseManagement_Models.pdb
+D:\Projects C#\WebCourseManagement_API\WebCourseManagement_Models\obj\Debug\net6.0\WebCourseManagement_Models.genruntimeconfig.cache
+D:\Projects C#\WebCourseManagement_API\WebCourseManagement_Models\obj\Debug\net6.0\ref\WebCourseManagement_Models.dll

@@ -1,0 +1,12 @@
+D:\Projects C#\WebCourseManagement_API\WebCourseManagement_Commons\bin\Debug\net6.0\WebCourseManagement_Commons.deps.json
+D:\Projects C#\WebCourseManagement_API\WebCourseManagement_Commons\bin\Debug\net6.0\WebCourseManagement_Commons.dll
+D:\Projects C#\WebCourseManagement_API\WebCourseManagement_Commons\bin\Debug\net6.0\WebCourseManagement_Commons.pdb
+D:\Projects C#\WebCourseManagement_API\WebCourseManagement_Commons\obj\Debug\net6.0\WebCourseManagement_Commons.csproj.AssemblyReference.cache
+D:\Projects C#\WebCourseManagement_API\WebCourseManagement_Commons\obj\Debug\net6.0\WebCourseManagement_Commons.GeneratedMSBuildEditorConfig.editorconfig
+D:\Projects C#\WebCourseManagement_API\WebCourseManagement_Commons\obj\Debug\net6.0\WebCourseManagement_Commons.AssemblyInfoInputs.cache
+D:\Projects C#\WebCourseManagement_API\WebCourseManagement_Commons\obj\Debug\net6.0\WebCourseManagement_Commons.AssemblyInfo.cs
+D:\Projects C#\WebCourseManagement_API\WebCourseManagement_Commons\obj\Debug\net6.0\WebCourseManagement_Commons.csproj.CoreCompileInputs.cache
+D:\Projects C#\WebCourseManagement_API\WebCourseManagement_Commons\obj\Debug\net6.0\WebCourseManagement_Commons.dll
+D:\Projects C#\WebCourseManagement_API\WebCourseManagement_Commons\obj\Debug\net6.0\refint\WebCourseManagement_Commons.dll
+D:\Projects C#\WebCourseManagement_API\WebCourseManagement_Commons\obj\Debug\net6.0\WebCourseManagement_Commons.pdb
+D:\Projects C#\WebCourseManagement_API\WebCourseManagement_Commons\obj\Debug\net6.0\ref\WebCourseManagement_Commons.dll

@@ -1,0 +1,233 @@
+﻿using Microsoft.AspNetCore.Http;
+using System;
+using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
+using System.Linq;
+using System.Net.Mail;
+using System.Net;
+using System.Text;
+using System.Threading.Tasks;
+using WebCourseManagement_Business.Interfaces;
+using WebCourseManagement_Commons.DefaultConstants;
+using WebCourseManagement_Models.Converters;
+using WebCourseManagement_Models.DataContexts;
+using WebCourseManagement_Models.Entities;
+using WebCourseManagement_Models.RequestModels.AuthRequests;
+using WebCourseManagement_Models.ResponseModels.DataNguoiDung;
+using WebCourseManagement_Models.Responses;
+using WebCourseManagement_Repositories;
+using BcryptNet = BCrypt.Net.BCrypt;
+using Microsoft.EntityFrameworkCore;
+using System.IdentityModel.Tokens.Jwt;
+using Microsoft.Extensions.Configuration;
+using Microsoft.IdentityModel.Tokens;
+using System.Security.Claims;
+using System.Security.Cryptography;
+
+namespace WebCourseManagement_Business.Implements
+{
+    public class AuthService : IAuthService
+    {
+        private readonly AppDbContext _context;
+        private readonly ResponseObject<DataResponseNguoiDung> _responseObject;
+        private readonly ResponseObject<DataResponseToken> _responseTokenObject;
+        private readonly NguoiDungConverter _converter;
+        private readonly IConfiguration _configuration;
+        public AuthService(AppDbContext context, 
+                           ResponseObject<DataResponseNguoiDung> responseObject, 
+                           ResponseObject<DataResponseToken> responseTokenObject, 
+                           NguoiDungConverter converter,
+                           IConfiguration configuration)
+        {
+            _context = context;
+            _responseObject = responseObject;
+            _responseTokenObject = responseTokenObject;
+            _converter = converter;
+            _configuration = configuration;
+        }
+        #region Đăng ký và xác thực đăng ký tài khoản
+        public async Task<ResponseObject<DataResponseNguoiDung>> DangKyTaiKhoan(Request_DangKy request)
+        {
+            if(string.IsNullOrEmpty(request.HoVaTen)
+               ||string.IsNullOrEmpty(request.TenTaiKhoan)
+               || string.IsNullOrEmpty(request.SoDienThoai)
+               || string.IsNullOrEmpty(request.MatKhau)
+               || string.IsNullOrEmpty(request.Email))
+            {
+                return _responseObject.ResponseError(StatusCodes.Status400BadRequest, Constants.ExceptionMessage.REQUEST_TO_FILL_INFORMATION, null);
+            }
+            if (!Utilities.IsValidEmail(request.Email))
+            {
+                return _responseObject.ResponseError(StatusCodes.Status400BadRequest, Constants.ExceptionMessage.INVALID_EMAIL, null);
+            }
+            if (!Utilities.IsValidPhoneNumber(request.SoDienThoai))
+            {
+                return _responseObject.ResponseError(StatusCodes.Status400BadRequest, Constants.ExceptionMessage.INVALID_PHONE_NUMBER, null);
+            }
+            if (!Utilities.PasswordValid(request.MatKhau))
+
+            {
+                return _responseObject.ResponseError(StatusCodes.Status400BadRequest, Constants.ExceptionMessage.INVALID_PASSWORD, null);
+            }
+            if(_context.nguoiDungs.Any(x => x.TenTaiKhoan.Equals(request.TenTaiKhoan)))
+            {
+                return _responseObject.ResponseError(StatusCodes.Status400BadRequest, Constants.ExceptionMessage.ALREADY_ACCOUNT_NAME_EXISTED, null);
+            }
+            if (_context.nguoiDungs.Any(x => x.Email.Equals(request.Email)))
+            {
+                return _responseObject.ResponseError(StatusCodes.Status400BadRequest, Constants.ExceptionMessage.ALREADY_EMAIL_EXISTED, null);
+            }
+            try
+            {
+                NguoiDung nguoiDung = new NguoiDung
+                {
+                    AnhDaiDien = "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRZ2IRUIqIOAKar3LaLJely1iMXS4HFfouBrg&usqp=CAU",
+                    DaKhoa = false,
+                    Email = request.Email,
+                    GioiTinh = request.GioiTinh,
+                    HoVaTen = request.HoVaTen,
+                    MatKhau = BcryptNet.HashPassword(request.MatKhau),
+                    NgaySinh = request.NgaySinh,
+                    QuyenHanId = 3,
+                    SoDienThoai = request.SoDienThoai,
+                    TenTaiKhoan = request.TenTaiKhoan,
+                    ThoiGianTao = DateTime.Now,
+                    TrangThaiNguoiDungId = 1
+                };
+                await _context.nguoiDungs.AddAsync(nguoiDung);
+                await _context.SaveChangesAsync();
+                XacNhanEmail xacNhanEmail = new XacNhanEmail
+                {
+                    DaXacNhan = false,
+                    MaXacNhan = "MyBugs_" + GenerateCodeActive().ToString(),
+                    NguoiDungId = nguoiDung.Id,
+                    ThoiGianHetHan = DateTime.Now.AddMinutes(15)
+                };
+                await _context.xacNhanEmails.AddAsync(xacNhanEmail);
+                await _context.SaveChangesAsync();
+                string message = SendEmail(new EmailTo
+                {
+                    To = request.Email,
+                    Subject = Constants.ExceptionMessage.SUBJECT_EMAIL,
+                    Content = $"Mã kích hoạt của bạn là: {xacNhanEmail.MaXacNhan}, mã này có hiệu lực là 15 phút"
+                });
+                return _responseObject.ResponseSuccess(Constants.ExceptionMessage.REGISTER_SUCCESS, _converter.EntityToDTO(nguoiDung));
+            }catch(Exception ex)
+            {
+                await Console.Out.WriteLineAsync(ex.Message);
+                throw;
+            }
+        }
+        public async Task<ResponseObject<DataResponseNguoiDung>> XacNhanDangKyTaiKhoan(Request_XacNhanDangKyTaiKhoan request)
+        {
+            XacNhanEmail xacNhanEmail = _context.xacNhanEmails.Where(x => x.MaXacNhan.Equals(request.MaXacNhan)).FirstOrDefault();
+            if(xacNhanEmail == null)
+            {
+                return _responseObject.ResponseError(StatusCodes.Status404NotFound, "Mã xác nhận không chính xác", null);
+            }
+            if(xacNhanEmail.ThoiGianHetHan < DateTime.Now)
+            {
+                return _responseObject.ResponseError(StatusCodes.Status400BadRequest, "Mã xác nhận hết hạn", null);
+            }
+            NguoiDung nguoiDung = await _context.nguoiDungs.SingleOrDefaultAsync(x => x.Id == xacNhanEmail.NguoiDungId);
+            nguoiDung.TrangThaiNguoiDungId = 2;
+            _context.xacNhanEmails.Remove(xacNhanEmail);
+            _context.nguoiDungs.Update(nguoiDung);
+            await _context.SaveChangesAsync();
+            return _responseObject.ResponseSuccess(Constants.ExceptionMessage.VERIFIED, _converter.EntityToDTO(nguoiDung));
+        }
+        #endregion
+        #region Xử lý vấn đề liên quan đến gửi email
+
+        public string SendEmail(EmailTo emailTo)
+        {
+            if (!Utilities.IsValidEmail(emailTo.To))
+            {
+                return "Định dạng email không hợp lệ";
+            }
+            var smtpClient = new SmtpClient("smtp.gmail.com")
+            {
+                Port = 587,
+                Credentials = new NetworkCredential("minhquantb00@gmail.com", "jvztzxbtyugsiaea"),
+                EnableSsl = true
+            };
+            try
+            {
+                var message = new MailMessage();
+                message.From = new MailAddress("minhquantb00@gmail.com");
+                message.To.Add(emailTo.To);
+                message.Subject = emailTo.Subject;
+                message.Body = emailTo.Content;
+                message.IsBodyHtml = true;
+                smtpClient.Send(message);
+
+                return "Xác nhận gửi email thành công, lấy mã để xác thực";
+            }
+            catch (Exception ex)
+            {
+                return "Lỗi khi gửi email: " + ex.Message;
+            }
+        }
+        private int GenerateCodeActive()
+        {
+            Random random = new Random();
+            return random.Next(100000, 999999);
+        }
+
+
+        #endregion
+        #region Đăng nhập
+        public Task<ResponseObject<DataResponseToken>> DangNhap(Request_DangNhap request)
+        {
+            throw new NotImplementedException();
+        }
+        public DataResponseToken GenerateAccessToken(NguoiDung nguoiDung)
+        {
+            var jwtTokenHandler = new JwtSecurityTokenHandler();
+            var secretKeyBytes = Encoding.UTF8.GetBytes(_configuration.GetSection(Constants.AppSettingKeys.AUTH_SECRET).Value!);
+            var role = _context.quyenHans.SingleOrDefault(x => x.Id == nguoiDung.QuyenHanId);
+
+            var tokenDescription = new SecurityTokenDescriptor
+            {
+                Subject = new System.Security.Claims.ClaimsIdentity(new[]
+                {
+                    new Claim("Id", nguoiDung.Id.ToString()),
+                    new Claim("TenTaiKhoan", nguoiDung.TenTaiKhoan),
+                    new Claim("Email", nguoiDung.Email),
+                    new Claim(ClaimTypes.Role, role?.MaQuyen ?? "")
+                }),
+                Expires = DateTime.UtcNow.AddHours(4),
+                SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(secretKeyBytes), SecurityAlgorithms.HmacSha256Signature)
+            };
+            var token = jwtTokenHandler.CreateToken(tokenDescription);
+            var accessToken = jwtTokenHandler.WriteToken(token);
+            var refreshToken = GenerateRefreshToken();
+
+            RefreshToken rf = new RefreshToken
+            {
+                NguoiDungId = nguoiDung.Id,
+                ThoiGianHetHan = DateTime.Now.AddHours(10),
+                Token = refreshToken
+            };
+            _context.refreshTokens.Add(rf);
+            _context.SaveChanges();
+            DataResponseToken data = new DataResponseToken
+            {
+                AccessToken = accessToken,
+                RefreshToken = refreshToken,
+                DataResponseNguoiDung = _converter.EntityToDTO(nguoiDung)
+            };
+            return data;
+        }
+        public string GenerateRefreshToken()
+        {
+            var random = new byte[32];
+            using (var rng = RandomNumberGenerator.Create())
+            {
+                rng.GetBytes(random);
+                return Convert.ToBase64String(random);
+            }
+        }
+        #endregion
+    }
+}
