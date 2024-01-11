@@ -16,7 +16,7 @@
         data-name="70%"
         transform="translate(618 907)"
         font-size="30"
-        font-family="Inter-Bold, Inter"
+        font-family="Arial"
         font-weight="700"
       >
         <tspan x="0" y="0"> {{ percent }}% </tspan>
@@ -26,7 +26,7 @@
         transform="translate(619 931)"
         fill="#868eae"
         font-size="15"
-        font-family="Inter-Regular, Inter"
+        font-family="Arial"
       >
         <tspan x="0" y="0"> Progress </tspan>
       </text>

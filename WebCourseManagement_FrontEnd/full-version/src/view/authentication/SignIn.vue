@@ -3,33 +3,33 @@
     <a-col :xxl="6" :xl="12" :md="12" :sm="18">
       <AuthWrapper>
         <div class="ninjadash-authentication-top">
-          <h2 class="ninjadash-authentication-top__title">Sign in HexaDash</h2>
+          <h2 class="ninjadash-authentication-top__title">Vui lòng đăng nhập tài khoản</h2>
         </div>
         <div class="ninjadash-authentication-content">
           <a-form @finish="handleSubmit" :model="formState" layout="vertical">
-            <a-form-item name="username" label="Username or Email Address">
-              <a-input type="email" v-model:value="formState.email" />
+            <a-form-item name="username" label="Tài khoản">
+              <a-input type="text" v-model:value="formState.taiKhoan" />
             </a-form-item>
-            <a-form-item name="password" initialValue="123456" label="Password">
+            <a-form-item name="password" initialValue="123456" label="Mật khẩu">
               <a-input
                 type="password"
-                v-model:value="formState.password"
-                placeholder="Password"
+                v-model:value="formState.matKhau"
+                placeholder="Mật khẩu"
               />
             </a-form-item>
             <div class="ninjadash-auth-extra-links">
-              <a-checkbox @change="onChange">Keep me logged in</a-checkbox>
+              <a-checkbox @change="onChange">Lưu mật khẩu</a-checkbox>
               <router-link class="forgot-pass-link" to="/auth/forgotPassword">
-                Forgot password?
+                Quên mật khẩu?
               </router-link>
             </div>
             <a-form-item>
               <sdButton class="btn-signin" htmlType="submit" type="primary">
-                {{ isLoading ? "Loading..." : "Sign In" }}
+                {{ isLoading ? "Đang chờ..." : "Đăng nhập" }}
               </sdButton>
             </a-form-item>
             <p class="ninjadash-form-divider">
-              <span>Or</span>
+              <span>hoặc</span>
             </p>
             <ul class="ninjadash-social-login">
               <li>
@@ -55,15 +55,15 @@
                 </a>
               </li>
             </ul>
-            <div class="auth0-login">
-              <a href="#" @click="() => lock.show()"> Sign In with Auth0 </a>
-            </div>
+            <!-- <div class="auth0-login">
+              <a href="#" @click="() => lock.show()"> Đăng nhập với </a>
+            </div> -->
           </a-form>
         </div>
         <div class="ninjadash-authentication-bottom">
           <p>
-            Don't have an account?<router-link to="/auth/register"
-              >Sign up</router-link
+            Bạn không có tài khoản?<router-link to="/auth/register"
+              >Đăng ký</router-link
             >
           </p>
         </div>
@@ -101,8 +101,8 @@ const SignIn = defineComponent({
     };
 
     const formState = reactive({
-      email: "example@email.com",
-      password: "1234565",
+      taiKhoan: "anhquantbbg",
+      matKhau: "Anhquan123@",
     });
 
     const lock = new Auth0Lock(clientId, domain, auth0options);

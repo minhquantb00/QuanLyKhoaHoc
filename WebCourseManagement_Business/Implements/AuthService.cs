@@ -177,9 +177,24 @@ namespace WebCourseManagement_Business.Implements
 
         #endregion
         #region Đăng nhập
-        public Task<ResponseObject<DataResponseToken>> DangNhap(Request_DangNhap request)
+        public async Task<ResponseObject<DataResponseToken>> DangNhap(Request_DangNhap request)
         {
-            throw new NotImplementedException();
+            if (string.IsNullOrEmpty(request.TenTaiKhoan) || string.IsNullOrEmpty(request.MatKhau))
+            {
+                return _responseTokenObject.ResponseError(StatusCodes.Status400BadRequest, Constants.ExceptionMessage.REQUEST_TO_FILL_INFORMATION, null);
+            }
+            var nguoiDung = await _context.nguoiDungs.SingleOrDefaultAsync(x => x.TenTaiKhoan.Equals(request.TenTaiKhoan));
+            if(nguoiDung == null)
+            {
+                return _responseTokenObject.ResponseError(StatusCodes.Status400BadRequest, "Tên tài khoản không chính xác", null);
+            }
+            bool checkMatKhau = BcryptNet.Verify(request.MatKhau, nguoiDung.MatKhau);
+            if (!checkMatKhau)
+            {
+                return _responseTokenObject.ResponseError(StatusCodes.Status400BadRequest, "Mật khẩu không chính xác", null);
+            }
+            return _responseTokenObject.ResponseSuccess("Đăng nhập tài khoản thành công", GenerateAccessToken(nguoiDung));
+
         }
         public DataResponseToken GenerateAccessToken(NguoiDung nguoiDung)
         {
