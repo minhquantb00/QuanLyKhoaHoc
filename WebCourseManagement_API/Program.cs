@@ -48,6 +48,7 @@ builder.Services.AddSwaggerGen(option =>
         }
     });
 });
+builder.Services.AddScoped<IOAuthService, OAuthService>();
 builder.Services.AddScoped<IAuthService, AuthService>();
 builder.Services.AddScoped<ResponseObject<DataResponseNguoiDung>>();
 builder.Services.AddScoped<ResponseObject<DataResponseToken>>();
