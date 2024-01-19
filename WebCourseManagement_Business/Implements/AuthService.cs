@@ -244,5 +244,53 @@ namespace WebCourseManagement_Business.Implements
             }
         }
         #endregion
+        #region Renew Access Token
+        public ResponseObject<DataResponseToken> RenewAccessToken(Request_RenewToken request)
+        {
+            try
+            {
+                var jwtTokenHandler = new JwtSecurityTokenHandler();
+                var secretKey = _configuration.GetSection("AppSettings:SecretKey").Value;
+
+                var tokenValidation = new TokenValidationParameters
+                {
+                    ValidateIssuerSigningKey = true,
+                    ValidateAudience = false,
+                    ValidateIssuer = false,
+                    IssuerSigningKey = new SymmetricSecurityKey(System.Text.Encoding.UTF8.GetBytes(secretKey))
+                };
+
+                var tokenAuthentication = jwtTokenHandler.ValidateToken(request.AccessToken, tokenValidation, out var validatedToken);
+                if (!(validatedToken is JwtSecurityToken jwtSecurityToken) || jwtSecurityToken.Header.Alg != SecurityAlgorithms.HmacSha256)
+                {
+                    return _responseTokenObject.ResponseError(StatusCodes.Status400BadRequest, "Token không hợp lệ", null);
+                }
+                var refreshToken = _context.refreshTokens.SingleOrDefault(x => x.Token.Equals(request.RefreshToken));
+                if (refreshToken == null)
+                {
+                    return _responseTokenObject.ResponseError(StatusCodes.Status404NotFound, "RefreshToken không tồn tại trong database", null);
+                }
+                if (refreshToken.ThoiGianHetHan < DateTime.Now)
+                {
+                    return _responseTokenObject.ResponseError(StatusCodes.Status401Unauthorized, "RefreshToken đã hết hạn", null);
+                }
+                var user = _context.nguoiDungs.SingleOrDefault(x => x.Id == refreshToken.NguoiDungId);
+                if (user == null)
+                {
+                    return _responseTokenObject.ResponseError(StatusCodes.Status404NotFound, "Người dùng không tồn tại", null);
+                }
+                var newToken = GenerateAccessToken(user);
+                return _responseTokenObject.ResponseSuccess("Token đã được làm mới thành công", newToken);
+            }
+            catch (SecurityTokenValidationException ex)
+            {
+                return _responseTokenObject.ResponseError(StatusCodes.Status400BadRequest, "Lỗi xác thực token: " + ex.Message, null);
+            }
+            catch (Exception ex)
+            {
+                return _responseTokenObject.ResponseError(StatusCodes.Status500InternalServerError, "Lỗi không xác định: " + ex.Message, null);
+            }
+        }
+        #endregion
     }
 }

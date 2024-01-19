@@ -17,5 +17,6 @@ namespace WebCourseManagement_Business.Interfaces
         Task<ResponseObject<DataResponseToken>> DangNhap(Request_DangNhap request);
         Task<ResponseObject<DataResponseNguoiDung>> XacNhanDangKyTaiKhoan(Request_XacNhanDangKyTaiKhoan request);
         DataResponseToken GenerateAccessToken(NguoiDung nguoiDung);
+        ResponseObject<DataResponseToken> RenewAccessToken(Request_RenewToken request);
     }
 }

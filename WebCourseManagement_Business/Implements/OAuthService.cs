@@ -41,8 +41,6 @@ namespace WebCourseManagement_Business.Implements
         {
             try
             {
-                var opt = new GoogleOptions();
-                var test = new Microsoft.AspNetCore.Authentication.Google.GoogleHandler()
 
                 string googleApiInformation = "https://www.googleapis.com/oauth2/v3/userinfo";
                 var httpClient = new HttpClient();

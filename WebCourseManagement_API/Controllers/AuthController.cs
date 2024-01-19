@@ -71,5 +71,10 @@ namespace WebCourseManagement_API.Controllers
                     return StatusCode(500, result);
             }
         }
+        [HttpPost("RenewAccessToken")]
+        public IActionResult RenewAccessToken(Request_RenewToken request)
+        {
+            return Ok(_authService.RenewAccessToken(request));
+        }
     }
 }
