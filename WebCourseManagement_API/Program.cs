@@ -7,6 +7,9 @@ using WebCourseManagement_Models.Converters;
 using WebCourseManagement_Models.DataContexts;
 using WebCourseManagement_Models.ResponseModels.DataNguoiDung;
 using WebCourseManagement_Models.Responses;
+using Microsoft.AspNetCore.Authentication.Google;
+using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.AspNetCore.Authentication;
 
 var builder = WebApplication.CreateBuilder(args);
 builder.Logging.ClearProviders();
@@ -47,6 +50,21 @@ builder.Services.AddSwaggerGen(option =>
             new string[]{}
         }
     });
+});
+//builder.Services.Configure<CookiePolicyOptions>(options =>
+//{
+//    options.CheckConsentNeeded = context => true;
+//    options.MinimumSameSitePolicy = SameSiteMode.None;
+//});
+builder.Services.AddAuthentication(options =>
+{
+    options.DefaultScheme = CookieAuthenticationDefaults.AuthenticationScheme;
+    options.DefaultChallengeScheme = GoogleDefaults.AuthenticationScheme;
+}).AddCookie().AddGoogle(GoogleDefaults.AuthenticationScheme, options =>
+{
+    options.ClientId = builder.Configuration.GetSection("Authentication:Google:ClientId").Value;
+    options.ClientSecret = builder.Configuration.GetSection("Authentication:Google:ClientSecret").Value;
+    options.ClaimActions.MapJsonKey("urn:google:picture", "picture", "url");
 });
 builder.Services.AddScoped<IOAuthService, OAuthService>();
 builder.Services.AddScoped<IAuthService, AuthService>();

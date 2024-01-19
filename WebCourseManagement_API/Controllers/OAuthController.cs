@@ -1,4 +1,7 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.AspNetCore.Authentication.Google;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using WebCourseManagement_Business.Interfaces;
 
@@ -18,5 +21,6 @@ namespace WebCourseManagement_API.Controllers
         {
             return Ok(await _oauthService.ValidateGoogleToken(token));
         }
+        
     }
 }
