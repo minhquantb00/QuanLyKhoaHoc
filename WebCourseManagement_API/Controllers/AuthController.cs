@@ -90,5 +90,23 @@ namespace WebCourseManagement_API.Controllers
         {
             return Ok(await _authService.XacNhanQuenMatKhau(request));
         }
+        [HttpPost("TaoMatKhauMoi")]
+        public async Task<IActionResult> TaoMatKhauMoi(Request_TaoMatKhauMoi request)
+        {
+            var result = await _authService.TaoMatKhauMoi(request);
+            switch (result.Status)
+            {
+                case 200:
+                    return Ok(result);
+                case 404:
+                    return NotFound(result);
+                case 400:
+                    return BadRequest(result);
+                case 403:
+                    return Unauthorized(result);
+                default:
+                    return StatusCode(500, result);
+            }
+        }
     }
 }
