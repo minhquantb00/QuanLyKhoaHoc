@@ -1,4 +1,6 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using WebCourseManagement_Business.Interfaces;
 using WebCourseManagement_Models.RequestModels.AuthRequests;
@@ -75,6 +77,18 @@ namespace WebCourseManagement_API.Controllers
         public IActionResult RenewAccessToken(Request_RenewToken request)
         {
             return Ok(_authService.RenewAccessToken(request));
+        }
+        [HttpPut("DoiMatKhau")]
+        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
+        public async Task<IActionResult> DoiMatKhau(Request_DoiMatKhau request)
+        {
+            int id = int.Parse(HttpContext.User.FindFirst("Id").Value);
+            return Ok(await _authService.DoiMatKhau(id, request));
+        }
+        [HttpPost("XacNhanQuenMatKhau")]
+        public async Task<IActionResult> XacNhanQuenMatKhau(Request_XacNhanQuenMatKhau request)
+        {
+            return Ok(await _authService.XacNhanQuenMatKhau(request));
         }
     }
 }

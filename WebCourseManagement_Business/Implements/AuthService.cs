@@ -292,5 +292,59 @@ namespace WebCourseManagement_Business.Implements
             }
         }
         #endregion
+        #region Đổi mật khẩu
+        public async Task<string> DoiMatKhau(int nguoiDungId, Request_DoiMatKhau request)
+        {
+            var nguoiDung = await _context.nguoiDungs.SingleOrDefaultAsync(x => x.Id == nguoiDungId);
+            bool checkMatKhauCu = BcryptNet.Verify(request.MatKhauCu, nguoiDung.MatKhau);
+            if (!checkMatKhauCu)
+            {
+                return "Mật khẩu không chính xác";
+            }
+            if(string.IsNullOrEmpty(request.MatKhauCu) || string.IsNullOrEmpty(request.MatKhauMoi))
+            {
+                return "Vui lòng điền đầy đủ thông tin";
+            }
+            if (!request.MatKhauMoi.Equals(request.XacNhanMatKhauMoi))
+            {
+                return "Mật khẩu không trùng khớp";
+            }
+            nguoiDung.MatKhau = BcryptNet.HashPassword(request.MatKhauMoi);
+            await _context.SaveChangesAsync();
+            return "Đổi mật khẩu thành công";
+        }
+        #endregion
+        #region Xác nhận quên mật khẩu
+        public async Task<string> XacNhanQuenMatKhau(Request_XacNhanQuenMatKhau request)
+        {
+            NguoiDung nguoiDung = await _context.nguoiDungs.FirstOrDefaultAsync(x => x.Email.Equals(request.Email));
+            if (nguoiDung is null)
+            {
+                return "Email không tồn tại trong hệ thống";
+            }
+            else
+            {
+                var confirms = _context.xacNhanEmails.Where(x => x.NguoiDungId == nguoiDung.Id).ToList();
+                _context.xacNhanEmails.RemoveRange(confirms);
+                await _context.SaveChangesAsync();
+                XacNhanEmail xacNhanEmail = new XacNhanEmail
+                {
+                    NguoiDungId = nguoiDung.Id,
+                    DaXacNhan = false,
+                    ThoiGianHetHan = DateTime.Now.AddHours(4),
+                    MaXacNhan = "MyBugs" + "_" + GenerateCodeActive().ToString()
+                };
+                await _context.xacNhanEmails.AddAsync(xacNhanEmail);
+                await _context.SaveChangesAsync();
+                string message = SendEmail(new EmailTo
+                {
+                    To = request.Email,
+                    Subject = "Nhận mã xác nhận để tạo mật khẩu mới từ đây: ",
+                    Content = $"Mã kích hoạt của bạn là: {xacNhanEmail.MaXacNhan}, mã này sẽ hết hạn sau 4 tiếng"
+                });
+                return "Gửi mã xác nhận về email thành công, vui lòng kiểm tra email";
+            }
+        }
+        #endregion
     }
 }
