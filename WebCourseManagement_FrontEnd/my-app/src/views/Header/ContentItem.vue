@@ -1,7 +1,7 @@
 <template>
   <div id="content-course" class="container">
     <div class="slider">
-      <v-carousel show-arrows="hover" hide-delimiters continuous="true">
+      <v-carousel show-arrows="hover" hide-delimiters continuous="true" cycle interval="2000">
         <v-carousel-item
           src="https://img-c.udemycdn.com/notices/featured_carousel_slide/image/5bf6274c-4a57-42ce-93d6-9775b06730be.jpg"
           cover
@@ -44,6 +44,68 @@
         </v-sheet>
       </div>
     </div>
+
+    <div class="course-suggest">
+        <h2 style="margin-bottom: 20px">Khóa học nổi bật</h2>
+        <div class="list-course">
+          <v-sheet class="mx-auto" elevation="4">
+            <v-slide-group v-model="model" center-active show-arrows>
+              <v-slide-group-item
+                v-for="n in listCourse"
+                :key="n.id"
+                v-slot="{ toggle }"
+              >
+                <div class="ma-6 course-item" @click="toggle" style="width: 250px">
+                  <v-img :src="n.image" width="250px" height="141px" />
+                  <h4>{{ n.nameCourse }}</h4>
+                  <p style="margin: 0">{{ n.description }}</p>
+                  <v-rating
+                    half-increments
+                    hover
+                    :length="5"
+                    :size="32"
+                    :model-value="n.rating"
+                    active-color="primary"
+                    @click="changeRating(n.id, $event)"
+                  />
+                  <p style="margin: 0">{{ n.price }}</p>
+                </div>
+              </v-slide-group-item>
+            </v-slide-group>
+          </v-sheet>
+        </div>
+      </div>
+
+      <div class="course-suggest">
+        <h2 style="margin-bottom: 20px">Bài viết nổi bật</h2>
+        <div class="list-course">
+          <v-sheet class="mx-auto" elevation="4">
+            <v-slide-group v-model="model" center-active show-arrows>
+              <v-slide-group-item
+                v-for="n in listCourse"
+                :key="n.id"
+                v-slot="{ toggle }"
+              >
+                <div class="ma-6 course-item" @click="toggle" style="width: 250px">
+                  <v-img :src="n.image" width="250px" height="141px" />
+                  <h4>{{ n.nameCourse }}</h4>
+                  <p style="margin: 0">{{ n.description }}</p>
+                  <v-rating
+                    half-increments
+                    hover
+                    :length="5"
+                    :size="32"
+                    :model-value="n.rating"
+                    active-color="primary"
+                    @click="changeRating(n.id, $event)"
+                  />
+                  <p style="margin: 0">{{ n.price }}</p>
+                </div>
+              </v-slide-group-item>
+            </v-slide-group>
+          </v-sheet>
+        </div>
+      </div>
   </div>
 </template>
 
@@ -118,7 +180,6 @@ export default {
 <style scoped>
 .course-suggest {
   margin-top: 40px;
-  min-height: 1000px;
 }
 .course-item:hover{
     cursor: pointer;

@@ -7,6 +7,9 @@
       <div>
         <ContentItem></ContentItem>
       </div>
+      <div style="margin-top:40px">
+        <FooterItem></FooterItem>
+      </div>
   </div>
 
 </template>
@@ -14,8 +17,9 @@
 <script>
 import HeaderItem from '../Header/HeaderItem.vue'
 import ContentItem from '../Header/ContentItem.vue'
+import FooterItem from '../Header/FooterItem.vue'
 export default {
-  components: { HeaderItem, ContentItem },
+  components: { HeaderItem, ContentItem, FooterItem },
 
 }
 </script>
