@@ -1,7 +1,7 @@
 <template>
   <div id="content-course" class="container">
     <div class="slider">
-      <v-carousel show-arrows="hover" hide-delimiters>
+      <v-carousel show-arrows="hover" hide-delimiters continuous="true">
         <v-carousel-item
           src="https://img-c.udemycdn.com/notices/featured_carousel_slide/image/5bf6274c-4a57-42ce-93d6-9775b06730be.jpg"
           cover
@@ -24,8 +24,8 @@
               :key="n.id"
               v-slot="{ toggle }"
             >
-              <div class="ma-6" @click="toggle" style="width: 250px">
-                <v-img :src="n.image" width="250px" />
+              <div class="ma-6 course-item" @click="toggle" style="width: 250px">
+                <v-img :src="n.image" width="250px" height="141px" />
                 <h4>{{ n.nameCourse }}</h4>
                 <p style="margin: 0">{{ n.description }}</p>
                 <v-rating
@@ -118,5 +118,9 @@ export default {
 <style scoped>
 .course-suggest {
   margin-top: 40px;
+  min-height: 1000px;
+}
+.course-item:hover{
+    cursor: pointer;
 }
 </style>

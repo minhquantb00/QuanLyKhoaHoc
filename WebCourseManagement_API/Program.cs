@@ -71,6 +71,7 @@ builder.Services.AddScoped<IAuthService, AuthService>();
 builder.Services.AddScoped<ResponseObject<DataResponseNguoiDung>>();
 builder.Services.AddScoped<ResponseObject<DataResponseToken>>();
 builder.Services.AddScoped<NguoiDungConverter>();
+builder.Services.AddScoped<IUserService, UserService>();
 builder.Services.AddAuthentication(Microsoft.AspNetCore.Authentication.JwtBearer.JwtBearerDefaults.AuthenticationScheme).AddJwtBearer(options => {
     options.RequireHttpsMetadata = false;
     options.SaveToken = true;
