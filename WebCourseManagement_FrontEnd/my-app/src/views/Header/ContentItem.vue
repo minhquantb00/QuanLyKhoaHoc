@@ -25,9 +25,9 @@
               v-slot="{ toggle }"
             >
               <div class="ma-6" @click="toggle" style="width: 250px">
-                <v-img :src="n.image" width="250px"/>
-                <h4 >{{ n.nameCourse }}</h4>
-                <p style="margin: 0;">{{ n.description }}</p>
+                <v-img :src="n.image" width="250px" />
+                <h4>{{ n.nameCourse }}</h4>
+                <p style="margin: 0">{{ n.description }}</p>
                 <v-rating
                   half-increments
                   hover
@@ -35,8 +35,9 @@
                   :size="32"
                   :model-value="n.rating"
                   active-color="primary"
+                  @click="changeRating(n.id, $event)"
                 />
-                <p style="margin:0">{{ n.price }}</p>
+                <p style="margin: 0">{{ n.price }}</p>
               </div>
             </v-slide-group-item>
           </v-slide-group>
@@ -56,48 +57,60 @@ export default {
           image:
             "https://tuhoclaptrinh.edu.vn/upload/post/2023/04/19/gioi-thieu-ngon-ngu-c-20230419090719-567750.jpg",
           nameCourse: "Khóa học C# .Net Core",
-          description: "C# là một ngôn ngữ thuần hướng đối tượng",
+          description: "C# là một ngôn ngữ thuần hướng đối tượng,...",
           rating: 3,
           price: "397.000 VNĐ",
         },
         {
           id: 2,
           image:
-            "https://tuhoclaptrinh.edu.vn/upload/post/2023/04/19/gioi-thieu-ngon-ngu-c-20230419090719-567750.jpg",
-          nameCourse: "Khóa học C# .Net Core",
-          description: "C# là một ngôn ngữ thuần hướng đối tượng",
+            "https://appmaster.io/api/_files/hRaLG2N4DVjRZJQzCpN2zJ/download/",
+          nameCourse: "Khóa học Java",
+          description:
+            "Java là một ngôn ngữ lập trình thuần hướng đối tượng,...",
           rating: 3,
           price: "397.000 VNĐ",
         },
         {
           id: 3,
           image:
-            "https://tuhoclaptrinh.edu.vn/upload/post/2023/04/19/gioi-thieu-ngon-ngu-c-20230419090719-567750.jpg",
-          nameCourse: "Khóa học C# .Net Core",
-          description: "C# là một ngôn ngữ thuần hướng đối tượng",
+            "https://code24h.com/pictures/picfullsizes/2018/08/12/vpn1534042332.jpg",
+          nameCourse: "Khóa học Vuejs",
+          description: "Vuejs là một framework của JavaScript,...",
           rating: 3,
           price: "397.000 VNĐ",
         },
         {
           id: 4,
           image:
-            "https://tuhoclaptrinh.edu.vn/upload/post/2023/04/19/gioi-thieu-ngon-ngu-c-20230419090719-567750.jpg",
-          nameCourse: "Khóa học C# .Net Core",
-          description: "C# là một ngôn ngữ thuần hướng đối tượng",
+            "https://amela.vn/wp-content/uploads/2021/08/reactjs-app-development-500x500-1.jpg",
+          nameCourse: "Khóa học ReactJs",
+          description: "ReacJs là một thư viện JavaScript mã nguồn mở,...",
           rating: 3,
           price: "397.000 VNĐ",
         },
         {
           id: 5,
           image:
-            "https://tuhoclaptrinh.edu.vn/upload/post/2023/04/19/gioi-thieu-ngon-ngu-c-20230419090719-567750.jpg",
-          nameCourse: "Khóa học C# .Net Core",
-          description: "C# là một ngôn ngữ thuần hướng đối tượng",
+            "https://cdn.mcivietnam.com/nhanvien/media/Blog/python-trong-marketingjpegbd2kfe.jpeg",
+          nameCourse: "Khóa học Python",
+          description:
+            "Python là một ngôn ngữ lập trình bậc cao, đa mục đích,...",
           rating: 3,
           price: "397.000 VNĐ",
         },
       ],
     };
+  },
+  methods: {
+    changeRating(courseId, event) {
+      const newRating = event.target.value;
+      const course = this.listCourse.find(course => course.id === courseId);
+      if (course) {
+        course.rating = newRating;
+      }
+      console.log(`Updated rating for course ${courseId}: ${newRating}`);
+    },
   },
 };
 </script>
