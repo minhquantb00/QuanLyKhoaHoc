@@ -20,6 +20,16 @@ const routes = [
     path: "/",
     name: "home",
     component: HomeContentVue
+  },
+  {
+    path: "/register",
+    name: "register",
+    component: () => import('../views/Authenticate/Register.vue')
+  },
+  {
+    path: "/login",
+    name: "login",
+    component: () => import('../views/Authenticate/Login.vue')
   }
 ];
 

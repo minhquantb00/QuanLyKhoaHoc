@@ -1,9 +1,9 @@
 <template>
   <v-card id="footer-course">
     <div class="container infor-course">
-        <h3 class="text-center text-white">
+        <h3 class="text-center text-white mb-5">
             <v-img src="https://www.udemy.com/staticx/udemy/images/v7/logo-udemy-inverted.svg" style="padding-left:10px" width="200px" />
-            Thông tin về MyBugs Course
+            Thông tin về <span style="color:violet">MyBugs Course</span>
         </h3>
         <v-table fixed-header>
             <tbody style="background-color: rgb(24, 21, 21);">
