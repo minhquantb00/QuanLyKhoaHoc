@@ -74,7 +74,7 @@
 
         <v-card-text class="text-center">
           <span class="mr-3">Bạn đã có tài khoản?</span>
-          <v-btn color="success">Đăng nhập</v-btn>
+          <v-btn color="success"  @click="() => {router.push({ path: '/login' })}">Đăng nhập</v-btn>
         </v-card-text>
       </v-card>
     </div>
@@ -82,6 +82,7 @@
 </template>
 
 <script>
+import { useRouter } from 'vue-router'
 export default {
   data() {
     return {
@@ -95,6 +96,7 @@ export default {
         ngaySinh: new Date(),
       },
       terms: false,
+      router: useRouter()
     };
   },
 };

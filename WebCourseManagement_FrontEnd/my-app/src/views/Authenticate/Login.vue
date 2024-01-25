@@ -40,7 +40,7 @@
   
           <v-card-text class="text-center">
             <span class="mr-3">Bạn chưa có tài khoản?</span>
-            <v-btn color="success">Đăng ký</v-btn>
+            <v-btn color="success" @click="() => {router.push({ path: '/register' })}">Đăng ký</v-btn>
           </v-card-text>
         </v-card>
       </div>
@@ -48,6 +48,7 @@
   </template>
   
   <script>
+  import { useRouter } from 'vue-router'
   export default {
     data() {
       return {
@@ -55,7 +56,8 @@
           taiKhoan: "",
           matKhau: "",
         },
-        terms: false
+        terms: false,
+        router: useRouter()
       };
     },
   };
