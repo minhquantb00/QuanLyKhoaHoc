@@ -8,7 +8,9 @@
         title="Vui lòng đăng nhập tại đây!"
       >
         <v-container class="set-index">
-          <v-label class="input-label" :rules="taiKhoanRules">Tài khoản</v-label>
+          <v-label class="input-label" :rules="taiKhoanRules"
+            >Tài khoản</v-label
+          >
           <v-text-field
             v-model="inputLogin.taiKhoan"
             color="primary"
@@ -27,7 +29,7 @@
         </v-container>
 
         <v-card-actions class="justify-content-evenly">
-          <v-btn color="success" @click="login">
+          <v-btn color="success" :loading="loading" @click="login">
             Đăng nhập
 
             <v-icon icon="mdi-chevron-right" end></v-icon>
@@ -53,7 +55,8 @@
 
 <script>
 import { useRouter } from "vue-router";
-import { mapState } from "vuex";
+import { authApi  } from '../../apis/Auth/authApi'
+import  useEmitter  from '../../helpers/useEmitter'
 export default {
   data() {
     return {
@@ -62,7 +65,10 @@ export default {
         matKhau: "",
       },
       terms: false,
+      authenticateApi: authApi(),
       router: useRouter(),
+      emitter: useEmitter(),
+      loading: false,
       taiKhoanRules: [
         (value) => {
           if (value) return true;
@@ -89,9 +95,47 @@ export default {
     };
   },
   methods: {
-    login() {
-      console.log('Quân đẹp trai')
-      this.$store.dispatch("AUTH/login")
+    async login(){
+      this.loading = true
+      const result = (await authenticateApi.login(this.inputLogin)).data
+      if(result.status === 200){
+        this.emitter.emit('showAlert', {
+          type: 'success',
+          content: result.message
+        })
+        if(!localStorage.getItem('accessToken')){
+          localStorage.setItem('accessToken', result.data.accessToken)
+          localStorage.setItem('refreshToken', result.data.refreshToken)
+
+          const accessToken = localStorage.getItem('accessToken')
+          var decoded = parseJwt(accessToken)
+          localStorage.setItem('userInfo', JSON.stringify(decoded))
+        }
+        this.router.push({path: '/'})
+      }
+      else{
+        const alert = {
+          type: 'error',
+          content: result.message
+        }
+        this.emitter.emit('showAlert', alert)
+      }
+      this.loading = false
+    },
+    parseJwt(token) {
+      var base64Url = token.split(".")[1];
+      var base64 = base64Url.replace(/-/g, "+").replace(/_/g, "/");
+      var jsonPayload = decodeURIComponent(
+        window
+          .atob(base64)
+          .split("")
+          .map(function (c) {
+            return "%" + ("00" + c.charCodeAt(0).toString(16)).slice(-2);
+          })
+          .join("")
+      );
+
+      return JSON.parse(jsonPayload);
     },
   },
 };
