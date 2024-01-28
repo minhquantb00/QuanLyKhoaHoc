@@ -56,7 +56,7 @@
 <script>
 import { useRouter } from "vue-router";
 import { authApi  } from '../../apis/Auth/authApi'
-import  useEmitter  from '../../helpers/useEmitter'
+import   useEmitter   from '../../helpers/useEmitter'
 export default {
   data() {
     return {
@@ -97,7 +97,7 @@ export default {
   methods: {
     async login(){
       this.loading = true
-      const result = (await authenticateApi.login(this.inputLogin)).data
+      const result = (await this.authenticateApi.login(this.inputLogin)).data
       if(result.status === 200){
         this.emitter.emit('showAlert', {
           type: 'success',
