@@ -84,5 +84,18 @@ namespace WebCourseManagement_Business.Implements
             }
             return _responseObject.ResponseSuccess("Lấy dữ liệu thành công", _converter.EntityToDTO(nguoiDung));
         }
+
+        public async Task<string> XoaNguoiDung(int nguoiDungId)
+        {
+            var nguoiDung = await _context.nguoiDungs.SingleOrDefaultAsync(x => x.Id == nguoiDungId);
+            if(nguoiDung == null)
+            {
+                return "Người dùng không tồn tại";
+            }
+            nguoiDung.TrangThaiNguoiDungId = 1;
+            _context.Update(nguoiDung);
+            await _context.SaveChangesAsync();
+            return "Xóa người dùng thành công";
+        }
     }
 }

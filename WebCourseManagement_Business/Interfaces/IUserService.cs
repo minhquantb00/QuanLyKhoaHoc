@@ -16,5 +16,6 @@ namespace WebCourseManagement_Business.Interfaces
         Task<PageResult<DataResponseNguoiDung>> GetAlls(InputUser input, int pageSize, int pageNumber);
         Task<ResponseObject<DataResponseNguoiDung>> GetUserById(int nguoiDungId);
         Task<ResponseObject<DataResponseNguoiDung>> CapNhatThongTinNguoiDung(Request_CapNhatThongTinNguoiDung request);
+        Task<string> XoaNguoiDung(int nguoiDungId);
     }
 }

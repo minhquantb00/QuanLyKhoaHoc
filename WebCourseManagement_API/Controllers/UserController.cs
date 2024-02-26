@@ -30,5 +30,10 @@ namespace WebCourseManagement_API.Controllers
         {
             return Ok(await _userService.CapNhatThongTinNguoiDung(request));
         }
+        [HttpDelete("XoaNguoiDung/{id}")]
+        public async Task<IActionResult> XoaNguoiDung([FromRoute] int id)
+        {
+            return Ok(await _userService.XoaNguoiDung(id));
+        }
     }
 }
