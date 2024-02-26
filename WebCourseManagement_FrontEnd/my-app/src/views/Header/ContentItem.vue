@@ -35,8 +35,9 @@
                   :size="32"
                   :model-value="n.rating"
                   active-color="primary"
-                  @click="changeRating(n.id, $event)"
+                  @click="() => {router.push({path:'/detail-product'})}"
                 />
+                <!-- custom trên -->
                 <p style="margin: 0">{{ n.price }}</p>
               </div>
             </v-slide-group-item>
@@ -110,9 +111,11 @@
 </template>
 
 <script>
+import { useRouter } from 'vue-router'
 export default {
   data() {
     return {
+      router: useRouter(),
       listCourse: [
         {
           id: 1,

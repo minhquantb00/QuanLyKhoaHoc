@@ -22,10 +22,23 @@
             v-model="inputLogin.matKhau"
             color="primary"
             placeholder="Mật khẩu"
-            type="password"
+            :append-inner-icon="visible ? 'mdi-eye-off' :'mdi-eye'"
+            :type="visible ? 'text' : 'password'"
             variant="underlined"
+            @click:append-inner="visible = !visible"
           ></v-text-field>
+          <v-row>
+            <v-col>
           <v-checkbox v-model="terms" color="primary" label="Nhớ mật khẩu" />
+
+            </v-col>
+            <v-col>
+              <div class="forgot-password pa-4">
+              <a @click="() => {router.push({path:'/forgot-password'})}">Quên mật khẩu</a>
+              </div>
+            </v-col>
+          </v-row>
+
         </v-container>
 
         <v-card-actions class="justify-content-evenly">
@@ -35,6 +48,20 @@
             <v-icon icon="mdi-chevron-right" end></v-icon>
           </v-btn>
         </v-card-actions>
+        <div class="or-login">
+          <v-title>--or--</v-title>
+        </div>
+        <div class="text-center">
+          <v-btn
+            block
+            class="text-none mb-4"
+            color="white"
+            size="x-large"
+            variant="flat"
+          >
+            <v-title class="ma-4"><span style="color:blue; font-size:25px;">G</span><span style="color:red; font-size:23px;">o</span><span style="color:#FFD700; font-size:23px;">o</span><span style="color:blue; font-size:23px;">g</span><span style="color:green; font-size:23px;">l</span><span style="color:red; font-size:23px;">e</span></v-title>
+          </v-btn>
+        </div>
 
         <v-card-text class="text-center">
           <span class="mr-3">Bạn chưa có tài khoản?</span>
@@ -55,8 +82,8 @@
 
 <script>
 import { useRouter } from "vue-router";
-import { authApi  } from '../../apis/Auth/authApi'
-import   useEmitter   from '../../helpers/useEmitter'
+import { authApi } from "../../apis/Auth/authApi";
+import useEmitter from "../../helpers/useEmitter";
 export default {
   data() {
     return {
@@ -75,6 +102,7 @@ export default {
           return "Bạn phải điền tên tài khoản";
         },
       ],
+      visible: false,
       passwordRules: [
         (value) => {
           if (value) return true;
@@ -95,32 +123,31 @@ export default {
     };
   },
   methods: {
-    async login(){
-      this.loading = true
-      const result = (await this.authenticateApi.login(this.inputLogin)).data
-      if(result.status === 200){
-        this.emitter.emit('showAlert', {
-          type: 'success',
-          content: result.message
-        })
-        if(!localStorage.getItem('accessToken')){
-          localStorage.setItem('accessToken', result.data.accessToken)
-          localStorage.setItem('refreshToken', result.data.refreshToken)
+    async login() {
+      this.loading = true;
+      const result = (await this.authenticateApi.login(this.inputLogin)).data;
+      if (result.status === 200) {
+        this.emitter.emit("showAlert", {
+          type: "success",
+          content: result.message,
+        });
+        if (!localStorage.getItem("accessToken")) {
+          localStorage.setItem("accessToken", result.data.accessToken);
+          localStorage.setItem("refreshToken", result.data.refreshToken);
 
-          const accessToken = localStorage.getItem('accessToken')
-          var decoded = parseJwt(accessToken)
-          localStorage.setItem('userInfo', JSON.stringify(decoded))
+          const accessToken = localStorage.getItem("accessToken");
+          var decoded = parseJwt(accessToken);
+          localStorage.setItem("userInfo", JSON.stringify(decoded));
         }
-        this.router.push({path: '/'})
-      }
-      else{
+        this.router.push({ path: "/" });
+      } else {
         const alert = {
-          type: 'error',
-          content: result.message
-        }
-        this.emitter.emit('showAlert', alert)
+          type: "error",
+          content: result.message,
+        };
+        this.emitter.emit("showAlert", alert);
       }
-      this.loading = false
+      this.loading = false;
     },
     parseJwt(token) {
       var base64Url = token.split(".")[1];
@@ -177,5 +204,15 @@ export default {
   padding: 20px;
   background-color: rgba(0, 0, 0, 0.75);
   box-shadow: 0 0 10px rgba(255, 255, 255, 0.5);
+}
+.or-login{
+  text-align: center;
+  margin-bottom: 10px;
+}
+.forgot-password{
+margin-left: 90px;
+}
+.forgot-password a:hover{
+color: rgb(106, 65, 255);
 }
 </style>

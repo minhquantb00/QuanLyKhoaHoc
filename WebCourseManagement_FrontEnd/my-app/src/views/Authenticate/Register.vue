@@ -34,8 +34,10 @@
             v-model="inputRegister.matKhau"
             color="primary"
             placeholder="Mật khẩu"
-            type="password"
+            :append-inner-icon="visible? 'mdi-eye-off':'mdi-eye'"
+            :type="visible?'text':'password'"
             variant="underlined"
+            @click:append-inner="visible = !visible"
           ></v-text-field>
           <v-label class="input-label">Số điện thoại</v-label>
           <v-text-field
@@ -95,6 +97,7 @@ export default {
         gioiTinh: null,
         ngaySinh: new Date(),
       },
+      visible:false,
       terms: false,
       router: useRouter()
     };

@@ -20,7 +20,16 @@
     "vue3-datepicker": "^0.4.0",
     "vuetify": "npm:@vuetify/nightly@next",
     "vuex": "^4.0.0",
-    "webfontloader": "^1.0.0"
+    "webfontloader": "^1.0.0",
+    "@fortawesome/fontawesome-svg-core": "^6.3.0",
+    "@fortawesome/free-brands-svg-icons": "^6.3.0",
+    "@fortawesome/free-regular-svg-icons": "^6.3.0",
+    "@fortawesome/free-solid-svg-icons": "^6.3.0",
+    "@fortawesome/vue-fontawesome": "^3.0.3",
+    "@jamescoyle/vue-icon": "^0.1.2",
+    "@kangc/v-md-editor": "^2.3.15",
+    "@mdi/js": "^7.1.96",
+    "fortawesome": "^0.0.1-security"
   },
   "devDependencies": {
     "@babel/core": "^7.12.16",

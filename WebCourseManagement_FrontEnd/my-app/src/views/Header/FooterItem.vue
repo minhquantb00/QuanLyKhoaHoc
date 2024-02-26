@@ -3,15 +3,17 @@
     <div class="container infor-course">
         <h3 class="text-center text-white mb-5">
             <v-img src="https://www.udemy.com/staticx/udemy/images/v7/logo-udemy-inverted.svg" style="padding-left:10px" width="200px" />
-            Thông tin về <span style="color:violet">MyBugs Course</span>
+            <div class="title-footer">
+                Thông tin về <span style="color:violet">MyBugs Course</span>
+            </div>
         </h3>
         <v-table fixed-header>
             <tbody style="background-color: rgb(24, 21, 21);">
                 <tr v-for="item in listWork" :key="item.id">
                     <td class="text-white">{{ item.lienHe }}</td>
-                    <td class="text-white">{{ item.gioiThieu }}</td>
-                    <td class="text-white">{{ item.sanPham }}</td>
-                    <td class="text-white">{{ item.congCu }}</td>
+                    <td class="text-white"><a href="#">{{ item.gioiThieu }}</a></td>
+                    <td class="text-white"><a href="#">{{ item.sanPham }}</a></td>
+                    <td class="text-white"><a href="#">{{ item.congCu }}</a></td>
                 </tr>
             </tbody>
         </v-table>
@@ -62,5 +64,16 @@ export default {
 }
 .infor-course{
     background-color:  rgb(24, 21, 21);
+}
+.text-white a{
+    text-decoration: none;
+    color: white;
+}
+.text-white a:hover{
+    box-shadow: 0 0.5px rgb(255, 255, 255);
+    transition: box-shadow 0.3s;
+}
+.title-footer{
+    margin: -50px 0px 40px 90px;
 }
 </style>

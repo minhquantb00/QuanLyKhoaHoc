@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <link
+    href="https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css"
+    rel="stylesheet"
+/>
+  </head>
+  <style>
+    .dropdown_one {
+      margin-left: 50px;
+    }
+    .dropdown_menu_one a {
+      padding: 10px 0px 10px 30px;
+    }
+     a .dropdow_one {
+      position: absolute;
+      right: 0;
+      transition: 0.3s ease;
+    }
+    .dropdown_menu_one {
+      background-color: #414141;
+      border-radius: 4px;
+      display: none;
+    }
+  </style>
+  <body>
+    <a class="sub-btn_one">
+      <i class="bx bxs-widget"></i>
+      <span>Quản lý thuộc tính</span>
+      <i class="fas fa-angle-right dropdown_one"></i>
+    </a>
+    <div class="dropdown_menu_one">
+      <a th:href="@{/movie/movie-type}" onclick="overLoad()"
+        ><i class="bx bx-movie-play"></i>Thể loại phim</a
+      >
+      <a th:href="@{/movie/language}" onclick="overLoad()"
+        ><i class="bx bx-world"></i>Ngôn ngữ phim</a
+      >
+      <a th:href="@{/movie/director}" onclick="overLoad()"
+        ><i class="bx bxs-user"></i>Đạo diễn phim</a
+      >
+      <a th:href="@{/movie/performer}" onclick="overLoad()"
+        ><i class="bx bxs-group"></i>Diễn viên phim</a
+      >
+      <a th:href="@{/rated/find-all}" onclick="overLoad()"
+        ><i class="bx bx-child"></i>Phân loại độ tuổi</a
+      >
+      <a th:href="@{/service/service-type}" onclick="overLoad()"
+        ><i class="bx bxl-slack"></i>Thể loại dịch vụ</a
+      >
+    </div>
+
+    <script>
+      $(document).ready(function () {
+        $(".sub-btn_one").click(function () {
+          $(this).next(".dropdown_menu_one").slideToggle();
+          $(this).find(".dropdown_one").toggleClass("rotate");
+        });
+      });
+    </script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.0/jquery.min.js"></script>
+    <script
+        type="module"
+        src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"
+></script>
+<script
+        nomodule
+        src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.js"
+></script>
+  </body>
+</html>

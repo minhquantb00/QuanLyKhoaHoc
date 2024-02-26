@@ -30,6 +30,28 @@ const routes = [
     path: "/login",
     name: "login",
     component: () => import('../views/Authenticate/Login.vue')
+  },
+  {
+    path: "/forgot-password",
+    name: "forgot-password",
+    component: () => import('../views/Authenticate/ForgotPassword.vue')
+  }
+  ,
+  {
+    path: "/new-forgot-password",
+    name: "new-forgot-password",
+    component: () => import('../views/Authenticate/NewForgotPassword.vue')
+  }
+  ,
+  {
+    path: "/detail-forgot-password",
+    name: "detail-forgot-password",
+    component: () => import('../views/Authenticate/DetailForgotPassword.vue')
+  },
+  {
+    path: "/detail-product",
+    name: "detail-product",
+    component: () => import('../views/ProductDetail/DetailProduct.vue')
   }
 ];
 
