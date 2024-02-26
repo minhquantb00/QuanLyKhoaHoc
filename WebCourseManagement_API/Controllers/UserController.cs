@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Mvc;
 using WebCourseManagement_Business.Interfaces;
 using WebCourseManagement_Models.RequestModels.InputRequests;
+using WebCourseManagement_Models.RequestModels.UserRequests;
 
 namespace WebCourseManagement_API.Controllers
 {
@@ -19,10 +20,15 @@ namespace WebCourseManagement_API.Controllers
         {
             return Ok(await _userService.GetAlls(input, pageSize, pageNumber));
         }
-        [HttpGet("GetUserById")]
-        public async Task<IActionResult> GetUserById([FromQuery] int id)
+        [HttpGet("GetUserById/{id}")]
+        public async Task<IActionResult> GetUserById([FromRoute] int id)
         {
             return Ok(await _userService.GetUserById(id));
+        }
+        [HttpPut("CapNhatThongTinNguoiDung")]
+        public async Task<IActionResult> CapNhatThongTinNguoiDung([FromForm] Request_CapNhatThongTinNguoiDung request)
+        {
+            return Ok(await _userService.CapNhatThongTinNguoiDung(request));
         }
     }
 }

@@ -12,7 +12,6 @@ namespace WebCourseManagement_Models.RequestModels.UserRequests
     public class Request_CapNhatThongTinNguoiDung
     {
         public int NguoiDungId { get; set; }
-        public string TenTaiKhoan { get; set; }
         public string HoVaTen { get; set; }
         public string Email { get; set; }
         public string SoDienThoai { get; set; }

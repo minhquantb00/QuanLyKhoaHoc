@@ -12,6 +12,7 @@ using WebCourseManagement_Models.RequestModels.InputRequests;
 using WebCourseManagement_Models.RequestModels.UserRequests;
 using WebCourseManagement_Models.ResponseModels.DataNguoiDung;
 using WebCourseManagement_Models.Responses;
+using WebCourseManagement_Repositories.HandleImage;
 using WebCourseManagement_Repositories.HandlePagination;
 
 namespace WebCourseManagement_Business.Implements
@@ -28,9 +29,27 @@ namespace WebCourseManagement_Business.Implements
             _responseObject = responseObject;
         }
 
-        public Task<ResponseObject<DataResponseNguoiDung>> CapNhatThongTinNguoiDung(Request_CapNhatThongTinNguoiDung request)
+        public async Task<ResponseObject<DataResponseNguoiDung>> CapNhatThongTinNguoiDung(Request_CapNhatThongTinNguoiDung request)
         {
-            throw new NotImplementedException();
+            var nguoiDung = await _context.nguoiDungs.SingleOrDefaultAsync(x => x.Id == request.NguoiDungId);
+            if(nguoiDung == null)
+            {
+                return _responseObject.ResponseError(StatusCodes.Status404NotFound, "Không tìm thấy thông tin người dùng", null);
+            }
+            nguoiDung.HoVaTen = request.HoVaTen;
+            nguoiDung.AnhDaiDien = await HandleUploadImage.UpdateFile(nguoiDung.AnhDaiDien, request.AnhDaiDien);
+            nguoiDung.SoDienThoai = request.SoDienThoai;
+            nguoiDung.DiaChi = request.DiaChi;
+            nguoiDung.Email = request.Email;
+            nguoiDung.GioiTinh = request.GioiTinh;
+            nguoiDung.NgaySinh = request.NgaySinh;
+            nguoiDung.QuanHuyenId = request.QuanHuyenId;
+            nguoiDung.XaPhuongId = request.XaPhuongId;
+            nguoiDung.TinhThanhId = request.TinhThanhId;
+            nguoiDung.ThoiGianCapNhat = DateTime.Now;
+            _context.nguoiDungs.Update(nguoiDung);
+            await _context.SaveChangesAsync();
+            return _responseObject.ResponseSuccess("Cập nhật thông tin người dùng thành công", _converter.EntityToDTO(nguoiDung));
         }
 
         public async Task<PageResult<DataResponseNguoiDung>> GetAlls(InputUser input, int pageSize, int pageNumber)
