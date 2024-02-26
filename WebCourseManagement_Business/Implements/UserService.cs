@@ -9,6 +9,7 @@ using WebCourseManagement_Business.Interfaces;
 using WebCourseManagement_Models.Converters;
 using WebCourseManagement_Models.DataContexts;
 using WebCourseManagement_Models.RequestModels.InputRequests;
+using WebCourseManagement_Models.RequestModels.UserRequests;
 using WebCourseManagement_Models.ResponseModels.DataNguoiDung;
 using WebCourseManagement_Models.Responses;
 using WebCourseManagement_Repositories.HandlePagination;
@@ -25,6 +26,11 @@ namespace WebCourseManagement_Business.Implements
             _context = context;
             _converter = converter;
             _responseObject = responseObject;
+        }
+
+        public Task<ResponseObject<DataResponseNguoiDung>> CapNhatThongTinNguoiDung(Request_CapNhatThongTinNguoiDung request)
+        {
+            throw new NotImplementedException();
         }
 
         public async Task<PageResult<DataResponseNguoiDung>> GetAlls(InputUser input, int pageSize, int pageNumber)
