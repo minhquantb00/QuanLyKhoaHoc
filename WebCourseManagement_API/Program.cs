@@ -10,6 +10,7 @@ using WebCourseManagement_Models.Responses;
 using Microsoft.AspNetCore.Authentication.Google;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authentication;
+using WebCourseManagement_Models.ResponseModels.DataKhoaHoc;
 
 var builder = WebApplication.CreateBuilder(args);
 builder.Logging.ClearProviders();
@@ -72,6 +73,9 @@ builder.Services.AddScoped<ResponseObject<DataResponseNguoiDung>>();
 builder.Services.AddScoped<ResponseObject<DataResponseToken>>();
 builder.Services.AddScoped<NguoiDungConverter>();
 builder.Services.AddScoped<IUserService, UserService>();
+builder.Services.AddScoped<IKhoaHocService, KhoaHocService>();
+builder.Services.AddScoped<ResponseObject<DataResponseKhoaHoc>>();
+builder.Services.AddScoped<KhoaHocConverter>();
 builder.Services.AddAuthentication(Microsoft.AspNetCore.Authentication.JwtBearer.JwtBearerDefaults.AuthenticationScheme).AddJwtBearer(options => {
     options.RequireHttpsMetadata = false;
     options.SaveToken = true;

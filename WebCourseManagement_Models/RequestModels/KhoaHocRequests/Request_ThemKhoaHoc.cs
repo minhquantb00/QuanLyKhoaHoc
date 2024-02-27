@@ -13,7 +13,6 @@ namespace WebCourseManagement_Models.RequestModels.KhoaHocRequests
         public string TenKhoaHoc { get; set; }
         public string MoTa { get; set; }
         public IFormFile AnhKhoaHoc { get; set; }
-        public int NguoiTaoId { get; set; }
         public decimal GiaKhoaHoc { get; set; }
         public int LoaiKhoaHocId { get; set; }
         public string? LinkVideoGioiThieu { get; set; }
