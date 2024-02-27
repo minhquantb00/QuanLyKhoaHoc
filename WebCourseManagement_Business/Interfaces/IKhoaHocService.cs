@@ -12,5 +12,7 @@ namespace WebCourseManagement_Business.Interfaces
     public interface IKhoaHocService
     {
         Task<ResponseObject<DataResponseKhoaHoc>> ThemKhoaHoc(int nguoiTaoId, Request_ThemKhoaHoc request);
+        Task<ResponseObject<DataResponseKhoaHoc>> SuaThongTinKhoaHoc(int nguoiSuaId, Request_CapNhatThongTinKhoaHoc request);
+        Task<string> XoaKhoaHoc(int khoaHocId);
     }
 }
