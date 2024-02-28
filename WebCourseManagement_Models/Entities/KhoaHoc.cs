@@ -27,5 +27,6 @@ namespace WebCourseManagement_Models.Entities
         public int LoaiKhoaHocId { get; set; }
         public virtual LoaiKhoaHoc LoaiKhoaHoc { get; set; }
         public string? LinkVideoGioiThieu { get; set; }
+        public bool IsActive { get; set; } = true;
     }
 }

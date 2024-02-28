@@ -92,7 +92,8 @@ namespace WebCourseManagement_Business.Implements
                     SoDienThoai = request.SoDienThoai,
                     TenTaiKhoan = request.TenTaiKhoan,
                     ThoiGianTao = DateTime.Now,
-                    TrangThaiNguoiDungId = 1
+                    TrangThaiNguoiDungId = 1,
+                    IsActive = true
                 };
                 await _context.nguoiDungs.AddAsync(nguoiDung);
                 await _context.SaveChangesAsync();

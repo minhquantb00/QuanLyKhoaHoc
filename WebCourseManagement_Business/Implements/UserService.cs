@@ -92,7 +92,7 @@ namespace WebCourseManagement_Business.Implements
             {
                 return "Người dùng không tồn tại";
             }
-            nguoiDung.TrangThaiNguoiDungId = 1;
+            nguoiDung.IsActive = false;
             _context.Update(nguoiDung);
             await _context.SaveChangesAsync();
             return "Xóa người dùng thành công";

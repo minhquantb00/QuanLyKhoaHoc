@@ -36,5 +36,6 @@ namespace WebCourseManagement_Models.Entities
         public DateTime? ThoiGianKhoa { get; set; }
         public DateTime? ThoiGianMoKhoa { get; set; }
         public int? SoLanViPham { get; set; }
+        public bool IsActive { get; set; } = true;
     }
 }
