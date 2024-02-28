@@ -31,9 +31,15 @@ namespace WebCourseManagement_API.Controllers
             return Ok(await _khoaHocService.SuaThongTinKhoaHoc(id, request));
         }
         [HttpDelete("XoaKhoaHoc/{khoaHocId}")]
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> XoaKhoaHoc([FromRoute]int khoaHocId)
         {
             return Ok(await _khoaHocService.XoaKhoaHoc(khoaHocId));
+        }
+        [HttpGet("GetKhoaHocById/{id}")]
+        public async Task<IActionResult> GetKhoaHocById([FromRoute] int id)
+        {
+            return Ok(await _khoaHocService.GetKhoaHocById(id));
         }
     }
 }
