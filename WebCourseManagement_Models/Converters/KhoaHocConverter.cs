@@ -35,7 +35,8 @@ namespace WebCourseManagement_Models.Converters
                 SoNguoiDangKyKhoaHoc = khoaHoc.SoNguoiDangKyKhoaHoc,
                 TenKhoaHoc = khoaHoc.TenKhoaHoc,
                 TenLoaiKhoaHoc = _context.loaiKhoaHocs.SingleOrDefault(x => x.Id == khoaHoc.LoaiKhoaHocId).TenLoai,
-                TongThoiGianBaiHoc = khoaHoc.TongThoiGianBaiHoc
+                TongThoiGianBaiHoc = khoaHoc.TongThoiGianBaiHoc,
+                Id = khoaHoc.Id
             };
         }
     }

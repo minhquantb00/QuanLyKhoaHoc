@@ -8,7 +8,7 @@ using WebCourseManagement_Models.ResponseModels.DataNguoiDung;
 
 namespace WebCourseManagement_Models.ResponseModels.DataKhoaHoc
 {
-    public class DataResponseKhoaHoc
+    public class DataResponseKhoaHoc : DataResponseBase
     {
         public string TenKhoaHoc { get; set; }
         public string MoTa { get; set; }
