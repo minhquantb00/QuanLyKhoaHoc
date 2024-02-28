@@ -3,9 +3,11 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using WebCourseManagement_Models.RequestModels.InputRequests;
 using WebCourseManagement_Models.RequestModels.KhoaHocRequests;
 using WebCourseManagement_Models.ResponseModels.DataKhoaHoc;
 using WebCourseManagement_Models.Responses;
+using WebCourseManagement_Repositories.HandlePagination;
 
 namespace WebCourseManagement_Business.Interfaces
 {
@@ -15,5 +17,6 @@ namespace WebCourseManagement_Business.Interfaces
         Task<ResponseObject<DataResponseKhoaHoc>> SuaThongTinKhoaHoc(int nguoiSuaId, Request_CapNhatThongTinKhoaHoc request);
         Task<string> XoaKhoaHoc(int khoaHocId);
         Task<DataResponseKhoaHoc> GetKhoaHocById(int khoaHocId);
+        Task<PageResult<DataResponseKhoaHoc>> GetAlls(InputKhoaHoc input, int pageSize, int pageNumber);
     }
 }

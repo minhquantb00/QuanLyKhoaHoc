@@ -9,10 +9,12 @@ using WebCourseManagement_Business.Interfaces;
 using WebCourseManagement_Models.Converters;
 using WebCourseManagement_Models.DataContexts;
 using WebCourseManagement_Models.Entities;
+using WebCourseManagement_Models.RequestModels.InputRequests;
 using WebCourseManagement_Models.RequestModels.KhoaHocRequests;
 using WebCourseManagement_Models.ResponseModels.DataKhoaHoc;
 using WebCourseManagement_Models.Responses;
 using WebCourseManagement_Repositories.HandleImage;
+using WebCourseManagement_Repositories.HandlePagination;
 
 namespace WebCourseManagement_Business.Implements
 {
@@ -28,6 +30,30 @@ namespace WebCourseManagement_Business.Implements
             _responseObject = responseObject;
             _converter = converter;
             _httpContextAccessor = httpContextAccessor;
+        }
+
+        public async Task<PageResult<DataResponseKhoaHoc>> GetAlls(InputKhoaHoc input, int pageSize, int pageNumber)
+        {
+            var query =  _context.khoaHocs.Include(x => x.LoaiKhoaHoc).Include(x => x.NguoiTao).AsNoTracking().AsQueryable();
+            if (input.LoaiKhoaHocId.HasValue)
+            {
+                query = query.Where(x => x.LoaiKhoaHocId ==  input.LoaiKhoaHocId);
+            }
+            if(input.NguoiTaoId.HasValue)
+            {
+                query = query.Where(x => x.NguoiTaoId == input.NguoiTaoId);
+            }
+            if (!string.IsNullOrWhiteSpace(input.TenKhoaHoc))
+            {
+                query = query.Where(x => x.TenKhoaHoc.ToLower().Contains(input.TenKhoaHoc.ToLower()));
+            }
+            if(input.GiaTu.HasValue && input.GiaDen.HasValue)
+            {
+                query = query.Where(x => x.GiaKhoaHoc >= input.GiaTu && x.GiaKhoaHoc <= input.GiaDen);
+            }
+
+            var result = Pagination.GetPagedData(query.Select(x => _converter.EntityToDTO(x)), pageSize, pageNumber);
+            return result;
         }
 
         public async Task<DataResponseKhoaHoc> GetKhoaHocById(int khoaHocId)

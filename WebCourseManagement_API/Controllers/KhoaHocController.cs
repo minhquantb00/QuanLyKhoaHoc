@@ -3,7 +3,10 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using WebCourseManagement_Business.Interfaces;
+using WebCourseManagement_Models.RequestModels.InputRequests;
 using WebCourseManagement_Models.RequestModels.KhoaHocRequests;
+using WebCourseManagement_Models.ResponseModels.DataKhoaHoc;
+using WebCourseManagement_Repositories.HandlePagination;
 
 namespace WebCourseManagement_API.Controllers
 {
@@ -40,6 +43,11 @@ namespace WebCourseManagement_API.Controllers
         public async Task<IActionResult> GetKhoaHocById([FromRoute] int id)
         {
             return Ok(await _khoaHocService.GetKhoaHocById(id));
+        }
+        [HttpGet("GetAlls")]
+        public async Task<IActionResult> GetAlls([FromQuery] InputKhoaHoc input, int pageSize = 10, int pageNumber = 1)
+        {
+            return Ok(await _khoaHocService.GetAlls(input, pageSize, pageNumber));
         }
     }
 }
