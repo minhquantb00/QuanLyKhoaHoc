@@ -23,5 +23,17 @@ namespace WebCourseManagement_API.Controllers
             int id = int.Parse(HttpContext.User.FindFirst("Id").Value);
             return Ok(await _khoaHocService.ThemKhoaHoc(id, request));
         }
+        [HttpPut("CapNhatThongTinKhoaHoc")]
+        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
+        public async Task<IActionResult> CapNhatThongTinKhoaHoc([FromForm] Request_CapNhatThongTinKhoaHoc request)
+        {
+            int id = int.Parse(HttpContext.User.FindFirst("Id").Value);
+            return Ok(await _khoaHocService.SuaThongTinKhoaHoc(id, request));
+        }
+        [HttpDelete("XoaKhoaHoc/{khoaHocId}")]
+        public async Task<IActionResult> XoaKhoaHoc([FromRoute]int khoaHocId)
+        {
+            return Ok(await _khoaHocService.XoaKhoaHoc(khoaHocId));
+        }
     }
 }

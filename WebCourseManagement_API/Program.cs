@@ -73,6 +73,7 @@ builder.Services.AddScoped<ResponseObject<DataResponseNguoiDung>>();
 builder.Services.AddScoped<ResponseObject<DataResponseToken>>();
 builder.Services.AddScoped<NguoiDungConverter>();
 builder.Services.AddHttpContextAccessor();
+
 builder.Services.AddScoped<IUserService, UserService>();
 builder.Services.AddScoped<IKhoaHocService, KhoaHocService>();
 builder.Services.AddScoped<ResponseObject<DataResponseKhoaHoc>>();

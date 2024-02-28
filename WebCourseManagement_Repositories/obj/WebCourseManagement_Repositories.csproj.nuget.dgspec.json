@@ -1,20 +1,24 @@
 {
   "format": 1,
   "restore": {
-    "D:\\Projects Csharp\\WebCourseManagement_API\\WebCourseManagement_Repositories\\WebCourseManagement_Repositories.csproj": {}
+    "C:\\Users\\Friday\\source\\repos\\QuanLyKhoaHoc\\WebCourseManagement_Repositories\\WebCourseManagement_Repositories.csproj": {}
   },
   "projects": {
-    "D:\\Projects Csharp\\WebCourseManagement_API\\WebCourseManagement_Commons\\WebCourseManagement_Commons.csproj": {
+    "C:\\Users\\Friday\\source\\repos\\QuanLyKhoaHoc\\WebCourseManagement_Commons\\WebCourseManagement_Commons.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "D:\\Projects Csharp\\WebCourseManagement_API\\WebCourseManagement_Commons\\WebCourseManagement_Commons.csproj",
+        "projectUniqueName": "C:\\Users\\Friday\\source\\repos\\QuanLyKhoaHoc\\WebCourseManagement_Commons\\WebCourseManagement_Commons.csproj",
         "projectName": "WebCourseManagement_Commons",
-        "projectPath": "D:\\Projects Csharp\\WebCourseManagement_API\\WebCourseManagement_Commons\\WebCourseManagement_Commons.csproj",
-        "packagesPath": "C:\\Users\\Admin\\.nuget\\packages\\",
-        "outputPath": "D:\\Projects Csharp\\WebCourseManagement_API\\WebCourseManagement_Commons\\obj\\",
+        "projectPath": "C:\\Users\\Friday\\source\\repos\\QuanLyKhoaHoc\\WebCourseManagement_Commons\\WebCourseManagement_Commons.csproj",
+        "packagesPath": "C:\\Users\\Friday\\.nuget\\packages\\",
+        "outputPath": "C:\\Users\\Friday\\source\\repos\\QuanLyKhoaHoc\\WebCourseManagement_Commons\\obj\\",
         "projectStyle": "PackageReference",
+        "fallbackFolders": [
+          "C:\\Program Files\\DevExpress 22.2\\Components\\Offline Packages"
+        ],
         "configFilePaths": [
-          "C:\\Users\\Admin\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Users\\Friday\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\DevExpress 22.2.config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
         ],
         "originalTargetFrameworks": [
@@ -22,6 +26,7 @@
         ],
         "sources": {
           "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
+          "C:\\Program Files\\DevExpress 22.2\\Components\\System\\Components\\Packages": {},
           "https://api.nuget.org/v3/index.json": {}
         },
         "frameworks": {
@@ -65,21 +70,25 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\7.0.203\\RuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\7.0.400\\RuntimeIdentifierGraph.json"
         }
       }
     },
-    "D:\\Projects Csharp\\WebCourseManagement_API\\WebCourseManagement_Models\\WebCourseManagement_Models.csproj": {
+    "C:\\Users\\Friday\\source\\repos\\QuanLyKhoaHoc\\WebCourseManagement_Models\\WebCourseManagement_Models.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "D:\\Projects Csharp\\WebCourseManagement_API\\WebCourseManagement_Models\\WebCourseManagement_Models.csproj",
+        "projectUniqueName": "C:\\Users\\Friday\\source\\repos\\QuanLyKhoaHoc\\WebCourseManagement_Models\\WebCourseManagement_Models.csproj",
         "projectName": "WebCourseManagement_Models",
-        "projectPath": "D:\\Projects Csharp\\WebCourseManagement_API\\WebCourseManagement_Models\\WebCourseManagement_Models.csproj",
-        "packagesPath": "C:\\Users\\Admin\\.nuget\\packages\\",
-        "outputPath": "D:\\Projects Csharp\\WebCourseManagement_API\\WebCourseManagement_Models\\obj\\",
+        "projectPath": "C:\\Users\\Friday\\source\\repos\\QuanLyKhoaHoc\\WebCourseManagement_Models\\WebCourseManagement_Models.csproj",
+        "packagesPath": "C:\\Users\\Friday\\.nuget\\packages\\",
+        "outputPath": "C:\\Users\\Friday\\source\\repos\\QuanLyKhoaHoc\\WebCourseManagement_Models\\obj\\",
         "projectStyle": "PackageReference",
+        "fallbackFolders": [
+          "C:\\Program Files\\DevExpress 22.2\\Components\\Offline Packages"
+        ],
         "configFilePaths": [
-          "C:\\Users\\Admin\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Users\\Friday\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\DevExpress 22.2.config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
         ],
         "originalTargetFrameworks": [
@@ -87,14 +96,15 @@
         ],
         "sources": {
           "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
+          "C:\\Program Files\\DevExpress 22.2\\Components\\System\\Components\\Packages": {},
           "https://api.nuget.org/v3/index.json": {}
         },
         "frameworks": {
           "net6.0": {
             "targetAlias": "net6.0",
             "projectReferences": {
-              "D:\\Projects Csharp\\WebCourseManagement_API\\WebCourseManagement_Commons\\WebCourseManagement_Commons.csproj": {
-                "projectPath": "D:\\Projects Csharp\\WebCourseManagement_API\\WebCourseManagement_Commons\\WebCourseManagement_Commons.csproj"
+              "C:\\Users\\Friday\\source\\repos\\QuanLyKhoaHoc\\WebCourseManagement_Commons\\WebCourseManagement_Commons.csproj": {
+                "projectPath": "C:\\Users\\Friday\\source\\repos\\QuanLyKhoaHoc\\WebCourseManagement_Commons\\WebCourseManagement_Commons.csproj"
               }
             }
           }
@@ -150,21 +160,25 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\7.0.203\\RuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\7.0.400\\RuntimeIdentifierGraph.json"
         }
       }
     },
-    "D:\\Projects Csharp\\WebCourseManagement_API\\WebCourseManagement_Repositories\\WebCourseManagement_Repositories.csproj": {
+    "C:\\Users\\Friday\\source\\repos\\QuanLyKhoaHoc\\WebCourseManagement_Repositories\\WebCourseManagement_Repositories.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "D:\\Projects Csharp\\WebCourseManagement_API\\WebCourseManagement_Repositories\\WebCourseManagement_Repositories.csproj",
+        "projectUniqueName": "C:\\Users\\Friday\\source\\repos\\QuanLyKhoaHoc\\WebCourseManagement_Repositories\\WebCourseManagement_Repositories.csproj",
         "projectName": "WebCourseManagement_Repositories",
-        "projectPath": "D:\\Projects Csharp\\WebCourseManagement_API\\WebCourseManagement_Repositories\\WebCourseManagement_Repositories.csproj",
-        "packagesPath": "C:\\Users\\Admin\\.nuget\\packages\\",
-        "outputPath": "D:\\Projects Csharp\\WebCourseManagement_API\\WebCourseManagement_Repositories\\obj\\",
+        "projectPath": "C:\\Users\\Friday\\source\\repos\\QuanLyKhoaHoc\\WebCourseManagement_Repositories\\WebCourseManagement_Repositories.csproj",
+        "packagesPath": "C:\\Users\\Friday\\.nuget\\packages\\",
+        "outputPath": "C:\\Users\\Friday\\source\\repos\\QuanLyKhoaHoc\\WebCourseManagement_Repositories\\obj\\",
         "projectStyle": "PackageReference",
+        "fallbackFolders": [
+          "C:\\Program Files\\DevExpress 22.2\\Components\\Offline Packages"
+        ],
         "configFilePaths": [
-          "C:\\Users\\Admin\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Users\\Friday\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\DevExpress 22.2.config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
         ],
         "originalTargetFrameworks": [
@@ -172,17 +186,18 @@
         ],
         "sources": {
           "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
+          "C:\\Program Files\\DevExpress 22.2\\Components\\System\\Components\\Packages": {},
           "https://api.nuget.org/v3/index.json": {}
         },
         "frameworks": {
           "net6.0": {
             "targetAlias": "net6.0",
             "projectReferences": {
-              "D:\\Projects Csharp\\WebCourseManagement_API\\WebCourseManagement_Commons\\WebCourseManagement_Commons.csproj": {
-                "projectPath": "D:\\Projects Csharp\\WebCourseManagement_API\\WebCourseManagement_Commons\\WebCourseManagement_Commons.csproj"
+              "C:\\Users\\Friday\\source\\repos\\QuanLyKhoaHoc\\WebCourseManagement_Commons\\WebCourseManagement_Commons.csproj": {
+                "projectPath": "C:\\Users\\Friday\\source\\repos\\QuanLyKhoaHoc\\WebCourseManagement_Commons\\WebCourseManagement_Commons.csproj"
               },
-              "D:\\Projects Csharp\\WebCourseManagement_API\\WebCourseManagement_Models\\WebCourseManagement_Models.csproj": {
-                "projectPath": "D:\\Projects Csharp\\WebCourseManagement_API\\WebCourseManagement_Models\\WebCourseManagement_Models.csproj"
+              "C:\\Users\\Friday\\source\\repos\\QuanLyKhoaHoc\\WebCourseManagement_Models\\WebCourseManagement_Models.csproj": {
+                "projectPath": "C:\\Users\\Friday\\source\\repos\\QuanLyKhoaHoc\\WebCourseManagement_Models\\WebCourseManagement_Models.csproj"
               }
             }
           }
@@ -246,7 +261,7 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\7.0.203\\RuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\7.0.400\\RuntimeIdentifierGraph.json"
         }
       }
     }

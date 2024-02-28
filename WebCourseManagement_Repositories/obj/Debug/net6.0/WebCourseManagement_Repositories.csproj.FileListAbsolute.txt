@@ -17,3 +17,22 @@ D:\Projects C#\WebCourseManagement_API\WebCourseManagement_Repositories\obj\Debu
 D:\Projects C#\WebCourseManagement_API\WebCourseManagement_Repositories\obj\Debug\net6.0\WebCourseManagement_Repositories.pdb
 D:\Projects C#\WebCourseManagement_API\WebCourseManagement_Repositories\obj\Debug\net6.0\WebCourseManagement_Repositories.genruntimeconfig.cache
 D:\Projects C#\WebCourseManagement_API\WebCourseManagement_Repositories\obj\Debug\net6.0\ref\WebCourseManagement_Repositories.dll
+C:\Users\Friday\source\repos\QuanLyKhoaHoc\WebCourseManagement_Repositories\bin\Debug\net6.0\WebCourseManagement_Repositories.deps.json
+C:\Users\Friday\source\repos\QuanLyKhoaHoc\WebCourseManagement_Repositories\bin\Debug\net6.0\WebCourseManagement_Repositories.runtimeconfig.json
+C:\Users\Friday\source\repos\QuanLyKhoaHoc\WebCourseManagement_Repositories\bin\Debug\net6.0\WebCourseManagement_Repositories.dll
+C:\Users\Friday\source\repos\QuanLyKhoaHoc\WebCourseManagement_Repositories\bin\Debug\net6.0\WebCourseManagement_Repositories.pdb
+C:\Users\Friday\source\repos\QuanLyKhoaHoc\WebCourseManagement_Repositories\bin\Debug\net6.0\WebCourseManagement_Commons.dll
+C:\Users\Friday\source\repos\QuanLyKhoaHoc\WebCourseManagement_Repositories\bin\Debug\net6.0\WebCourseManagement_Models.dll
+C:\Users\Friday\source\repos\QuanLyKhoaHoc\WebCourseManagement_Repositories\bin\Debug\net6.0\WebCourseManagement_Commons.pdb
+C:\Users\Friday\source\repos\QuanLyKhoaHoc\WebCourseManagement_Repositories\bin\Debug\net6.0\WebCourseManagement_Models.pdb
+C:\Users\Friday\source\repos\QuanLyKhoaHoc\WebCourseManagement_Repositories\obj\Debug\net6.0\WebCourseManagement_Repositories.csproj.AssemblyReference.cache
+C:\Users\Friday\source\repos\QuanLyKhoaHoc\WebCourseManagement_Repositories\obj\Debug\net6.0\WebCourseManagement_Repositories.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\Friday\source\repos\QuanLyKhoaHoc\WebCourseManagement_Repositories\obj\Debug\net6.0\WebCourseManagement_Repositories.AssemblyInfoInputs.cache
+C:\Users\Friday\source\repos\QuanLyKhoaHoc\WebCourseManagement_Repositories\obj\Debug\net6.0\WebCourseManagement_Repositories.AssemblyInfo.cs
+C:\Users\Friday\source\repos\QuanLyKhoaHoc\WebCourseManagement_Repositories\obj\Debug\net6.0\WebCourseManagement_Repositories.csproj.CoreCompileInputs.cache
+C:\Users\Friday\source\repos\QuanLyKhoaHoc\WebCourseManagement_Repositories\obj\Debug\net6.0\WebCourseManagement_Repositories.csproj.CopyComplete
+C:\Users\Friday\source\repos\QuanLyKhoaHoc\WebCourseManagement_Repositories\obj\Debug\net6.0\WebCourseManagement_Repositories.dll
+C:\Users\Friday\source\repos\QuanLyKhoaHoc\WebCourseManagement_Repositories\obj\Debug\net6.0\refint\WebCourseManagement_Repositories.dll
+C:\Users\Friday\source\repos\QuanLyKhoaHoc\WebCourseManagement_Repositories\obj\Debug\net6.0\WebCourseManagement_Repositories.pdb
+C:\Users\Friday\source\repos\QuanLyKhoaHoc\WebCourseManagement_Repositories\obj\Debug\net6.0\WebCourseManagement_Repositories.genruntimeconfig.cache
+C:\Users\Friday\source\repos\QuanLyKhoaHoc\WebCourseManagement_Repositories\obj\Debug\net6.0\ref\WebCourseManagement_Repositories.dll

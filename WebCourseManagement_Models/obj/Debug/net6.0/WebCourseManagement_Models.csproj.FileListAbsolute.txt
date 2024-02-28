@@ -15,3 +15,20 @@ D:\Projects C#\WebCourseManagement_API\WebCourseManagement_Models\obj\Debug\net6
 D:\Projects C#\WebCourseManagement_API\WebCourseManagement_Models\obj\Debug\net6.0\WebCourseManagement_Models.pdb
 D:\Projects C#\WebCourseManagement_API\WebCourseManagement_Models\obj\Debug\net6.0\WebCourseManagement_Models.genruntimeconfig.cache
 D:\Projects C#\WebCourseManagement_API\WebCourseManagement_Models\obj\Debug\net6.0\ref\WebCourseManagement_Models.dll
+C:\Users\Friday\source\repos\QuanLyKhoaHoc\WebCourseManagement_Models\bin\Debug\net6.0\WebCourseManagement_Models.deps.json
+C:\Users\Friday\source\repos\QuanLyKhoaHoc\WebCourseManagement_Models\bin\Debug\net6.0\WebCourseManagement_Models.runtimeconfig.json
+C:\Users\Friday\source\repos\QuanLyKhoaHoc\WebCourseManagement_Models\bin\Debug\net6.0\WebCourseManagement_Models.dll
+C:\Users\Friday\source\repos\QuanLyKhoaHoc\WebCourseManagement_Models\bin\Debug\net6.0\WebCourseManagement_Models.pdb
+C:\Users\Friday\source\repos\QuanLyKhoaHoc\WebCourseManagement_Models\bin\Debug\net6.0\WebCourseManagement_Commons.dll
+C:\Users\Friday\source\repos\QuanLyKhoaHoc\WebCourseManagement_Models\bin\Debug\net6.0\WebCourseManagement_Commons.pdb
+C:\Users\Friday\source\repos\QuanLyKhoaHoc\WebCourseManagement_Models\obj\Debug\net6.0\WebCourseManagement_Models.csproj.AssemblyReference.cache
+C:\Users\Friday\source\repos\QuanLyKhoaHoc\WebCourseManagement_Models\obj\Debug\net6.0\WebCourseManagement_Models.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\Friday\source\repos\QuanLyKhoaHoc\WebCourseManagement_Models\obj\Debug\net6.0\WebCourseManagement_Models.AssemblyInfoInputs.cache
+C:\Users\Friday\source\repos\QuanLyKhoaHoc\WebCourseManagement_Models\obj\Debug\net6.0\WebCourseManagement_Models.AssemblyInfo.cs
+C:\Users\Friday\source\repos\QuanLyKhoaHoc\WebCourseManagement_Models\obj\Debug\net6.0\WebCourseManagement_Models.csproj.CoreCompileInputs.cache
+C:\Users\Friday\source\repos\QuanLyKhoaHoc\WebCourseManagement_Models\obj\Debug\net6.0\WebCourseManagement_Models.csproj.CopyComplete
+C:\Users\Friday\source\repos\QuanLyKhoaHoc\WebCourseManagement_Models\obj\Debug\net6.0\WebCourseManagement_Models.dll
+C:\Users\Friday\source\repos\QuanLyKhoaHoc\WebCourseManagement_Models\obj\Debug\net6.0\refint\WebCourseManagement_Models.dll
+C:\Users\Friday\source\repos\QuanLyKhoaHoc\WebCourseManagement_Models\obj\Debug\net6.0\WebCourseManagement_Models.pdb
+C:\Users\Friday\source\repos\QuanLyKhoaHoc\WebCourseManagement_Models\obj\Debug\net6.0\WebCourseManagement_Models.genruntimeconfig.cache
+C:\Users\Friday\source\repos\QuanLyKhoaHoc\WebCourseManagement_Models\obj\Debug\net6.0\ref\WebCourseManagement_Models.dll

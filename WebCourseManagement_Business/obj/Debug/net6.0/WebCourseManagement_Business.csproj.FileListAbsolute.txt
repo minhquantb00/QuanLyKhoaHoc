@@ -19,3 +19,24 @@ D:\Projects C#\WebCourseManagement_API\WebCourseManagement_Business\obj\Debug\ne
 D:\Projects C#\WebCourseManagement_API\WebCourseManagement_Business\obj\Debug\net6.0\WebCourseManagement_Business.pdb
 D:\Projects C#\WebCourseManagement_API\WebCourseManagement_Business\obj\Debug\net6.0\WebCourseManagement_Business.genruntimeconfig.cache
 D:\Projects C#\WebCourseManagement_API\WebCourseManagement_Business\obj\Debug\net6.0\ref\WebCourseManagement_Business.dll
+C:\Users\Friday\source\repos\QuanLyKhoaHoc\WebCourseManagement_Business\bin\Debug\net6.0\WebCourseManagement_Business.deps.json
+C:\Users\Friday\source\repos\QuanLyKhoaHoc\WebCourseManagement_Business\bin\Debug\net6.0\WebCourseManagement_Business.runtimeconfig.json
+C:\Users\Friday\source\repos\QuanLyKhoaHoc\WebCourseManagement_Business\bin\Debug\net6.0\WebCourseManagement_Business.dll
+C:\Users\Friday\source\repos\QuanLyKhoaHoc\WebCourseManagement_Business\bin\Debug\net6.0\WebCourseManagement_Business.pdb
+C:\Users\Friday\source\repos\QuanLyKhoaHoc\WebCourseManagement_Business\bin\Debug\net6.0\WebCourseManagement_Commons.dll
+C:\Users\Friday\source\repos\QuanLyKhoaHoc\WebCourseManagement_Business\bin\Debug\net6.0\WebCourseManagement_Models.dll
+C:\Users\Friday\source\repos\QuanLyKhoaHoc\WebCourseManagement_Business\bin\Debug\net6.0\WebCourseManagement_Repositories.dll
+C:\Users\Friday\source\repos\QuanLyKhoaHoc\WebCourseManagement_Business\bin\Debug\net6.0\WebCourseManagement_Models.pdb
+C:\Users\Friday\source\repos\QuanLyKhoaHoc\WebCourseManagement_Business\bin\Debug\net6.0\WebCourseManagement_Repositories.pdb
+C:\Users\Friday\source\repos\QuanLyKhoaHoc\WebCourseManagement_Business\bin\Debug\net6.0\WebCourseManagement_Commons.pdb
+C:\Users\Friday\source\repos\QuanLyKhoaHoc\WebCourseManagement_Business\obj\Debug\net6.0\WebCourseManagement_Business.csproj.AssemblyReference.cache
+C:\Users\Friday\source\repos\QuanLyKhoaHoc\WebCourseManagement_Business\obj\Debug\net6.0\WebCourseManagement_Business.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\Friday\source\repos\QuanLyKhoaHoc\WebCourseManagement_Business\obj\Debug\net6.0\WebCourseManagement_Business.AssemblyInfoInputs.cache
+C:\Users\Friday\source\repos\QuanLyKhoaHoc\WebCourseManagement_Business\obj\Debug\net6.0\WebCourseManagement_Business.AssemblyInfo.cs
+C:\Users\Friday\source\repos\QuanLyKhoaHoc\WebCourseManagement_Business\obj\Debug\net6.0\WebCourseManagement_Business.csproj.CoreCompileInputs.cache
+C:\Users\Friday\source\repos\QuanLyKhoaHoc\WebCourseManagement_Business\obj\Debug\net6.0\WebCourseManagement_Business.csproj.CopyComplete
+C:\Users\Friday\source\repos\QuanLyKhoaHoc\WebCourseManagement_Business\obj\Debug\net6.0\WebCourseManagement_Business.dll
+C:\Users\Friday\source\repos\QuanLyKhoaHoc\WebCourseManagement_Business\obj\Debug\net6.0\refint\WebCourseManagement_Business.dll
+C:\Users\Friday\source\repos\QuanLyKhoaHoc\WebCourseManagement_Business\obj\Debug\net6.0\WebCourseManagement_Business.pdb
+C:\Users\Friday\source\repos\QuanLyKhoaHoc\WebCourseManagement_Business\obj\Debug\net6.0\WebCourseManagement_Business.genruntimeconfig.cache
+C:\Users\Friday\source\repos\QuanLyKhoaHoc\WebCourseManagement_Business\obj\Debug\net6.0\ref\WebCourseManagement_Business.dll

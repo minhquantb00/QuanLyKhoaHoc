@@ -136,6 +136,22 @@
           }
         }
       },
+      "Microsoft.AspNetCore.Authentication.Google/6.0.6": {
+        "type": "package",
+        "compile": {
+          "lib/net6.0/Microsoft.AspNetCore.Authentication.Google.dll": {
+            "related": ".xml"
+          }
+        },
+        "runtime": {
+          "lib/net6.0/Microsoft.AspNetCore.Authentication.Google.dll": {
+            "related": ".xml"
+          }
+        },
+        "frameworkReferences": [
+          "Microsoft.AspNetCore.App"
+        ]
+      },
       "Microsoft.AspNetCore.Authentication.JwtBearer/6.0.20": {
         "type": "package",
         "dependencies": {
@@ -2169,6 +2185,7 @@
         "framework": ".NETCoreApp,Version=v6.0",
         "dependencies": {
           "MailKit": "4.3.0",
+          "Microsoft.AspNetCore.Authentication.Google": "6.0.6",
           "Microsoft.AspNetCore.Authentication.JwtBearer": "6.0.20",
           "Microsoft.EntityFrameworkCore": "7.0.10",
           "Microsoft.EntityFrameworkCore.SqlServer": "7.0.10",
@@ -2413,6 +2430,21 @@
         "lib/netstandard2.1/MailKit.xml",
         "mailkit.4.3.0.nupkg.sha512",
         "mailkit.nuspec"
+      ]
+    },
+    "Microsoft.AspNetCore.Authentication.Google/6.0.6": {
+      "sha512": "++1JD/0V7LeDdB1hxnhy16AhUY04QoO9EKhghbWqJhp6MHWYqFCcVBwPBc17Dw7Ra1I+SD7B7z+qcsVb20iABw==",
+      "type": "package",
+      "path": "microsoft.aspnetcore.authentication.google/6.0.6",
+      "files": [
+        ".nupkg.metadata",
+        ".signature.p7s",
+        "Icon.png",
+        "THIRD-PARTY-NOTICES.TXT",
+        "lib/net6.0/Microsoft.AspNetCore.Authentication.Google.dll",
+        "lib/net6.0/Microsoft.AspNetCore.Authentication.Google.xml",
+        "microsoft.aspnetcore.authentication.google.6.0.6.nupkg.sha512",
+        "microsoft.aspnetcore.authentication.google.nuspec"
       ]
     },
     "Microsoft.AspNetCore.Authentication.JwtBearer/6.0.20": {
@@ -6479,19 +6511,24 @@
     ]
   },
   "packageFolders": {
-    "C:\\Users\\Admin\\.nuget\\packages\\": {}
+    "C:\\Users\\Friday\\.nuget\\packages\\": {},
+    "C:\\Program Files\\DevExpress 22.2\\Components\\Offline Packages": {}
   },
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "D:\\Projects Csharp\\WebCourseManagement_API\\WebCourseManagement_API\\WebCourseManagement_API.csproj",
+      "projectUniqueName": "C:\\Users\\Friday\\source\\repos\\QuanLyKhoaHoc\\WebCourseManagement_API\\WebCourseManagement_API.csproj",
       "projectName": "WebCourseManagement_API",
-      "projectPath": "D:\\Projects Csharp\\WebCourseManagement_API\\WebCourseManagement_API\\WebCourseManagement_API.csproj",
-      "packagesPath": "C:\\Users\\Admin\\.nuget\\packages\\",
-      "outputPath": "D:\\Projects Csharp\\WebCourseManagement_API\\WebCourseManagement_API\\obj\\",
+      "projectPath": "C:\\Users\\Friday\\source\\repos\\QuanLyKhoaHoc\\WebCourseManagement_API\\WebCourseManagement_API.csproj",
+      "packagesPath": "C:\\Users\\Friday\\.nuget\\packages\\",
+      "outputPath": "C:\\Users\\Friday\\source\\repos\\QuanLyKhoaHoc\\WebCourseManagement_API\\obj\\",
       "projectStyle": "PackageReference",
+      "fallbackFolders": [
+        "C:\\Program Files\\DevExpress 22.2\\Components\\Offline Packages"
+      ],
       "configFilePaths": [
-        "C:\\Users\\Admin\\AppData\\Roaming\\NuGet\\NuGet.Config",
+        "C:\\Users\\Friday\\AppData\\Roaming\\NuGet\\NuGet.Config",
+        "C:\\Program Files (x86)\\NuGet\\Config\\DevExpress 22.2.config",
         "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
       ],
       "originalTargetFrameworks": [
@@ -6499,17 +6536,18 @@
       ],
       "sources": {
         "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
+        "C:\\Program Files\\DevExpress 22.2\\Components\\System\\Components\\Packages": {},
         "https://api.nuget.org/v3/index.json": {}
       },
       "frameworks": {
         "net6.0": {
           "targetAlias": "net6.0",
           "projectReferences": {
-            "D:\\Projects Csharp\\WebCourseManagement_API\\WebCourseManagement_Business\\WebCourseManagement_Business.csproj": {
-              "projectPath": "D:\\Projects Csharp\\WebCourseManagement_API\\WebCourseManagement_Business\\WebCourseManagement_Business.csproj"
+            "C:\\Users\\Friday\\source\\repos\\QuanLyKhoaHoc\\WebCourseManagement_Business\\WebCourseManagement_Business.csproj": {
+              "projectPath": "C:\\Users\\Friday\\source\\repos\\QuanLyKhoaHoc\\WebCourseManagement_Business\\WebCourseManagement_Business.csproj"
             },
-            "D:\\Projects Csharp\\WebCourseManagement_API\\WebCourseManagement_Models\\WebCourseManagement_Models.csproj": {
-              "projectPath": "D:\\Projects Csharp\\WebCourseManagement_API\\WebCourseManagement_Models\\WebCourseManagement_Models.csproj"
+            "C:\\Users\\Friday\\source\\repos\\QuanLyKhoaHoc\\WebCourseManagement_Models\\WebCourseManagement_Models.csproj": {
+              "projectPath": "C:\\Users\\Friday\\source\\repos\\QuanLyKhoaHoc\\WebCourseManagement_Models\\WebCourseManagement_Models.csproj"
             }
           }
         }
@@ -6568,7 +6606,7 @@
             "privateAssets": "all"
           }
         },
-        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\7.0.203\\RuntimeIdentifierGraph.json"
+        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\7.0.400\\RuntimeIdentifierGraph.json"
       }
     }
   },

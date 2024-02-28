@@ -30,6 +30,12 @@ namespace WebCourseManagement_Business.Implements
             _httpContextAccessor = httpContextAccessor;
         }
 
+        public async Task<DataResponseKhoaHoc> GetKhoaHocById(int khoaHocId)
+        {
+            var khoaHoc = await _context.khoaHocs.SingleOrDefaultAsync(x => x.Id == khoaHocId);
+            return _converter.EntityToDTO(khoaHoc);
+        }
+
         public async Task<ResponseObject<DataResponseKhoaHoc>> SuaThongTinKhoaHoc(int nguoiSuaId, Request_CapNhatThongTinKhoaHoc request)
         {
             var khoaHoc = await _context.khoaHocs.SingleOrDefaultAsync(x => x.Id == request.KhoaHocId);
@@ -41,7 +47,6 @@ namespace WebCourseManagement_Business.Implements
             {
                 return _responseObject.ResponseError(StatusCodes.Status404NotFound, "Loại khóa học không tồn tại", null);
             }
-            if (nguoiSuaId != khoaHoc.NguoiTaoId)
             {
                 return _responseObject.ResponseError(StatusCodes.Status400BadRequest, "Bạn không có quyền sửa thông tin khóa học", null);
             }
@@ -61,7 +66,6 @@ namespace WebCourseManagement_Business.Implements
         public async Task<ResponseObject<DataResponseKhoaHoc>> ThemKhoaHoc(int nguoiTaoId, Request_ThemKhoaHoc request)
         {
             var loaiKhoaHoc = await _context.loaiKhoaHocs.SingleOrDefaultAsync(x => x.Id == request.LoaiKhoaHocId);
-            if (loaiKhoaHoc == null)
             {
                 return _responseObject.ResponseError(StatusCodes.Status404NotFound, "Không tìm thấy loại khóa học", null);
             }

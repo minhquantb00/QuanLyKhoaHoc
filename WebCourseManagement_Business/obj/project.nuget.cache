@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "ZWhk8fvsRwjiVq2D8p0emX7Fk/Xfv+U3D7MqqBAcrIvnfivDzXedKdiD7asFVmSjmg2wNT5QNiRlZOZms5m6hg==",
+  "dgSpecHash": "FWK+ZJjrxTKJ1Sn0I+i1/x2aDF7LPfyCHbvg37oiMt4tyMvPPxI+H79RCBjWz+gw+WieHtYxQrsUPTYckCMLfg==",
   "success": true,
-  "projectFilePath": "C:\\Users\\Friday\\Source\\Repos\\QuanLyKhoaHoc\\WebCourseManagement_Business\\WebCourseManagement_Business.csproj",
+  "projectFilePath": "C:\\Users\\Friday\\source\\repos\\QuanLyKhoaHoc\\WebCourseManagement_Business\\WebCourseManagement_Business.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\Friday\\.nuget\\packages\\azure.core\\1.24.0\\azure.core.1.24.0.nupkg.sha512",
     "C:\\Users\\Friday\\.nuget\\packages\\azure.identity\\1.6.0\\azure.identity.1.6.0.nupkg.sha512",

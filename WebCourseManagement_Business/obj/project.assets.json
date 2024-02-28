@@ -6283,11 +6283,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\Friday\\Source\\Repos\\QuanLyKhoaHoc\\WebCourseManagement_Business\\WebCourseManagement_Business.csproj",
+      "projectUniqueName": "C:\\Users\\Friday\\source\\repos\\QuanLyKhoaHoc\\WebCourseManagement_Business\\WebCourseManagement_Business.csproj",
       "projectName": "WebCourseManagement_Business",
-      "projectPath": "C:\\Users\\Friday\\Source\\Repos\\QuanLyKhoaHoc\\WebCourseManagement_Business\\WebCourseManagement_Business.csproj",
+      "projectPath": "C:\\Users\\Friday\\source\\repos\\QuanLyKhoaHoc\\WebCourseManagement_Business\\WebCourseManagement_Business.csproj",
       "packagesPath": "C:\\Users\\Friday\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\Friday\\Source\\Repos\\QuanLyKhoaHoc\\WebCourseManagement_Business\\obj\\",
+      "outputPath": "C:\\Users\\Friday\\source\\repos\\QuanLyKhoaHoc\\WebCourseManagement_Business\\obj\\",
       "projectStyle": "PackageReference",
       "fallbackFolders": [
         "C:\\Program Files\\DevExpress 22.2\\Components\\Offline Packages"
@@ -6309,11 +6309,11 @@
         "net6.0": {
           "targetAlias": "net6.0",
           "projectReferences": {
-            "C:\\Users\\Friday\\Source\\Repos\\QuanLyKhoaHoc\\WebCourseManagement_Models\\WebCourseManagement_Models.csproj": {
-              "projectPath": "C:\\Users\\Friday\\Source\\Repos\\QuanLyKhoaHoc\\WebCourseManagement_Models\\WebCourseManagement_Models.csproj"
+            "C:\\Users\\Friday\\source\\repos\\QuanLyKhoaHoc\\WebCourseManagement_Models\\WebCourseManagement_Models.csproj": {
+              "projectPath": "C:\\Users\\Friday\\source\\repos\\QuanLyKhoaHoc\\WebCourseManagement_Models\\WebCourseManagement_Models.csproj"
             },
-            "C:\\Users\\Friday\\Source\\Repos\\QuanLyKhoaHoc\\WebCourseManagement_Repositories\\WebCourseManagement_Repositories.csproj": {
-              "projectPath": "C:\\Users\\Friday\\Source\\Repos\\QuanLyKhoaHoc\\WebCourseManagement_Repositories\\WebCourseManagement_Repositories.csproj"
+            "C:\\Users\\Friday\\source\\repos\\QuanLyKhoaHoc\\WebCourseManagement_Repositories\\WebCourseManagement_Repositories.csproj": {
+              "projectPath": "C:\\Users\\Friday\\source\\repos\\QuanLyKhoaHoc\\WebCourseManagement_Repositories\\WebCourseManagement_Repositories.csproj"
             }
           }
         }
