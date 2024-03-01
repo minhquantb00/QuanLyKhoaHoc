@@ -12,13 +12,9 @@ namespace WebCourseManagement_Models.Converters
     public class BaiHocConverter
     {
         private readonly AppDbContext _context;
-        private readonly KhoaHocConverter _khoaHocConverter;
-        private readonly ChuongHocConverter _converter;
-        public BaiHocConverter(AppDbContext context, KhoaHocConverter khoaHocConverter, ChuongHocConverter converter)
+        public BaiHocConverter(AppDbContext context)
         {
             _context = context;
-            _khoaHocConverter = khoaHocConverter;
-            _converter = converter;
         }
         public DataResponseBaiHoc EntityToDTO(BaiHoc baiHoc)
         {
@@ -28,8 +24,7 @@ namespace WebCourseManagement_Models.Converters
                 TenBaiHoc = baiHoc.TenBaiHoc,
                 ThoiGianCapNhat = baiHoc.ThoiGianCapNhat,
                 ThoiGianTao = baiHoc.ThoiGianTao,
-                ThoiLuongVideo = baiHoc.ThoiLuongVideo,
-                DataResponseChuongHoc = _converter.EntityToDTO(baiHoc.ChuongKhoaHoc)
+                ThoiLuongVideo = baiHoc.ThoiLuongVideo
             };
         }
     }

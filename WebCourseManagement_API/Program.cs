@@ -12,6 +12,7 @@ using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authentication;
 using WebCourseManagement_Models.ResponseModels.DataKhoaHoc;
 using WebCourseManagement_Models.ResponseModels.DataChuongHoc;
+using WebCourseManagement_Models.ResponseModels.DataBaiHoc;
 
 var builder = WebApplication.CreateBuilder(args);
 builder.Logging.ClearProviders();
@@ -74,6 +75,8 @@ builder.Services.AddScoped<ResponseObject<DataResponseNguoiDung>>();
 builder.Services.AddScoped<ResponseObject<DataResponseToken>>();
 builder.Services.AddScoped<NguoiDungConverter>();
 builder.Services.AddHttpContextAccessor();
+builder.Services.AddScoped<BaiHocConverter>();
+builder.Services.AddScoped<ResponseObject<DataResponseBaiHoc>>();
 builder.Services.AddScoped<ResponseObject<DataResponseChuongHoc>>();
 builder.Services.AddScoped<ChuongHocConverter>();
 builder.Services.AddScoped<IChuongKhoaHocService, ChuongKhoaHocService>();
