@@ -14,7 +14,7 @@ namespace WebCourseManagement_Models.Entities
         public virtual NguoiDung NguoiDung { get; set; }
         public string? BinhLuan { get; set; }
         public string? DuongDanAnhBinhLuan { get; set; }
-        public int? BinhLuanGocId { get; set; } // nếu có để coi như cái này là reply
+        public int? BinhLuanGocId { get; set; }
         public int SoLuotLike { get; set; }
         public int SoLuotBinhLuanTraLoi { get; set; }
         public DateTime ThoiGianTao { get; set; }

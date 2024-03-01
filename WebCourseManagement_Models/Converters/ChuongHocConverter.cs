@@ -12,17 +12,14 @@ namespace WebCourseManagement_Models.Converters
     public class ChuongHocConverter
     {
         private readonly AppDbContext _context;
-        private readonly KhoaHocConverter _khoaHocConverter;
-        public ChuongHocConverter(AppDbContext context, KhoaHocConverter khoaHocConverter)
+        public ChuongHocConverter(AppDbContext context)
         {
             _context = context;
-            _khoaHocConverter = khoaHocConverter;
         }
         public DataResponseChuongHoc EntityToDTO(ChuongKhoaHoc chuongKhoaHoc)
         {
             return new DataResponseChuongHoc
             {
-                DataKhoaHoc = _khoaHocConverter.EntityToDTO(chuongKhoaHoc.KhoaHoc),
                 SoBaiHocTrongChuong = chuongKhoaHoc.SoBaiHocTrongChuong,
                 TenChuong = chuongKhoaHoc.TenChuong,
                 ThoiGianTao = chuongKhoaHoc.ThoiGianTao,
