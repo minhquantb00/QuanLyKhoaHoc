@@ -12,9 +12,11 @@ namespace WebCourseManagement_Models.Converters
     public class ChuongHocConverter
     {
         private readonly AppDbContext _context;
-        public ChuongHocConverter(AppDbContext context)
+        private readonly BaiHocConverter _baiHocConverter;
+        public ChuongHocConverter(AppDbContext context, BaiHocConverter baiHocConverter)
         {
             _context = context;
+            _baiHocConverter = baiHocConverter;
         }
         public DataResponseChuongHoc EntityToDTO(ChuongKhoaHoc chuongKhoaHoc)
         {
@@ -24,7 +26,8 @@ namespace WebCourseManagement_Models.Converters
                 TenChuong = chuongKhoaHoc.TenChuong,
                 ThoiGianTao = chuongKhoaHoc.ThoiGianTao,
                 TongThoiGianHoc1Chuong = chuongKhoaHoc.TongThoiGianHoc1Chuong,
-                Id = chuongKhoaHoc.Id
+                Id = chuongKhoaHoc.Id,
+                DataResponseBaiHocs = chuongKhoaHoc.BaiHocs.Select(x => _baiHocConverter.EntityToDTO(x)).AsQueryable()
             };
         }
     }

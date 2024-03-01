@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using WebCourseManagement_Models.Entities;
+using WebCourseManagement_Models.ResponseModels.DataChuongHoc;
 
 namespace WebCourseManagement_Models.ResponseModels.DataBaiHoc
 {
@@ -14,5 +15,6 @@ namespace WebCourseManagement_Models.ResponseModels.DataBaiHoc
         public DateTime ThoiGianTao { get; set; }
         public DateTime? ThoiGianCapNhat { get; set; }
         public int ThoiLuongVideo { get; set; }
+        public DataResponseChuongHoc DataResponseChuongHoc { get; set; }
     }
 }

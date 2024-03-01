@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using WebCourseManagement_Models.Entities;
+using WebCourseManagement_Models.ResponseModels.DataChuongHoc;
 using WebCourseManagement_Models.ResponseModels.DataNguoiDung;
 
 namespace WebCourseManagement_Models.ResponseModels.DataKhoaHoc
@@ -24,5 +25,6 @@ namespace WebCourseManagement_Models.ResponseModels.DataKhoaHoc
         public int SoHocVienDaHoanThanh { get; set; }
         public string TenLoaiKhoaHoc { get; set; }
         public string? LinkVideoGioiThieu { get; set; }
+        public IQueryable<DataResponseChuongHoc> DataResponseChuongHocs { get; set; }
     }
 }

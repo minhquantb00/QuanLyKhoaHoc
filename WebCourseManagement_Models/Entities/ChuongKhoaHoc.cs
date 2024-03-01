@@ -14,5 +14,6 @@ namespace WebCourseManagement_Models.Entities
         public int TongThoiGianHoc1Chuong { get; set; }
         public int SoBaiHocTrongChuong { get; set; }
         public DateTime ThoiGianTao { get; set; }
+        public virtual ICollection<BaiHoc> BaiHocs { get; set; }
     }
 }
