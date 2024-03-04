@@ -1,0 +1,12 @@
+C:\Users\Friday\source\repos\QuanLyKhoaHoc\WebCourseManagement_Commons\bin\Release\net6.0\WebCourseManagement_Commons.deps.json
+C:\Users\Friday\source\repos\QuanLyKhoaHoc\WebCourseManagement_Commons\bin\Release\net6.0\WebCourseManagement_Commons.dll
+C:\Users\Friday\source\repos\QuanLyKhoaHoc\WebCourseManagement_Commons\bin\Release\net6.0\WebCourseManagement_Commons.pdb
+C:\Users\Friday\source\repos\QuanLyKhoaHoc\WebCourseManagement_Commons\obj\Release\net6.0\WebCourseManagement_Commons.csproj.AssemblyReference.cache
+C:\Users\Friday\source\repos\QuanLyKhoaHoc\WebCourseManagement_Commons\obj\Release\net6.0\WebCourseManagement_Commons.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\Friday\source\repos\QuanLyKhoaHoc\WebCourseManagement_Commons\obj\Release\net6.0\WebCourseManagement_Commons.AssemblyInfoInputs.cache
+C:\Users\Friday\source\repos\QuanLyKhoaHoc\WebCourseManagement_Commons\obj\Release\net6.0\WebCourseManagement_Commons.AssemblyInfo.cs
+C:\Users\Friday\source\repos\QuanLyKhoaHoc\WebCourseManagement_Commons\obj\Release\net6.0\WebCourseManagement_Commons.csproj.CoreCompileInputs.cache
+C:\Users\Friday\source\repos\QuanLyKhoaHoc\WebCourseManagement_Commons\obj\Release\net6.0\WebCourseManagement_Commons.dll
+C:\Users\Friday\source\repos\QuanLyKhoaHoc\WebCourseManagement_Commons\obj\Release\net6.0\refint\WebCourseManagement_Commons.dll
+C:\Users\Friday\source\repos\QuanLyKhoaHoc\WebCourseManagement_Commons\obj\Release\net6.0\WebCourseManagement_Commons.pdb
+C:\Users\Friday\source\repos\QuanLyKhoaHoc\WebCourseManagement_Commons\obj\Release\net6.0\ref\WebCourseManagement_Commons.dll
