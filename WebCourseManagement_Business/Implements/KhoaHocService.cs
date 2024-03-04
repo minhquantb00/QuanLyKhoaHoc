@@ -73,6 +73,7 @@ namespace WebCourseManagement_Business.Implements
             {
                 return _responseObject.ResponseError(StatusCodes.Status404NotFound, "Loại khóa học không tồn tại", null);
             }
+            if(nguoiSuaId != khoaHoc.NguoiTaoId)
             {
                 return _responseObject.ResponseError(StatusCodes.Status400BadRequest, "Bạn không có quyền sửa thông tin khóa học", null);
             }

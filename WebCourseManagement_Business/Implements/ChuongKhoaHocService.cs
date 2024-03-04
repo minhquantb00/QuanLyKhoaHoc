@@ -53,11 +53,11 @@ namespace WebCourseManagement_Business.Implements
             var chuongHoc = await _context.chuongKhoaHocs.SingleOrDefaultAsync(x => x.Id == request.ChuongKhoaHocId);
             if (!currentUser.Identity.IsAuthenticated)
             {
-                return _responseObject.ResponseError(StatusCodes.Status400BadRequest, "Người dùng không được xác thực hoặc không được xác định", null);
+                return _responseObject.ResponseError(StatusCodes.Status401Unauthorized, "Người dùng không được xác thực hoặc không được xác định", null);
             }
             if (khoaHoc.NguoiTaoId != int.Parse(userId))
             {
-                return _responseObject.ResponseError(StatusCodes.Status400BadRequest, "Người dùng không có quyền sử dụng chức năng này", null);
+                return _responseObject.ResponseError(StatusCodes.Status403Forbidden, "Người dùng không có quyền sử dụng chức năng này", null);
             }
             if (khoaHoc == null)
             {

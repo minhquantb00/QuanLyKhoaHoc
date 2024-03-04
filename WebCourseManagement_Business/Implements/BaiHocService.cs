@@ -27,7 +27,7 @@ namespace WebCourseManagement_Business.Implements
 
         }
 
-        public Task<ResponseObject<DataResponseBaiHoc>> SuaThongTinBaiHoc(Request_SuaThongTinBaiHoc request)
+        public  Task<ResponseObject<DataResponseBaiHoc>> SuaThongTinBaiHoc(Request_SuaThongTinBaiHoc request)
         {
             throw new NotImplementedException();
         }
@@ -44,7 +44,7 @@ namespace WebCourseManagement_Business.Implements
             }
             if (khoaHoc.NguoiTaoId != int.Parse(userId))
             {
-                return _responseObject.ResponseError(StatusCodes.Status403Forbidden, "Người dùng không đủ quyền để thự hiện chức năng này", null);
+                return _responseObject.ResponseError(StatusCodes.Status403Forbidden, "Người dùng không đủ quyền để thực hiện chức năng này", null);
             }
             if (chuongHoc is null)
             {
