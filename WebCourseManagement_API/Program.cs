@@ -1,18 +1,18 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.AspNetCore.Authentication.Google;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.OpenApi.Models;
 using WebCourseManagement_Business.Implements;
 using WebCourseManagement_Business.Interfaces;
 using WebCourseManagement_Commons.DefaultConstants;
 using WebCourseManagement_Models.Converters;
 using WebCourseManagement_Models.DataContexts;
+using WebCourseManagement_Models.ResponseModels.DataBaiHoc;
+using WebCourseManagement_Models.ResponseModels.DataChuongHoc;
+using WebCourseManagement_Models.ResponseModels.DataKhoaHoc;
 using WebCourseManagement_Models.ResponseModels.DataNguoiDung;
 using WebCourseManagement_Models.Responses;
-using Microsoft.AspNetCore.Authentication.Google;
-using Microsoft.AspNetCore.Authentication.Cookies;
-using Microsoft.AspNetCore.Authentication;
-using WebCourseManagement_Models.ResponseModels.DataKhoaHoc;
-using WebCourseManagement_Models.ResponseModels.DataChuongHoc;
-using WebCourseManagement_Models.ResponseModels.DataBaiHoc;
 
 var builder = WebApplication.CreateBuilder(args);
 builder.Logging.ClearProviders();
@@ -76,6 +76,9 @@ builder.Services.AddScoped<ResponseObject<DataResponseToken>>();
 builder.Services.AddScoped<NguoiDungConverter>();
 builder.Services.AddHttpContextAccessor();
 builder.Services.AddScoped<BaiHocConverter>();
+builder.Services.AddScoped<IBaiHocService, BaiHocService>();
+builder.Services.AddScoped<ResponseObject<DataResponseBaiHoc>>();
+builder.Services.AddScoped<BaiHocConverter>();
 builder.Services.AddScoped<ResponseObject<DataResponseBaiHoc>>();
 builder.Services.AddScoped<ResponseObject<DataResponseChuongHoc>>();
 builder.Services.AddScoped<ChuongHocConverter>();
@@ -84,7 +87,8 @@ builder.Services.AddScoped<IUserService, UserService>();
 builder.Services.AddScoped<IKhoaHocService, KhoaHocService>();
 builder.Services.AddScoped<ResponseObject<DataResponseKhoaHoc>>();
 builder.Services.AddScoped<KhoaHocConverter>();
-builder.Services.AddAuthentication(Microsoft.AspNetCore.Authentication.JwtBearer.JwtBearerDefaults.AuthenticationScheme).AddJwtBearer(options => {
+builder.Services.AddAuthentication(Microsoft.AspNetCore.Authentication.JwtBearer.JwtBearerDefaults.AuthenticationScheme).AddJwtBearer(options =>
+{
     options.RequireHttpsMetadata = false;
     options.SaveToken = true;
     options.TokenValidationParameters = new Microsoft.IdentityModel.Tokens.TokenValidationParameters

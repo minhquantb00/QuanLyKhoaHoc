@@ -1,9 +1,4 @@
-﻿
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using WebCourseManagement_Commons.Enumerates;
+﻿using WebCourseManagement_Commons.Enumerates;
 
 namespace WebCourseManagement_Models.Entities
 {
@@ -17,10 +12,10 @@ namespace WebCourseManagement_Models.Entities
         public string? AnhDaiDien { get; set; }
         public DateTime ThoiGianTao { get; set; }
         public DateTime? ThoiGianCapNhat { get; set; }
-        public DateTime NgaySinh { get; set; }
+        public DateTime? NgaySinh { get; set; }
         public int QuyenHanId { get; set; }
         public virtual QuyenHan? QuyenHan { get; set; }
-        public Enums.GioiTinh GioiTinh { get; set; }
+        public Enums.GioiTinh? GioiTinh { get; set; }
         public int TrangThaiNguoiDungId { get; set; }
         public virtual TrangThaiNguoiDung? TrangThaiNguoiDung { get; set; }
         public int? XaPhuongId { get; set; }
