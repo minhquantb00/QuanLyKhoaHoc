@@ -18,5 +18,15 @@ namespace WebCourseManagement_API.Controllers
         {
             return Ok(await _baiHocService.ThemBaiHoc(request));
         }
+        [HttpPut("SuaThongTinBaiHoc")]
+        public async Task<IActionResult> SuaThongTinBaiHoc([FromBody] Request_SuaThongTinBaiHoc request)
+        {
+            return Ok(await _baiHocService.SuaThongTinBaiHoc(request));
+        }
+        [HttpDelete("XoaBaiHoc/{baiHocId}")]
+        public async Task<IActionResult> XoaBaiHoc([FromRoute] int baiHocId)
+        {
+            return Ok(await _baiHocService.XoaBaiHoc(baiHocId));
+        }
     }
 }
