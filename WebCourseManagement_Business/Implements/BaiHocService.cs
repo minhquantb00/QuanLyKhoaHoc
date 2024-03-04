@@ -17,8 +17,8 @@ namespace WebCourseManagement_Business.Implements
         private readonly AppDbContext _context;
         private readonly ResponseObject<DataResponseBaiHoc> _responseObject;
         private readonly BaiHocConverter _converter;
-        private readonly HttpContextAccessor _httpContextAccessor;
-        public BaiHocService(AppDbContext context, ResponseObject<DataResponseBaiHoc> responseObject, BaiHocConverter converter, HttpContextAccessor httpContextAccessor)
+        private readonly IHttpContextAccessor _httpContextAccessor;
+        public BaiHocService(AppDbContext context, ResponseObject<DataResponseBaiHoc> responseObject, BaiHocConverter converter, IHttpContextAccessor httpContextAccessor)
         {
             _context = context;
             _responseObject = responseObject;
