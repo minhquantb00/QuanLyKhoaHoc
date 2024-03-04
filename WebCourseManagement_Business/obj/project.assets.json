@@ -6278,24 +6278,19 @@
     ]
   },
   "packageFolders": {
-    "C:\\Users\\kient\\.nuget\\packages\\": {},
-    "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages": {}
+    "C:\\Users\\viett\\.nuget\\packages\\": {}
   },
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\kient\\Source\\Repos\\QuanLyKhoaHoc\\WebCourseManagement_Business\\WebCourseManagement_Business.csproj",
+      "projectUniqueName": "C:\\Users\\viett\\Source\\Repos\\QuanLyKhoaHoc\\WebCourseManagement_Business\\WebCourseManagement_Business.csproj",
       "projectName": "WebCourseManagement_Business",
-      "projectPath": "C:\\Users\\kient\\Source\\Repos\\QuanLyKhoaHoc\\WebCourseManagement_Business\\WebCourseManagement_Business.csproj",
-      "packagesPath": "C:\\Users\\kient\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\kient\\Source\\Repos\\QuanLyKhoaHoc\\WebCourseManagement_Business\\obj\\",
+      "projectPath": "C:\\Users\\viett\\Source\\Repos\\QuanLyKhoaHoc\\WebCourseManagement_Business\\WebCourseManagement_Business.csproj",
+      "packagesPath": "C:\\Users\\viett\\.nuget\\packages\\",
+      "outputPath": "C:\\Users\\viett\\Source\\Repos\\QuanLyKhoaHoc\\WebCourseManagement_Business\\obj\\",
       "projectStyle": "PackageReference",
-      "fallbackFolders": [
-        "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
-      ],
       "configFilePaths": [
-        "C:\\Users\\kient\\AppData\\Roaming\\NuGet\\NuGet.Config",
-        "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
+        "C:\\Users\\viett\\AppData\\Roaming\\NuGet\\NuGet.Config",
         "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
       ],
       "originalTargetFrameworks": [
@@ -6309,11 +6304,11 @@
         "net6.0": {
           "targetAlias": "net6.0",
           "projectReferences": {
-            "C:\\Users\\kient\\Source\\Repos\\QuanLyKhoaHoc\\WebCourseManagement_Models\\WebCourseManagement_Models.csproj": {
-              "projectPath": "C:\\Users\\kient\\Source\\Repos\\QuanLyKhoaHoc\\WebCourseManagement_Models\\WebCourseManagement_Models.csproj"
+            "C:\\Users\\viett\\Source\\Repos\\QuanLyKhoaHoc\\WebCourseManagement_Models\\WebCourseManagement_Models.csproj": {
+              "projectPath": "C:\\Users\\viett\\Source\\Repos\\QuanLyKhoaHoc\\WebCourseManagement_Models\\WebCourseManagement_Models.csproj"
             },
-            "C:\\Users\\kient\\Source\\Repos\\QuanLyKhoaHoc\\WebCourseManagement_Repositories\\WebCourseManagement_Repositories.csproj": {
-              "projectPath": "C:\\Users\\kient\\Source\\Repos\\QuanLyKhoaHoc\\WebCourseManagement_Repositories\\WebCourseManagement_Repositories.csproj"
+            "C:\\Users\\viett\\Source\\Repos\\QuanLyKhoaHoc\\WebCourseManagement_Repositories\\WebCourseManagement_Repositories.csproj": {
+              "projectPath": "C:\\Users\\viett\\Source\\Repos\\QuanLyKhoaHoc\\WebCourseManagement_Repositories\\WebCourseManagement_Repositories.csproj"
             }
           }
         }
@@ -6389,6 +6384,20 @@
         ],
         "assetTargetFallback": true,
         "warn": true,
+        "downloadDependencies": [
+          {
+            "name": "Microsoft.AspNetCore.App.Ref",
+            "version": "[6.0.27, 6.0.27]"
+          },
+          {
+            "name": "Microsoft.NETCore.App.Ref",
+            "version": "[6.0.27, 6.0.27]"
+          },
+          {
+            "name": "Microsoft.WindowsDesktop.App.Ref",
+            "version": "[6.0.27, 6.0.27]"
+          }
+        ],
         "frameworkReferences": {
           "Microsoft.NETCore.App": {
             "privateAssets": "all"
@@ -6399,6 +6408,12 @@
     }
   },
   "logs": [
+    {
+      "code": "Undefined",
+      "level": "Warning",
+      "warningLevel": 1,
+      "message": "Problem reading the cache file C:\\Users\\viett\\Source\\Repos\\QuanLyKhoaHoc\\WebCourseManagement_Business\\obj\\project.nuget.cache : Invalid property identifier character: <. Path 'version', line 3, position 0."
+    },
     {
       "code": "NU1902",
       "level": "Warning",

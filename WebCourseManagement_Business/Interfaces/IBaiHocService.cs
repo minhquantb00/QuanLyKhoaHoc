@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using WebCourseManagement_Models.RequestModels.BaiHocRequests;
+using WebCourseManagement_Models.RequestModels.BaiHocRequets;
 using WebCourseManagement_Models.ResponseModels.DataBaiHoc;
 using WebCourseManagement_Models.Responses;
 
