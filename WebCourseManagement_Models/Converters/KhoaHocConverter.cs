@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.EntityFrameworkCore;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -22,6 +23,7 @@ namespace WebCourseManagement_Models.Converters
         }
         public DataResponseKhoaHoc EntityToDTO(KhoaHoc khoaHoc)
         {
+
             return new DataResponseKhoaHoc()
             {
                 AnhKhoaHoc = khoaHoc.AnhKhoaHoc,
@@ -30,17 +32,17 @@ namespace WebCourseManagement_Models.Converters
                 MoTa = khoaHoc.MoTa,
                 NgayCapNhat = khoaHoc.NgayCapNhat,
                 NgayTao = khoaHoc.NgayTao,
-                NguoiTao = _converter.EntityToDTO(khoaHoc.NguoiTao),
                 SoBaiHoc = khoaHoc.SoBaiHoc,
                 SoChuong = khoaHoc.SoChuong,
                 SoHocVienDaHoanThanh = khoaHoc.SoHocVienDaHoanThanh,
                 SoNguoiDangKyKhoaHoc = khoaHoc.SoNguoiDangKyKhoaHoc,
                 TenKhoaHoc = khoaHoc.TenKhoaHoc,
-                TenLoaiKhoaHoc = _context.loaiKhoaHocs.SingleOrDefault(x => x.Id == khoaHoc.LoaiKhoaHocId).TenLoai,
+                TenLoaiKhoaHoc = _context.loaiBaiHocs.SingleOrDefault(x => x.Id == khoaHoc.LoaiKhoaHocId)?.TenLoai,
                 TongThoiGianBaiHoc = khoaHoc.TongThoiGianBaiHoc,
                 Id = khoaHoc.Id,
-                DataResponseChuongHocs = khoaHoc.ChuongKhoaHocs.Select(x => _chuongHocConverter.EntityToDTO(x)).AsQueryable()
+                DataResponseChuongHocs = _context.chuongKhoaHocs.Where(x => x.KhoaHocId == khoaHoc.Id).Select(x => _chuongHocConverter.EntityToDTO(x))
             };
         }
+
     }
 }

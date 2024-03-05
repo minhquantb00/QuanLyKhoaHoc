@@ -23,6 +23,13 @@ namespace WebCourseManagement_API.Controllers
             int id = int.Parse(HttpContext.User.FindFirst("Id").Value);
             return Ok(await _binhLuanBaiHocService.ThemBinhLuanBaiHoc(id, request));
         }
+        [HttpPost("TraLoiBinhLuan")]
+        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
+        public async Task<IActionResult> TraLoiBinhLuan([FromBody] Request_TraLoiBinhLuan request)
+        {
+            int id = int.Parse(HttpContext.User.FindFirst("Id").Value);
+            return Ok(await _binhLuanBaiHocService.TraLoiBinhLuan(id, request));
+        }
         [HttpPut("SuaBinhLuanBaiHoc")]
         [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
         public async Task<IActionResult> SuaBinhLuanBaiHoc([FromBody] Request_SuaBinhLuanBaiHoc request)

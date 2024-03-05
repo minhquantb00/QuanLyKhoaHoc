@@ -34,14 +34,10 @@ namespace WebCourseManagement_Business.Implements
 
         public async Task<PageResult<DataResponseKhoaHoc>> GetAlls(InputKhoaHoc input, int pageSize, int pageNumber)
         {
-            var query =  _context.khoaHocs.Include(x => x.LoaiKhoaHoc).Include(x => x.NguoiTao).AsNoTracking().AsQueryable();
+            var query =  _context.khoaHocs.Include(x => x.LoaiKhoaHoc).AsNoTracking().AsQueryable();
             if (input.LoaiKhoaHocId.HasValue)
             {
                 query = query.Where(x => x.LoaiKhoaHocId ==  input.LoaiKhoaHocId);
-            }
-            if(input.NguoiTaoId.HasValue)
-            {
-                query = query.Where(x => x.NguoiTaoId == input.NguoiTaoId);
             }
             if (!string.IsNullOrWhiteSpace(input.TenKhoaHoc))
             {
@@ -73,11 +69,6 @@ namespace WebCourseManagement_Business.Implements
             {
                 return _responseObject.ResponseError(StatusCodes.Status404NotFound, "Loại khóa học không tồn tại", null);
             }
-            if(nguoiSuaId != khoaHoc.NguoiTaoId)
-            {
-                return _responseObject.ResponseError(StatusCodes.Status400BadRequest, "Bạn không có quyền sửa thông tin khóa học", null);
-            }
-            khoaHoc.NguoiTaoId = nguoiSuaId;
             khoaHoc.MoTa = request.MoTa;
             khoaHoc.NgayCapNhat = DateTime.Now;
             khoaHoc.AnhKhoaHoc = await HandleUploadImage.UpdateFile(khoaHoc.AnhKhoaHoc, request.AnhKhoaHoc);
@@ -93,8 +84,14 @@ namespace WebCourseManagement_Business.Implements
         public async Task<ResponseObject<DataResponseKhoaHoc>> ThemKhoaHoc(int nguoiTaoId, Request_ThemKhoaHoc request)
         {
             var loaiKhoaHoc = await _context.loaiKhoaHocs.SingleOrDefaultAsync(x => x.Id == request.LoaiKhoaHocId);
+            var nguoiDung = await _context.nguoiDungs.SingleOrDefaultAsync(x => x.Id == nguoiTaoId);
+            if(loaiKhoaHoc == null)
             {
                 return _responseObject.ResponseError(StatusCodes.Status404NotFound, "Không tìm thấy loại khóa học", null);
+            }
+            if(nguoiDung == null)
+            {
+                return _responseObject.ResponseError(StatusCodes.Status404NotFound, "Người dùng không tồn tại", null);
             }
             KhoaHoc khoaHoc = new KhoaHoc
             {
@@ -104,7 +101,6 @@ namespace WebCourseManagement_Business.Implements
                 LoaiKhoaHocId = request.LoaiKhoaHocId,
                 MoTa = request.MoTa,
                 NgayTao = DateTime.Now,
-                NguoiTaoId = nguoiTaoId,
                 SoBaiHoc = 0,
                 SoChuong = 0,
                 SoHocVienDaHoanThanh = 0,
@@ -124,15 +120,16 @@ namespace WebCourseManagement_Business.Implements
             var khoaHoc = await _context.khoaHocs.SingleOrDefaultAsync(x => x.Id == khoaHocId);
 
             var currentUser = _httpContextAccessor.HttpContext.User;
+            var userId = currentUser.FindFirst("Id")?.Value;
 
             if (!currentUser.Identity.IsAuthenticated)
             {
-                throw new UnauthorizedAccessException("Người dùng không được xác thực hoặc không được xác định");
+                return "Người dùng không được xác thực hoặc không được xác định";
             }
 
             if (!currentUser.IsInRole("Admin") && !currentUser.IsInRole("Mod"))
             {
-                throw new UnauthorizedAccessException("Người dùng không có quyền sử dụng chức năng này");
+                return "Người dùng không có quyền sử dụng chức năng này";
             }
             if (khoaHoc == null)
             {

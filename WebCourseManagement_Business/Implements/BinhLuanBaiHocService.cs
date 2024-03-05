@@ -77,6 +77,31 @@ namespace WebCourseManagement_Business.Implements
             return _responseObject.ResponseSuccess("Thêm bình luận bài học thành công", _converter.EntityToDTO(binhLuanBaiHoc));
         }
 
+        public async Task<ResponseObject<DataResponseBinhLuanBaiHoc>> TraLoiBinhLuan(int nguoiDungId, Request_TraLoiBinhLuan request)
+        {
+            var nguoiDung = await _context.nguoiDungs.SingleOrDefaultAsync(x => x.Id == nguoiDungId);
+            var binhLuanGoc = await _context.binhLuanBaiHocs.SingleOrDefaultAsync(x => x.Id == request.BinhLuanGocId);
+            if(binhLuanGoc == null)
+            {
+                return _responseObject.ResponseError(StatusCodes.Status404NotFound, "Bình luận không tồn tại", null);
+            }
+            BinhLuanBaiHoc binhLuanBaiHoc = new BinhLuanBaiHoc
+            {
+                DuongDanAnhBinhLuan = request.DuongDanAnhBinhLuan,
+                IsActive = true,
+                BaiHocId = request.BaiHocId,
+                BinhLuan = request.BinhLuan,
+                NguoiDungId = nguoiDungId,
+                SoLuotBinhLuanTraLoi = 0,
+                SoLuotLike = 0,
+                ThoiGianTao = DateTime.Now,
+                TrangThaiBinhLuanId = 1
+            };
+            await _context.nguoiDungs.AddAsync(nguoiDung);
+            await _context.SaveChangesAsync();
+            return _responseObject.ResponseSuccess("Thêm bình luận bài học thành công", _converter.EntityToDTO(binhLuanBaiHoc));
+        }
+
         public async Task<string> XoaBinhLuanBaiHoc(int binhLuanId)
         {
             var currentUser = _httpContextAccessor.HttpContext.User;

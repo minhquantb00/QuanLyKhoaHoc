@@ -194,6 +194,14 @@ namespace WebCourseManagement_Business.Implements
             {
                 return _responseTokenObject.ResponseError(StatusCodes.Status400BadRequest, "Mật khẩu không chính xác", null);
             }
+            if(nguoiDung.IsActive == false || nguoiDung.TrangThaiNguoiDungId == 1)
+            {
+                return _responseTokenObject.ResponseError(StatusCodes.Status400BadRequest, "Tài khoản đã bị vô hiệu hóa hoặc chưa được kích hoạt! Vui lòng thử lại", null);
+            }
+            if(nguoiDung.DaKhoa == true)
+            {
+                return _responseTokenObject.ResponseError(StatusCodes.Status400BadRequest, "Tài khoản đã bị khóa! Vui lòng thử lại", null);
+            }
             return _responseTokenObject.ResponseSuccess("Đăng nhập tài khoản thành công", GenerateAccessToken(nguoiDung));
 
         }

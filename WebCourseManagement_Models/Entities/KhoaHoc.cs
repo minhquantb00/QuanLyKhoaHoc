@@ -7,9 +7,7 @@
         public string AnhKhoaHoc { get; set; }
         public int SoBaiHoc { get; set; }
         public int SoChuong { get; set; }
-        public int NguoiTaoId { get; set; }
         public decimal GiaKhoaHoc { get; set; }
-        public virtual NguoiDung? NguoiTao { get; set; }
         public DateTime NgayTao { get; set; }
         public DateTime? NgayCapNhat { get; set; }
         public int TongThoiGianBaiHoc { get; set; }

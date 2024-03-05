@@ -54,7 +54,7 @@ namespace WebCourseManagement_Business.Implements
 
         public async Task<PageResult<DataResponseNguoiDung>> GetAlls(InputUser input, int pageSize, int pageNumber)
         {
-            var query = await _context.nguoiDungs.Where(x => x.TrangThaiNguoiDungId == 2 && x.DaKhoa == false).ToListAsync();
+            var query = await _context.nguoiDungs.Where(x => x.TrangThaiNguoiDungId == 2 && x.DaKhoa == false && x.IsActive == true && x.TrangThaiNguoiDungId == 2).ToListAsync();
             if (!string.IsNullOrEmpty(input.HoVaTen))
             {
                 query = query.Where(x => x.HoVaTen.ToLower().Contains(input.HoVaTen.ToLower())).ToList();
@@ -77,7 +77,7 @@ namespace WebCourseManagement_Business.Implements
 
         public async Task<ResponseObject<DataResponseNguoiDung>> GetUserById(int nguoiDungId)
         {
-            var nguoiDung = await _context.nguoiDungs.SingleOrDefaultAsync(x => x.Id == nguoiDungId && x.TrangThaiNguoiDungId == 2 && x.DaKhoa == false);
+            var nguoiDung = await _context.nguoiDungs.SingleOrDefaultAsync(x => x.Id == nguoiDungId && x.TrangThaiNguoiDungId == 2 && x.DaKhoa == false && x.IsActive == true);
             if(nguoiDung == null)
             {
                 return _responseObject.ResponseError(StatusCodes.Status404NotFound, "Người dùng không tồn tại", null);
@@ -88,7 +88,7 @@ namespace WebCourseManagement_Business.Implements
         public async Task<string> XoaNguoiDung(int nguoiDungId)
         {
             var nguoiDung = await _context.nguoiDungs.SingleOrDefaultAsync(x => x.Id == nguoiDungId);
-            if(nguoiDung == null)
+            if(nguoiDung == null || nguoiDung.IsActive == false || nguoiDung.TrangThaiNguoiDungId == 1)
             {
                 return "Người dùng không tồn tại";
             }

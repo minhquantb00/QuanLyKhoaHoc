@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.EntityFrameworkCore;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -13,23 +14,21 @@ namespace WebCourseManagement_Models.Converters
     {
         private readonly AppDbContext _context;
         private readonly NguoiDungConverter _nguoiDungConverter;
-        private readonly BaiHocConverter _baiHocConverter;
-        public BinhLuanBaiHocConverter(AppDbContext context, NguoiDungConverter nguoiDungConverter, BaiHocConverter baiHocConverter)
+        public BinhLuanBaiHocConverter(AppDbContext context, NguoiDungConverter nguoiDungConverter)
         {
             _context = context;
             _nguoiDungConverter = nguoiDungConverter;
-            _baiHocConverter = baiHocConverter;
         }
 
         public DataResponseBinhLuanBaiHoc EntityToDTO(BinhLuanBaiHoc binhLuanBaiHoc)
         {
+            var binhLuanItem = _context.binhLuanBaiHocs.Include(x => x.NguoiDung).SingleOrDefault(x => x.Id == binhLuanBaiHoc.Id);
             return new DataResponseBinhLuanBaiHoc
             {
                 DuongDanAnhBinhLuan = binhLuanBaiHoc.DuongDanAnhBinhLuan,
                 BinhLuan = binhLuanBaiHoc.BinhLuan,
                 BinhLuanGocId = binhLuanBaiHoc.BinhLuanGocId,
-                DataResponseBaiHoc = _baiHocConverter.EntityToDTO(binhLuanBaiHoc.BaiHoc),
-                DataResponseNguoiDung = _nguoiDungConverter.EntityToDTO(binhLuanBaiHoc.NguoiDung),
+                DataResponseNguoiDung = _nguoiDungConverter.EntityToDTO(binhLuanItem.NguoiDung),
                 SoLuotBinhLuanTraLoi = binhLuanBaiHoc.SoLuotBinhLuanTraLoi,
                 SoLuotLike = binhLuanBaiHoc.SoLuotLike,
                 ThoiGianCapNhat = binhLuanBaiHoc.ThoiGianCapNhat,

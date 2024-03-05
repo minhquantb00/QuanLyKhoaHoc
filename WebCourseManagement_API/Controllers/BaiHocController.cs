@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using WebCourseManagement_Business.Interfaces;
-using WebCourseManagement_Models.RequestModels.BaiHocRequests;
+using WebCourseManagement_Models.RequestModels.BaiHocRequets;
 
 namespace WebCourseManagement_API.Controllers
 {

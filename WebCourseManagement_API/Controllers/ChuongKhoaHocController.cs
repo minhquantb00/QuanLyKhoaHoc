@@ -1,4 +1,6 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using WebCourseManagement_Business.Interfaces;
 using WebCourseManagement_Models.RequestModels.ChuongKhoaHocRequests;
@@ -15,6 +17,7 @@ namespace WebCourseManagement_API.Controllers
             _chuongKhoaHocService = chuongKhoaHocService;
         }
         [HttpPost("ThemChuongKhoaHoc")]
+        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
         public async Task<IActionResult> ThemChuongKhoaHoc(Request_ThemChuongKhoaHoc request)
         {
             return Ok(await _chuongKhoaHocService.ThemChuongHoc(request));

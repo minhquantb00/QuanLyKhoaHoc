@@ -16,5 +16,6 @@ namespace WebCourseManagement_Business.Interfaces
         Task<ResponseObject<DataResponseBinhLuanBaiHoc>> SuaBinhLuanBaiHoc(int nguoiDungId, Request_SuaBinhLuanBaiHoc request);
         Task<string> XoaBinhLuanBaiHoc(int binhLuanId);
         Task<PageResult<DataResponseBinhLuanBaiHoc>> GetAllBinhLuanTraLoi(int binhLuanId, int pageSize, int pageNumber);
+        Task<ResponseObject<DataResponseBinhLuanBaiHoc>> TraLoiBinhLuan(int nguoiDungId, Request_TraLoiBinhLuan request);
     }
 }

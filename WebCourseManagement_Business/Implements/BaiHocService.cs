@@ -33,14 +33,10 @@ namespace WebCourseManagement_Business.Implements
             var chuongHoc = await _context.chuongKhoaHocs.SingleOrDefaultAsync(x => x.Id == request.ChuongKhoaHocId);
             var khoaHoc = await _context.khoaHocs.SingleOrDefaultAsync(x => x.Id == chuongHoc.KhoaHocId);
             var baiHoc = await _context.baiHocs.SingleOrDefaultAsync(x => x.Id == request.BaiHocId);
-            var userId = currentUser.FindFirst(ClaimTypes.NameIdentifier).Value;
+            var userId = currentUser.FindFirst("Id").Value;
             if (!currentUser.Identity.IsAuthenticated)
             {
                 return _responseObject.ResponseError(StatusCodes.Status401Unauthorized, "Người dùng chưa được xác thực", null);
-            }
-            if (khoaHoc.NguoiTaoId != int.Parse(userId))
-            {
-                return _responseObject.ResponseError(StatusCodes.Status403Forbidden, "Người dùng không đủ quyền để thực hiện chức năng này", null);
             }
             if (chuongHoc is null)
             {
@@ -66,14 +62,10 @@ namespace WebCourseManagement_Business.Implements
             var currentUser = _httpContextAccessor.HttpContext.User;
             var chuongHoc = await _context.chuongKhoaHocs.SingleOrDefaultAsync(x => x.Id == request.ChuongKhoaHocId);
             var khoaHoc = await _context.khoaHocs.SingleOrDefaultAsync(x => x.Id == chuongHoc.KhoaHocId);
-            var userId = currentUser.FindFirst(ClaimTypes.NameIdentifier).Value;
+            var userId = currentUser.FindFirst("Id").Value;
             if (!currentUser.Identity.IsAuthenticated)
             {
                 return _responseObject.ResponseError(StatusCodes.Status401Unauthorized, "Người dùng chưa được xác thực", null);
-            }
-            if (khoaHoc.NguoiTaoId != int.Parse(userId))
-            {
-                return _responseObject.ResponseError(StatusCodes.Status403Forbidden, "Người dùng không đủ quyền để thực hiện chức năng này", null);
             }
             if (chuongHoc is null)
             {
@@ -97,17 +89,13 @@ namespace WebCourseManagement_Business.Implements
         public async Task<string> XoaBaiHoc(int baiHocId)
         {
             var currentUser = _httpContextAccessor.HttpContext.User;
-            var userId = currentUser.FindFirst(ClaimTypes.NameIdentifier).Value;
+            var userId = currentUser.FindFirst("Id").Value;
             var baiHoc = await _context.baiHocs.SingleOrDefaultAsync(x => x.Id == baiHocId);
             var chuongHoc = baiHoc.ChuongKhoaHoc;
             var khoaHoc = chuongHoc.KhoaHoc;
             if (!currentUser.Identity.IsAuthenticated)
             {
                 return "Người dùng chưa được xác thực";
-            }
-            if(khoaHoc.NguoiTaoId != int.Parse(userId))
-            {
-                return "Người dùng không có quyền thực hiện chức năng này";
             }
             _context.baiHocs.Remove(baiHoc);
             await _context.SaveChangesAsync();

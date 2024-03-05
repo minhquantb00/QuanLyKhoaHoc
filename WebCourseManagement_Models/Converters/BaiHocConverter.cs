@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.EntityFrameworkCore;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -20,6 +21,7 @@ namespace WebCourseManagement_Models.Converters
         }
         public DataResponseBaiHoc EntityToDTO(BaiHoc baiHoc)
         {
+            var baiHocItem = _context.baiHocs.Include(x => x.BinhLuanBaiHocs).FirstOrDefault(x => x.Id == baiHoc.Id);
             return new DataResponseBaiHoc()
             {
                 MoTaBaiHoc = baiHoc.MoTaBaiHoc,
@@ -27,7 +29,7 @@ namespace WebCourseManagement_Models.Converters
                 ThoiGianCapNhat = baiHoc.ThoiGianCapNhat,
                 ThoiGianTao = baiHoc.ThoiGianTao,
                 ThoiLuongVideo = baiHoc.ThoiLuongVideo,
-                DataResponseBinhLuanBaiHocs = baiHoc.BinhLuanBaiHocs.Select(x => _binhLuanBaiHocConverter.EntityToDTO(x)).AsQueryable(),
+                DataResponseBinhLuanBaiHocs = baiHocItem.BinhLuanBaiHocs.Select(x => _binhLuanBaiHocConverter.EntityToDTO(x)).AsQueryable(),
             };
         }
     }

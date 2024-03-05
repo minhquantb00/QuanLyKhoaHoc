@@ -273,7 +273,7 @@ namespace WebCourseManagement_Models.Migrations
                         column: x => x.LoaiTruongHocId,
                         principalTable: "loaiTruongHocs",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
@@ -299,6 +299,45 @@ namespace WebCourseManagement_Models.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "khoaHocs",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    TenKhoaHoc = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    MoTa = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    AnhKhoaHoc = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    SoBaiHoc = table.Column<int>(type: "int", nullable: false),
+                    SoChuong = table.Column<int>(type: "int", nullable: false),
+                    GiaKhoaHoc = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
+                    NgayTao = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    NgayCapNhat = table.Column<DateTime>(type: "datetime2", nullable: true),
+                    TongThoiGianBaiHoc = table.Column<int>(type: "int", nullable: false),
+                    SoNguoiDangKyKhoaHoc = table.Column<int>(type: "int", nullable: false),
+                    SoHocVienDaHoanThanh = table.Column<int>(type: "int", nullable: false),
+                    TrangThaiKhoaHocId = table.Column<int>(type: "int", nullable: false),
+                    LoaiKhoaHocId = table.Column<int>(type: "int", nullable: false),
+                    LinkVideoGioiThieu = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    IsActive = table.Column<bool>(type: "bit", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_khoaHocs", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_khoaHocs_loaiKhoaHocs_LoaiKhoaHocId",
+                        column: x => x.LoaiKhoaHocId,
+                        principalTable: "loaiKhoaHocs",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                    table.ForeignKey(
+                        name: "FK_khoaHocs_trangThaiKhoaHocs_TrangThaiKhoaHocId",
+                        column: x => x.TrangThaiKhoaHocId,
+                        principalTable: "trangThaiKhoaHocs",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "xaPhuongs",
                 columns: table => new
                 {
@@ -316,6 +355,29 @@ namespace WebCourseManagement_Models.Migrations
                         name: "FK_xaPhuongs_quanHuyens_QuanHuyenId",
                         column: x => x.QuanHuyenId,
                         principalTable: "quanHuyens",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "chuongKhoaHocs",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    KhoaHocId = table.Column<int>(type: "int", nullable: false),
+                    TenChuong = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    TongThoiGianHoc1Chuong = table.Column<int>(type: "int", nullable: false),
+                    SoBaiHocTrongChuong = table.Column<int>(type: "int", nullable: false),
+                    ThoiGianTao = table.Column<DateTime>(type: "datetime2", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_chuongKhoaHocs", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_chuongKhoaHocs_khoaHocs_KhoaHocId",
+                        column: x => x.KhoaHocId,
+                        principalTable: "khoaHocs",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
                 });
@@ -384,6 +446,44 @@ namespace WebCourseManagement_Models.Migrations
                         column: x => x.XaPhuongId,
                         principalTable: "xaPhuongs",
                         principalColumn: "Id");
+                });
+
+            migrationBuilder.CreateTable(
+                name: "baiHocs",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    TenBaiHoc = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    MoTaBaiHoc = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    ThoiGianTao = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    ThoiGianCapNhat = table.Column<DateTime>(type: "datetime2", nullable: true),
+                    LoaiBaiHocId = table.Column<int>(type: "int", nullable: false),
+                    ChuongKhoaHocId = table.Column<int>(type: "int", nullable: false),
+                    ThoiLuongVideo = table.Column<int>(type: "int", nullable: false),
+                    TrangThaiBaiHocId = table.Column<int>(type: "int", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_baiHocs", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_baiHocs_chuongKhoaHocs_ChuongKhoaHocId",
+                        column: x => x.ChuongKhoaHocId,
+                        principalTable: "chuongKhoaHocs",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                    table.ForeignKey(
+                        name: "FK_baiHocs_loaiBaiHocs_LoaiBaiHocId",
+                        column: x => x.LoaiBaiHocId,
+                        principalTable: "loaiBaiHocs",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                    table.ForeignKey(
+                        name: "FK_baiHocs_trangThaiBaiHocs_TrangThaiBaiHocId",
+                        column: x => x.TrangThaiBaiHocId,
+                        principalTable: "trangThaiBaiHocs",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
                 });
 
             migrationBuilder.CreateTable(
@@ -521,52 +621,6 @@ namespace WebCourseManagement_Models.Migrations
                         name: "FK_danhHieuNguoiDungs_nguoiDungs_NguoiDungId",
                         column: x => x.NguoiDungId,
                         principalTable: "nguoiDungs",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "khoaHocs",
-                columns: table => new
-                {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    TenKhoaHoc = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    MoTa = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    AnhKhoaHoc = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    SoBaiHoc = table.Column<int>(type: "int", nullable: false),
-                    SoChuong = table.Column<int>(type: "int", nullable: false),
-                    NguoiTaoId = table.Column<int>(type: "int", nullable: false),
-                    GiaKhoaHoc = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
-                    NgayTao = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    NgayCapNhat = table.Column<DateTime>(type: "datetime2", nullable: true),
-                    TongThoiGianBaiHoc = table.Column<int>(type: "int", nullable: false),
-                    SoNguoiDangKyKhoaHoc = table.Column<int>(type: "int", nullable: false),
-                    SoHocVienDaHoanThanh = table.Column<int>(type: "int", nullable: false),
-                    TrangThaiKhoaHocId = table.Column<int>(type: "int", nullable: false),
-                    LoaiKhoaHocId = table.Column<int>(type: "int", nullable: false),
-                    LinkVideoGioiThieu = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    IsActive = table.Column<bool>(type: "bit", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_khoaHocs", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_khoaHocs_loaiKhoaHocs_LoaiKhoaHocId",
-                        column: x => x.LoaiKhoaHocId,
-                        principalTable: "loaiKhoaHocs",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
-                    table.ForeignKey(
-                        name: "FK_khoaHocs_nguoiDungs_NguoiTaoId",
-                        column: x => x.NguoiTaoId,
-                        principalTable: "nguoiDungs",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
-                    table.ForeignKey(
-                        name: "FK_khoaHocs_trangThaiKhoaHocs_TrangThaiKhoaHocId",
-                        column: x => x.TrangThaiKhoaHocId,
-                        principalTable: "trangThaiKhoaHocs",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
                 });
@@ -740,164 +794,6 @@ namespace WebCourseManagement_Models.Migrations
                         name: "FK_xacNhanEmails_nguoiDungs_NguoiDungId",
                         column: x => x.NguoiDungId,
                         principalTable: "nguoiDungs",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "binhLuanBaiViets",
-                columns: table => new
-                {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    BaiVietId = table.Column<int>(type: "int", nullable: false),
-                    NguoiDungId = table.Column<int>(type: "int", nullable: true),
-                    BinhLuan = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    DuongDanAnhBinhLuan = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    BinhLuanGocId = table.Column<int>(type: "int", nullable: true),
-                    SoLuotLike = table.Column<int>(type: "int", nullable: false),
-                    SoLuotBinhLuanTraLoi = table.Column<int>(type: "int", nullable: false),
-                    ThoiGianTao = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    ThoiGianCapNhat = table.Column<DateTime>(type: "datetime2", nullable: true),
-                    ThoiGianXoa = table.Column<DateTime>(type: "datetime2", nullable: true),
-                    TrangThaiBinhLuanId = table.Column<int>(type: "int", nullable: false),
-                    IsActive = table.Column<bool>(type: "bit", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_binhLuanBaiViets", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_binhLuanBaiViets_baiViets_BaiVietId",
-                        column: x => x.BaiVietId,
-                        principalTable: "baiViets",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
-                    table.ForeignKey(
-                        name: "FK_binhLuanBaiViets_nguoiDungs_NguoiDungId",
-                        column: x => x.NguoiDungId,
-                        principalTable: "nguoiDungs",
-                        principalColumn: "Id");
-                    table.ForeignKey(
-                        name: "FK_binhLuanBaiViets_trangThaiBinhLuans_TrangThaiBinhLuanId",
-                        column: x => x.TrangThaiBinhLuanId,
-                        principalTable: "trangThaiBinhLuans",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "nguoiDungThichBaiViets",
-                columns: table => new
-                {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    NguoiDungId = table.Column<int>(type: "int", nullable: false),
-                    BaiVietId = table.Column<int>(type: "int", nullable: false),
-                    ThoiGianThich = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    DaXoa = table.Column<bool>(type: "bit", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_nguoiDungThichBaiViets", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_nguoiDungThichBaiViets_baiViets_BaiVietId",
-                        column: x => x.BaiVietId,
-                        principalTable: "baiViets",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
-                    table.ForeignKey(
-                        name: "FK_nguoiDungThichBaiViets_nguoiDungs_NguoiDungId",
-                        column: x => x.NguoiDungId,
-                        principalTable: "nguoiDungs",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "chuongKhoaHocs",
-                columns: table => new
-                {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    KhoaHocId = table.Column<int>(type: "int", nullable: false),
-                    TenChuong = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    TongThoiGianHoc1Chuong = table.Column<int>(type: "int", nullable: false),
-                    SoBaiHocTrongChuong = table.Column<int>(type: "int", nullable: false),
-                    ThoiGianTao = table.Column<DateTime>(type: "datetime2", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_chuongKhoaHocs", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_chuongKhoaHocs_khoaHocs_KhoaHocId",
-                        column: x => x.KhoaHocId,
-                        principalTable: "khoaHocs",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "nguoiDungThichBinhLuanBaiViets",
-                columns: table => new
-                {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    NguoiDungId = table.Column<int>(type: "int", nullable: false),
-                    BinhLuanBaiVietId = table.Column<int>(type: "int", nullable: false),
-                    ThoiGianTao = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    DaXoa = table.Column<bool>(type: "bit", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_nguoiDungThichBinhLuanBaiViets", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_nguoiDungThichBinhLuanBaiViets_binhLuanBaiViets_BinhLuanBaiVietId",
-                        column: x => x.BinhLuanBaiVietId,
-                        principalTable: "binhLuanBaiViets",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
-                    table.ForeignKey(
-                        name: "FK_nguoiDungThichBinhLuanBaiViets_nguoiDungs_NguoiDungId",
-                        column: x => x.NguoiDungId,
-                        principalTable: "nguoiDungs",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "baiHocs",
-                columns: table => new
-                {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    TenBaiHoc = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    MoTaBaiHoc = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    ThoiGianTao = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    ThoiGianCapNhat = table.Column<DateTime>(type: "datetime2", nullable: true),
-                    LoaiBaiHocId = table.Column<int>(type: "int", nullable: false),
-                    ChuongKhoaHocId = table.Column<int>(type: "int", nullable: false),
-                    ThoiLuongVideo = table.Column<int>(type: "int", nullable: false),
-                    TrangThaiBaiHocId = table.Column<int>(type: "int", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_baiHocs", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_baiHocs_chuongKhoaHocs_ChuongKhoaHocId",
-                        column: x => x.ChuongKhoaHocId,
-                        principalTable: "chuongKhoaHocs",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
-                    table.ForeignKey(
-                        name: "FK_baiHocs_loaiBaiHocs_LoaiBaiHocId",
-                        column: x => x.LoaiBaiHocId,
-                        principalTable: "loaiBaiHocs",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
-                    table.ForeignKey(
-                        name: "FK_baiHocs_trangThaiBaiHocs_TrangThaiBaiHocId",
-                        column: x => x.TrangThaiBaiHocId,
-                        principalTable: "trangThaiBaiHocs",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
                 });
@@ -1114,6 +1010,75 @@ namespace WebCourseManagement_Models.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "binhLuanBaiViets",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    BaiVietId = table.Column<int>(type: "int", nullable: false),
+                    NguoiDungId = table.Column<int>(type: "int", nullable: true),
+                    BinhLuan = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    DuongDanAnhBinhLuan = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    BinhLuanGocId = table.Column<int>(type: "int", nullable: true),
+                    SoLuotLike = table.Column<int>(type: "int", nullable: false),
+                    SoLuotBinhLuanTraLoi = table.Column<int>(type: "int", nullable: false),
+                    ThoiGianTao = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    ThoiGianCapNhat = table.Column<DateTime>(type: "datetime2", nullable: true),
+                    ThoiGianXoa = table.Column<DateTime>(type: "datetime2", nullable: true),
+                    TrangThaiBinhLuanId = table.Column<int>(type: "int", nullable: false),
+                    IsActive = table.Column<bool>(type: "bit", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_binhLuanBaiViets", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_binhLuanBaiViets_baiViets_BaiVietId",
+                        column: x => x.BaiVietId,
+                        principalTable: "baiViets",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                    table.ForeignKey(
+                        name: "FK_binhLuanBaiViets_nguoiDungs_NguoiDungId",
+                        column: x => x.NguoiDungId,
+                        principalTable: "nguoiDungs",
+                        principalColumn: "Id");
+                    table.ForeignKey(
+                        name: "FK_binhLuanBaiViets_trangThaiBinhLuans_TrangThaiBinhLuanId",
+                        column: x => x.TrangThaiBinhLuanId,
+                        principalTable: "trangThaiBinhLuans",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "nguoiDungThichBaiViets",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    NguoiDungId = table.Column<int>(type: "int", nullable: false),
+                    BaiVietId = table.Column<int>(type: "int", nullable: false),
+                    ThoiGianThich = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    DaXoa = table.Column<bool>(type: "bit", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_nguoiDungThichBaiViets", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_nguoiDungThichBaiViets_baiViets_BaiVietId",
+                        column: x => x.BaiVietId,
+                        principalTable: "baiViets",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                    table.ForeignKey(
+                        name: "FK_nguoiDungThichBaiViets_nguoiDungs_NguoiDungId",
+                        column: x => x.NguoiDungId,
+                        principalTable: "nguoiDungs",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "nguoiDungThichBinhLuanBaiHocs",
                 columns: table => new
                 {
@@ -1301,6 +1266,34 @@ namespace WebCourseManagement_Models.Migrations
                         onDelete: ReferentialAction.Restrict);
                 });
 
+            migrationBuilder.CreateTable(
+                name: "nguoiDungThichBinhLuanBaiViets",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    NguoiDungId = table.Column<int>(type: "int", nullable: false),
+                    BinhLuanBaiVietId = table.Column<int>(type: "int", nullable: false),
+                    ThoiGianTao = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    DaXoa = table.Column<bool>(type: "bit", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_nguoiDungThichBinhLuanBaiViets", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_nguoiDungThichBinhLuanBaiViets_binhLuanBaiViets_BinhLuanBaiVietId",
+                        column: x => x.BinhLuanBaiVietId,
+                        principalTable: "binhLuanBaiViets",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                    table.ForeignKey(
+                        name: "FK_nguoiDungThichBinhLuanBaiViets_nguoiDungs_NguoiDungId",
+                        column: x => x.NguoiDungId,
+                        principalTable: "nguoiDungs",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                });
+
             migrationBuilder.CreateIndex(
                 name: "IX_baiHocs_ChuongKhoaHocId",
                 table: "baiHocs",
@@ -1465,11 +1458,6 @@ namespace WebCourseManagement_Models.Migrations
                 name: "IX_khoaHocs_LoaiKhoaHocId",
                 table: "khoaHocs",
                 column: "LoaiKhoaHocId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_khoaHocs_NguoiTaoId",
-                table: "khoaHocs",
-                column: "NguoiTaoId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_khoaHocs_TrangThaiKhoaHocId",
@@ -1763,6 +1751,9 @@ namespace WebCourseManagement_Models.Migrations
                 name: "baiHocs");
 
             migrationBuilder.DropTable(
+                name: "nguoiDungs");
+
+            migrationBuilder.DropTable(
                 name: "trangThaiBaiViets");
 
             migrationBuilder.DropTable(
@@ -1773,18 +1764,6 @@ namespace WebCourseManagement_Models.Migrations
 
             migrationBuilder.DropTable(
                 name: "trangThaiBaiHocs");
-
-            migrationBuilder.DropTable(
-                name: "khoaHocs");
-
-            migrationBuilder.DropTable(
-                name: "loaiKhoaHocs");
-
-            migrationBuilder.DropTable(
-                name: "nguoiDungs");
-
-            migrationBuilder.DropTable(
-                name: "trangThaiKhoaHocs");
 
             migrationBuilder.DropTable(
                 name: "danhMucNguoiDungs");
@@ -1799,7 +1778,16 @@ namespace WebCourseManagement_Models.Migrations
                 name: "xaPhuongs");
 
             migrationBuilder.DropTable(
+                name: "khoaHocs");
+
+            migrationBuilder.DropTable(
                 name: "quanHuyens");
+
+            migrationBuilder.DropTable(
+                name: "loaiKhoaHocs");
+
+            migrationBuilder.DropTable(
+                name: "trangThaiKhoaHocs");
 
             migrationBuilder.DropTable(
                 name: "tinhThanhs");

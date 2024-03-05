@@ -12,7 +12,7 @@ using WebCourseManagement_Models.DataContexts;
 namespace WebCourseManagement_Models.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20240304065906_add")]
+    [Migration("20240305041527_add")]
     partial class add
     {
         /// <inheritdoc />
@@ -646,9 +646,6 @@ namespace WebCourseManagement_Models.Migrations
                     b.Property<DateTime>("NgayTao")
                         .HasColumnType("datetime2");
 
-                    b.Property<int>("NguoiTaoId")
-                        .HasColumnType("int");
-
                     b.Property<int>("SoBaiHoc")
                         .HasColumnType("int");
 
@@ -674,8 +671,6 @@ namespace WebCourseManagement_Models.Migrations
                     b.HasKey("Id");
 
                     b.HasIndex("LoaiKhoaHocId");
-
-                    b.HasIndex("NguoiTaoId");
 
                     b.HasIndex("TrangThaiKhoaHocId");
 
@@ -1969,12 +1964,6 @@ namespace WebCourseManagement_Models.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("WebCourseManagement_Models.Entities.NguoiDung", "NguoiTao")
-                        .WithMany()
-                        .HasForeignKey("NguoiTaoId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
                     b.HasOne("WebCourseManagement_Models.Entities.TrangThaiKhoaHoc", "TrangThaiKhoaHoc")
                         .WithMany()
                         .HasForeignKey("TrangThaiKhoaHocId")
@@ -1982,8 +1971,6 @@ namespace WebCourseManagement_Models.Migrations
                         .IsRequired();
 
                     b.Navigation("LoaiKhoaHoc");
-
-                    b.Navigation("NguoiTao");
 
                     b.Navigation("TrangThaiKhoaHoc");
                 });
