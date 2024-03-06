@@ -8,7 +8,8 @@ namespace WebCourseManagement_Models.Entities
 {
     public class QuyenHan : BaseEntity
     {
-        public string MaQuyen { get; set; }
+        public string MaQuyenHan { get; set; }
         public string TenQuyenHan { get; set; }
+
     }
 }

@@ -9,7 +9,5 @@ namespace WebCourseManagement_Models.Entities
     public class TrangThaiBinhLuan : BaseEntity
     {
         public string TenTrangThai { get; set; }
-        public virtual ICollection<BinhLuanBaiHoc> BinhLuanBaiHocs { get; set;}
-        public virtual ICollection<BinhLuanBaiViet> BinhLuanBaiViets { get; set; }
     }
 }

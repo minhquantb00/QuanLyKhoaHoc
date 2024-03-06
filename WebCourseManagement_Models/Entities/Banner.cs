@@ -6,8 +6,8 @@ using System.Threading.Tasks;
 
 namespace WebCourseManagement_Models.Entities
 {
-    public class DanhHieu : BaseEntity
+    public class Banner : BaseEntity
     {
-        public string TenDanhHieu { get; set; }
+        public string AnhBanner { get; set; }
     }
 }

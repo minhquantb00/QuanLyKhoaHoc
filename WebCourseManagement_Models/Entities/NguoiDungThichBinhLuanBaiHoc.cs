@@ -8,11 +8,12 @@ namespace WebCourseManagement_Models.Entities
 {
     public class NguoiDungThichBinhLuanBaiHoc : BaseEntity
     {
-        public int NguoiDungId { get; set; }
-        public virtual NguoiDung NguoiDung { get; set; }
+        public int NguoiDungThichBinhLuanId { get; set; }
+        public virtual NguoiDung NguoiDungThichBinhLuan { get; set; }
         public int BinhLuanBaiHocId { get; set; }
         public virtual BinhLuanBaiHoc BinhLuanBaiHoc { get; set; }
-        public DateTime ThoiGianTao { get; set; }
-        public bool DaXoa { get; set; }
+        public DateTime ThoiGianThich { get; set; }
+        public DateTime? ThoiGianBoThich { get; set; }
+        public bool? DaThich { get; set; }
     }
 }

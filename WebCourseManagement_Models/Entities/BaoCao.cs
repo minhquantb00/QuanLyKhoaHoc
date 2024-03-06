@@ -1,5 +1,4 @@
-﻿
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -10,18 +9,17 @@ namespace WebCourseManagement_Models.Entities
 {
     public class BaoCao : BaseEntity
     {
-        public int NguoiDungGuiId { get; set; }
-        public virtual NguoiDung NguoiDung { get; set; }
+        public int NguoiGuiBaoCaoId { get; set; }
         public int NguoiViPhamId { get; set; }
-        public bool DaXacMinh { get; set; } = false;
+        public bool? DaXacMinh { get; set; } = false;
         public DateTime ThoiGianGuiBaoCao { get; set; }
         public DateTime? ThoiGianXacMinh { get; set; }
-        public bool DaViPham { get; set; }
-        public string? GhiChu { get; set; }
-        public int BinhLuanId { get; set; }
+        public bool? DaViPham { get; set; }
+        public string GhiChuBaoCao { get; set; }
         public int LoaiBaoCaoId { get; set; }
+        public int BinhLuanId { get; set; }
+        public Enums.LoaiComment LoaiBinhLuan { get; set; }
+        public virtual NguoiDung NguoiGuiBaoCao { get; set; }
         public virtual LoaiBaoCao LoaiBaoCao { get; set; }
-        public Enums.LoaiComment? LoaiBinhLuan { get; set; }
-        public int? NguoiDungXacMinhId { get; set; }
     }
 }

@@ -20,35 +20,21 @@ namespace WebCourseManagement_Models.DataContexts
         public DbSet<BaoCao> baoCaos { get; set; }
         public DbSet<BinhLuanBaiHoc> binhLuanBaiHocs { get; set; }
         public DbSet<BinhLuanBaiViet> binhLuanBaiViets { get; set; }
-        public DbSet<Blog> blogs { get; set; }
-        public DbSet<ChuongKhoaHoc> chuongKhoaHocs { get; set; }
-        public DbSet<ChuyenNganh> chuyenNganhs { get; set; }
+        public DbSet<ChuongHoc> chuongHocs { get; set; }
         public DbSet<CodeDaNgonNgu> codeDaNgonNgus { get; set; }
-        public DbSet<DanhHieu> danhHieus { get; set; }
-        public DbSet<DanhHieuNguoiDung> danhHieuNguoiDungs { get; set; }
-        public DbSet<DanhMucNguoiDung> danhMucNguoiDungs { get; set; }
         public DbSet<DatCauHoi> datCauHois { get; set; }
-        public DbSet<DiemKiemTraBaiHocCuaNguoiDung> diemKiemTraBaiHocCuaNguoiDungs { get; set; }
         public DbSet<HoanThanhThucHanh> hoanThanhThucHanhs { get; set; }
-        public DbSet<HoanThanhTraLoiCauHoi> hoanThanhTraLoiCauHois { get; set; }
+        public DbSet<CauTraLoi> cauTraLois { get; set; }
         public DbSet<KhoaHoc> khoaHocs { get; set; }
         public DbSet<KhoaHocCuaNguoiDung> khoaHocCuaNguoiDungs { get; set; }
-        public DbSet<KinhNghiem> kinhNghiems { get; set; }
-        public DbSet<KinhNghiemHocTap> kinhNghiemHocTaps { get; set; }
-        public DbSet<LienHe> lienHes { get; set; }
-        public DbSet<LoaiBaiHoc> loaiBaiHocs { get; set; }
+        public DbSet<LienHeAdmin> lienHeAdmins { get; set; }
         public DbSet<LoaiBaoCao> loaiBaoCaos { get; set; }
-        public DbSet<LoaiBlog> loaiBlogs { get; set; }
         public DbSet<LoaiKhoaHoc> loaiKhoaHocs { get; set; }
-        public DbSet<LoaiTruongHoc> loaiTruongHocs { get; set; }
         public DbSet<NgonNgu> ngonNgus { get; set; }
         public DbSet<NguoiDung> nguoiDungs { get; set; }
-        public DbSet<NguoiDungGhiChuBaiHoc> nguoiDungGhiChus { get; set; }
         public DbSet<NguoiDungThichBaiViet> nguoiDungThichBaiViets { get; set; }
         public DbSet<NguoiDungThichBinhLuanBaiHoc> nguoiDungThichBinhLuanBaiHocs { get; set; }
         public DbSet<NguoiDungThichBinhLuanBaiViet> nguoiDungThichBinhLuanBaiViets { get; set; }
-        public DbSet<NoiDungTrangChu> noiDungTrangChus { get; set; }
-        public DbSet<PhanHoc> phanHocs { get; set; }
         public DbSet<QuanHuyen> quanHuyens { get; set; }
         public DbSet<QuyenHan> quyenHans { get; set; }
         public DbSet<RefreshToken> refreshTokens { get; set; }
@@ -60,13 +46,11 @@ namespace WebCourseManagement_Models.DataContexts
         public DbSet<TrangThaiBaiHoc> trangThaiBaiHocs { get; set; }
         public DbSet<TrangThaiBaiViet> trangThaiBaiViets { get; set; }
         public DbSet<TrangThaiBinhLuan> trangThaiBinhLuans { get; set; }
-        public DbSet<TrangThaiBlog> trangThaiBlogs { get; set; }
-        public DbSet<TrangThaiKhoaHoc> trangThaiKhoaHocs { get; set; }
         public DbSet<TrangThaiNguoiDung> trangThaiNguoiDungs { get; set; }
-        public DbSet<TruongHoc> truongHocs { get; set; }
-        public DbSet<VideoBaiGiang> videoBaiGiangs { get; set; }
-        public DbSet<VideoHoanThanh> videoHoanThanhs { get; set; }
         public DbSet<XacNhanEmail> xacNhanEmails { get; set; }
         public DbSet<XaPhuong> xaPhuongs { get; set; }
+        public DbSet<Banner> banners { get; set; }
+        public DbSet<DanhGia> danhGias { get; set; }
+        public DbSet<LoaiBaiViet> loaiBaiViets { get; set; }
     }
 }

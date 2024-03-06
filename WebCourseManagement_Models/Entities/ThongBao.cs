@@ -10,11 +10,11 @@ namespace WebCourseManagement_Models.Entities
     {
         public int NguoiDungId { get; set; }
         public virtual NguoiDung NguoiDung { get; set; }
-        public int? NguoiDungGuiThongBaoId { get; set; }
-        public bool DaXem { get; set; }
-        public string NoiDung { get; set; }
-        public DateTime ThoiGianTao { get; set; }
-        public string? Link { get; set; }
+        public int NguoiDungGuiThongBaoId { get; set; }
+        public bool DaXemThongBao { get; set; } = false;
+        public string NoiDungThongBao { get; set; }
+        public DateTime ThoiGianThongBao { get; set; }
+        public string LinkThongBao { get; set; }
         public bool HeThongThongBao { get; set; }
     }
 }

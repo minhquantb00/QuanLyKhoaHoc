@@ -12,7 +12,7 @@ using WebCourseManagement_Models.DataContexts;
 namespace WebCourseManagement_Models.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20240305041527_add")]
+    [Migration("20240306074233_add")]
     partial class add
     {
         /// <inheritdoc />
@@ -33,10 +33,7 @@ namespace WebCourseManagement_Models.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
-                    b.Property<int>("ChuongKhoaHocId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("LoaiBaiHocId")
+                    b.Property<int>("ChuongHocId")
                         .HasColumnType("int");
 
                     b.Property<string>("MoTaBaiHoc")
@@ -59,11 +56,13 @@ namespace WebCourseManagement_Models.Migrations
                     b.Property<int>("TrangThaiBaiHocId")
                         .HasColumnType("int");
 
+                    b.Property<string>("VideoBaiHoc")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
                     b.HasKey("Id");
 
-                    b.HasIndex("ChuongKhoaHocId");
-
-                    b.HasIndex("LoaiBaiHocId");
+                    b.HasIndex("ChuongHocId");
 
                     b.HasIndex("TrangThaiBaiHocId");
 
@@ -82,21 +81,20 @@ namespace WebCourseManagement_Models.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("DuLieuBaiViet")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("MoTaBaiViet")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<int>("NguoiDungTaoBaiId")
+                    b.Property<int>("LoaiBaiVietId")
                         .HasColumnType("int");
 
-                    b.Property<int>("SoLuongThich")
+                    b.Property<string>("MoTa")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("NguoiTaoBaiVietId")
                         .HasColumnType("int");
 
                     b.Property<int>("SoLuotBinhLuan")
+                        .HasColumnType("int");
+
+                    b.Property<int>("SoLuotThich")
                         .HasColumnType("int");
 
                     b.Property<DateTime?>("ThoiGianCapNhat")
@@ -117,11 +115,30 @@ namespace WebCourseManagement_Models.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("NguoiDungTaoBaiId");
+                    b.HasIndex("LoaiBaiVietId");
+
+                    b.HasIndex("NguoiTaoBaiVietId");
 
                     b.HasIndex("TrangThaiBaiVietId");
 
                     b.ToTable("baiViets");
+                });
+
+            modelBuilder.Entity("WebCourseManagement_Models.Entities.Banner", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("AnhBanner")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("banners");
                 });
 
             modelBuilder.Entity("WebCourseManagement_Models.Entities.BaoCao", b =>
@@ -135,28 +152,23 @@ namespace WebCourseManagement_Models.Migrations
                     b.Property<int>("BinhLuanId")
                         .HasColumnType("int");
 
-                    b.Property<bool>("DaViPham")
+                    b.Property<bool?>("DaViPham")
                         .HasColumnType("bit");
 
-                    b.Property<bool>("DaXacMinh")
+                    b.Property<bool?>("DaXacMinh")
                         .HasColumnType("bit");
 
-                    b.Property<string>("GhiChu")
+                    b.Property<string>("GhiChuBaoCao")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<int>("LoaiBaoCaoId")
                         .HasColumnType("int");
 
-                    b.Property<int?>("LoaiBinhLuan")
+                    b.Property<int>("LoaiBinhLuan")
                         .HasColumnType("int");
 
-                    b.Property<int>("NguoiDungGuiId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("NguoiDungId")
-                        .HasColumnType("int");
-
-                    b.Property<int?>("NguoiDungXacMinhId")
+                    b.Property<int>("NguoiGuiBaoCaoId")
                         .HasColumnType("int");
 
                     b.Property<int>("NguoiViPhamId")
@@ -172,7 +184,7 @@ namespace WebCourseManagement_Models.Migrations
 
                     b.HasIndex("LoaiBaoCaoId");
 
-                    b.HasIndex("NguoiDungId");
+                    b.HasIndex("NguoiGuiBaoCaoId");
 
                     b.ToTable("baoCaos");
                 });
@@ -188,25 +200,23 @@ namespace WebCourseManagement_Models.Migrations
                     b.Property<int>("BaiHocId")
                         .HasColumnType("int");
 
-                    b.Property<string>("BinhLuan")
-                        .HasColumnType("nvarchar(max)");
-
                     b.Property<int?>("BinhLuanGocId")
                         .HasColumnType("int");
 
                     b.Property<string>("DuongDanAnhBinhLuan")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<bool>("IsActive")
                         .HasColumnType("bit");
 
-                    b.Property<int?>("NguoiDungId")
+                    b.Property<int>("NguoiBinhLuanId")
                         .HasColumnType("int");
 
-                    b.Property<int>("SoLuotBinhLuanTraLoi")
+                    b.Property<int>("SoLuotThich")
                         .HasColumnType("int");
 
-                    b.Property<int>("SoLuotLike")
+                    b.Property<int>("SoLuotTraLoiBinhLuan")
                         .HasColumnType("int");
 
                     b.Property<DateTime?>("ThoiGianCapNhat")
@@ -225,7 +235,7 @@ namespace WebCourseManagement_Models.Migrations
 
                     b.HasIndex("BaiHocId");
 
-                    b.HasIndex("NguoiDungId");
+                    b.HasIndex("NguoiBinhLuanId");
 
                     b.HasIndex("TrangThaiBinhLuanId");
 
@@ -243,25 +253,27 @@ namespace WebCourseManagement_Models.Migrations
                     b.Property<int>("BaiVietId")
                         .HasColumnType("int");
 
-                    b.Property<string>("BinhLuan")
-                        .HasColumnType("nvarchar(max)");
-
                     b.Property<int?>("BinhLuanGocId")
                         .HasColumnType("int");
 
                     b.Property<string>("DuongDanAnhBinhLuan")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<bool>("IsActive")
                         .HasColumnType("bit");
 
-                    b.Property<int?>("NguoiDungId")
+                    b.Property<int>("NguoiBinhLuanId")
                         .HasColumnType("int");
 
-                    b.Property<int>("SoLuotBinhLuanTraLoi")
+                    b.Property<string>("NoiDungBinhLuan")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("SoLuotThich")
                         .HasColumnType("int");
 
-                    b.Property<int>("SoLuotLike")
+                    b.Property<int>("SoLuotTraLoiBinhLuan")
                         .HasColumnType("int");
 
                     b.Property<DateTime?>("ThoiGianCapNhat")
@@ -280,14 +292,14 @@ namespace WebCourseManagement_Models.Migrations
 
                     b.HasIndex("BaiVietId");
 
-                    b.HasIndex("NguoiDungId");
+                    b.HasIndex("NguoiBinhLuanId");
 
                     b.HasIndex("TrangThaiBinhLuanId");
 
                     b.ToTable("binhLuanBaiViets");
                 });
 
-            modelBuilder.Entity("WebCourseManagement_Models.Entities.Blog", b =>
+            modelBuilder.Entity("WebCourseManagement_Models.Entities.CauTraLoi", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -295,57 +307,29 @@ namespace WebCourseManagement_Models.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
-                    b.Property<string>("AnhBlog")
+                    b.Property<int>("CauHoiId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("CauTraLoiChiTiet")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<bool>("IsActive")
-                        .HasColumnType("bit");
-
-                    b.Property<string>("LinkBlog")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<int>("LoaiBlogId")
+                    b.Property<int>("NguoiTraLoiId")
                         .HasColumnType("int");
 
-                    b.Property<int>("NguoiDangBaiId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("SoLuotBinhLuan")
-                        .HasColumnType("int");
-
-                    b.Property<int>("SoLuotThich")
-                        .HasColumnType("int");
-
-                    b.Property<DateTime?>("ThoiGianCapNhat")
+                    b.Property<DateTime>("ThoiGianTraLoi")
                         .HasColumnType("datetime2");
-
-                    b.Property<DateTime>("ThoiGianTao")
-                        .HasColumnType("datetime2");
-
-                    b.Property<DateTime?>("ThoiGianXoa")
-                        .HasColumnType("datetime2");
-
-                    b.Property<string>("TieuDeBlog")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<int>("TrangThaiBlogId")
-                        .HasColumnType("int");
 
                     b.HasKey("Id");
 
-                    b.HasIndex("LoaiBlogId");
+                    b.HasIndex("CauHoiId");
 
-                    b.HasIndex("NguoiDangBaiId");
+                    b.HasIndex("NguoiTraLoiId");
 
-                    b.HasIndex("TrangThaiBlogId");
-
-                    b.ToTable("blogs");
+                    b.ToTable("cauTraLois");
                 });
 
-            modelBuilder.Entity("WebCourseManagement_Models.Entities.ChuongKhoaHoc", b =>
+            modelBuilder.Entity("WebCourseManagement_Models.Entities.ChuongHoc", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -363,34 +347,20 @@ namespace WebCourseManagement_Models.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<DateTime?>("ThoiGianCapNhat")
+                        .HasColumnType("datetime2");
+
                     b.Property<DateTime>("ThoiGianTao")
                         .HasColumnType("datetime2");
 
-                    b.Property<int>("TongThoiGianHoc1Chuong")
+                    b.Property<int>("TongThoiGianHocTrongChuong")
                         .HasColumnType("int");
 
                     b.HasKey("Id");
 
                     b.HasIndex("KhoaHocId");
 
-                    b.ToTable("chuongKhoaHocs");
-                });
-
-            modelBuilder.Entity("WebCourseManagement_Models.Entities.ChuyenNganh", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<string>("TenChuyenNganh")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("chuyenNganhs");
+                    b.ToTable("chuongHocs");
                 });
 
             modelBuilder.Entity("WebCourseManagement_Models.Entities.CodeDaNgonNgu", b =>
@@ -424,7 +394,7 @@ namespace WebCourseManagement_Models.Migrations
                     b.ToTable("codeDaNgonNgus");
                 });
 
-            modelBuilder.Entity("WebCourseManagement_Models.Entities.DanhHieu", b =>
+            modelBuilder.Entity("WebCourseManagement_Models.Entities.DanhGia", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -432,53 +402,12 @@ namespace WebCourseManagement_Models.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
-                    b.Property<string>("TenDanhHieu")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                    b.Property<double>("SoSao")
+                        .HasColumnType("float");
 
                     b.HasKey("Id");
 
-                    b.ToTable("danhHieus");
-                });
-
-            modelBuilder.Entity("WebCourseManagement_Models.Entities.DanhHieuNguoiDung", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<int>("DanhHieuId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("NguoiDungId")
-                        .HasColumnType("int");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("DanhHieuId");
-
-                    b.HasIndex("NguoiDungId");
-
-                    b.ToTable("danhHieuNguoiDungs");
-                });
-
-            modelBuilder.Entity("WebCourseManagement_Models.Entities.DanhMucNguoiDung", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<string>("TenDanhMuc")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("danhMucNguoiDungs");
+                    b.ToTable("danhGias");
                 });
 
             modelBuilder.Entity("WebCourseManagement_Models.Entities.DatCauHoi", b =>
@@ -492,23 +421,7 @@ namespace WebCourseManagement_Models.Migrations
                     b.Property<int>("BaiHocId")
                         .HasColumnType("int");
 
-                    b.Property<string>("CauHoi")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("CauTraLoiA")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("CauTraLoiB")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("CauTraLoiC")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("CauTraLoiD")
+                    b.Property<string>("CauTraLoi")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
@@ -522,35 +435,6 @@ namespace WebCourseManagement_Models.Migrations
                     b.ToTable("datCauHois");
                 });
 
-            modelBuilder.Entity("WebCourseManagement_Models.Entities.DiemKiemTraBaiHocCuaNguoiDung", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<int>("BaiHocId")
-                        .HasColumnType("int");
-
-                    b.Property<bool>("DaHoanThanh")
-                        .HasColumnType("bit");
-
-                    b.Property<int>("NguoiDungId")
-                        .HasColumnType("int");
-
-                    b.Property<DateTime>("ThoiGianMoBaiHoc")
-                        .HasColumnType("datetime2");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("BaiHocId");
-
-                    b.HasIndex("NguoiDungId");
-
-                    b.ToTable("diemKiemTraBaiHocCuaNguoiDungs");
-                });
-
             modelBuilder.Entity("WebCourseManagement_Models.Entities.HoanThanhThucHanh", b =>
                 {
                     b.Property<int>("Id")
@@ -559,57 +443,27 @@ namespace WebCourseManagement_Models.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
-                    b.Property<int>("BaiHocThucHanhId")
-                        .HasColumnType("int");
-
-                    b.Property<int?>("NgonNguId")
+                    b.Property<int>("NgonNguId")
                         .HasColumnType("int");
 
                     b.Property<int>("NguoiDungId")
                         .HasColumnType("int");
 
-                    b.Property<DateTime?>("ThoiGianHoanThanh")
+                    b.Property<DateTime>("ThoiGianHoanThanh")
                         .HasColumnType("datetime2");
 
-                    b.HasKey("Id");
+                    b.Property<int>("ThucHanhId")
+                        .HasColumnType("int");
 
-                    b.HasIndex("BaiHocThucHanhId");
+                    b.HasKey("Id");
 
                     b.HasIndex("NgonNguId");
 
                     b.HasIndex("NguoiDungId");
 
+                    b.HasIndex("ThucHanhId");
+
                     b.ToTable("hoanThanhThucHanhs");
-                });
-
-            modelBuilder.Entity("WebCourseManagement_Models.Entities.HoanThanhTraLoiCauHoi", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<int>("CauHoiId")
-                        .HasColumnType("int");
-
-                    b.Property<string>("CauTraLoi")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<int>("NguoiDungId")
-                        .HasColumnType("int");
-
-                    b.Property<DateTime?>("ThoiGianHoanThanh")
-                        .HasColumnType("datetime2");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("CauHoiId");
-
-                    b.HasIndex("NguoiDungId");
-
-                    b.ToTable("hoanThanhTraLoiCauHois");
                 });
 
             modelBuilder.Entity("WebCourseManagement_Models.Entities.KhoaHoc", b =>
@@ -624,19 +478,19 @@ namespace WebCourseManagement_Models.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<bool?>("DaXoa")
+                        .HasColumnType("bit");
+
                     b.Property<decimal>("GiaKhoaHoc")
                         .HasColumnType("decimal(18,2)");
 
                     b.Property<bool>("IsActive")
                         .HasColumnType("bit");
 
-                    b.Property<string>("LinkVideoGioiThieu")
-                        .HasColumnType("nvarchar(max)");
-
                     b.Property<int>("LoaiKhoaHocId")
                         .HasColumnType("int");
 
-                    b.Property<string>("MoTa")
+                    b.Property<string>("MoTaKhoaHoc")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
@@ -646,33 +500,25 @@ namespace WebCourseManagement_Models.Migrations
                     b.Property<DateTime>("NgayTao")
                         .HasColumnType("datetime2");
 
-                    b.Property<int>("SoBaiHoc")
-                        .HasColumnType("int");
+                    b.Property<DateTime?>("NgayXoa")
+                        .HasColumnType("datetime2");
 
-                    b.Property<int>("SoChuong")
+                    b.Property<int>("NguoiTaoId")
                         .HasColumnType("int");
 
                     b.Property<int>("SoHocVienDaHoanThanh")
                         .HasColumnType("int");
 
-                    b.Property<int>("SoNguoiDangKyKhoaHoc")
-                        .HasColumnType("int");
-
-                    b.Property<string>("TenKhoaHoc")
+                    b.Property<string>("TieuDeKhoaHoc")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("TongThoiGianBaiHoc")
-                        .HasColumnType("int");
-
-                    b.Property<int>("TrangThaiKhoaHocId")
+                    b.Property<int>("TongThoiGianKhoaHoc")
                         .HasColumnType("int");
 
                     b.HasKey("Id");
 
                     b.HasIndex("LoaiKhoaHocId");
-
-                    b.HasIndex("TrangThaiKhoaHocId");
 
                     b.ToTable("khoaHocs");
                 });
@@ -685,16 +531,19 @@ namespace WebCourseManagement_Models.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
-                    b.Property<int>("BaiHocId")
+                    b.Property<int>("BaiHocHienTaiId")
                         .HasColumnType("int");
 
-                    b.Property<bool>("DaHoanThanh")
+                    b.Property<bool?>("DaHoanThanh")
                         .HasColumnType("bit");
 
-                    b.Property<int?>("KhoaHocId")
+                    b.Property<int>("DanhGiaId")
                         .HasColumnType("int");
 
-                    b.Property<int?>("NguoiDungId")
+                    b.Property<int>("KhoaHocId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("NguoiDungId")
                         .HasColumnType("int");
 
                     b.Property<double>("PhanTramHoanThanh")
@@ -703,15 +552,11 @@ namespace WebCourseManagement_Models.Migrations
                     b.Property<DateTime>("ThoiGianDangKy")
                         .HasColumnType("datetime2");
 
-                    b.Property<DateTime>("ThoiGianHocLanCuoi")
-                        .HasColumnType("datetime2");
-
-                    b.Property<int?>("TienDoBaiHocId")
-                        .HasColumnType("int");
-
                     b.HasKey("Id");
 
-                    b.HasIndex("BaiHocId");
+                    b.HasIndex("BaiHocHienTaiId");
+
+                    b.HasIndex("DanhGiaId");
 
                     b.HasIndex("KhoaHocId");
 
@@ -720,7 +565,7 @@ namespace WebCourseManagement_Models.Migrations
                     b.ToTable("khoaHocCuaNguoiDungs");
                 });
 
-            modelBuilder.Entity("WebCourseManagement_Models.Entities.KinhNghiem", b =>
+            modelBuilder.Entity("WebCourseManagement_Models.Entities.LienHeAdmin", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -728,79 +573,11 @@ namespace WebCourseManagement_Models.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
-                    b.Property<string>("ChiTiet")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<int>("NguoiDungId")
-                        .HasColumnType("int");
-
-                    b.Property<DateTime>("ThoiGianBatDau")
-                        .HasColumnType("datetime2");
-
-                    b.Property<DateTime?>("ThoiGianKetThuc")
-                        .HasColumnType("datetime2");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("NguoiDungId");
-
-                    b.ToTable("kinhNghiems");
-                });
-
-            modelBuilder.Entity("WebCourseManagement_Models.Entities.KinhNghiemHocTap", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<int>("ChuyenNganhId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("NguoiDungId")
-                        .HasColumnType("int");
-
-                    b.Property<DateTime>("ThoiGianBatDau")
-                        .HasColumnType("datetime2");
-
-                    b.Property<DateTime?>("ThoiGianKetThuc")
-                        .HasColumnType("datetime2");
-
-                    b.Property<int>("TruongHocId")
-                        .HasColumnType("int");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("ChuyenNganhId");
-
-                    b.HasIndex("NguoiDungId");
-
-                    b.HasIndex("TruongHocId");
-
-                    b.ToTable("kinhNghiemHocTaps");
-                });
-
-            modelBuilder.Entity("WebCourseManagement_Models.Entities.LienHe", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<bool>("DaLienHe")
+                    b.Property<bool?>("DaLienHe")
                         .HasColumnType("bit");
 
-                    b.Property<int?>("DanhGiaTheoSao")
+                    b.Property<int>("NguoiLienHeId")
                         .HasColumnType("int");
-
-                    b.Property<int?>("NguoiLienHeId")
-                        .HasColumnType("int");
-
-                    b.Property<string>("NoiDungDanhGia")
-                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("SoDienThoai")
                         .IsRequired()
@@ -810,20 +587,17 @@ namespace WebCourseManagement_Models.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<DateTime>("ThoiGianGuiYeuCau")
-                        .HasColumnType("datetime2");
-
-                    b.Property<DateTime?>("ThoiGianLienHe")
+                    b.Property<DateTime>("ThoiGianLienHe")
                         .HasColumnType("datetime2");
 
                     b.HasKey("Id");
 
                     b.HasIndex("NguoiLienHeId");
 
-                    b.ToTable("lienHes");
+                    b.ToTable("lienHeAdmins");
                 });
 
-            modelBuilder.Entity("WebCourseManagement_Models.Entities.LoaiBaiHoc", b =>
+            modelBuilder.Entity("WebCourseManagement_Models.Entities.LoaiBaiViet", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -831,13 +605,13 @@ namespace WebCourseManagement_Models.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
-                    b.Property<string>("TenLoai")
+                    b.Property<string>("TenLoaiBaiViet")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
 
-                    b.ToTable("loaiBaiHocs");
+                    b.ToTable("loaiBaiViets");
                 });
 
             modelBuilder.Entity("WebCourseManagement_Models.Entities.LoaiBaoCao", b =>
@@ -857,23 +631,6 @@ namespace WebCourseManagement_Models.Migrations
                     b.ToTable("loaiBaoCaos");
                 });
 
-            modelBuilder.Entity("WebCourseManagement_Models.Entities.LoaiBlog", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<string>("TenLoaiBlog")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("loaiBlogs");
-                });
-
             modelBuilder.Entity("WebCourseManagement_Models.Entities.LoaiKhoaHoc", b =>
                 {
                     b.Property<int>("Id")
@@ -882,30 +639,13 @@ namespace WebCourseManagement_Models.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
-                    b.Property<string>("TenLoai")
+                    b.Property<string>("TenLoaiKhoaHoc")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
 
                     b.ToTable("loaiKhoaHocs");
-                });
-
-            modelBuilder.Entity("WebCourseManagement_Models.Entities.LoaiTruongHoc", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<string>("TenLoai")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("loaiTruongHocs");
                 });
 
             modelBuilder.Entity("WebCourseManagement_Models.Entities.NgonNgu", b =>
@@ -934,13 +674,11 @@ namespace WebCourseManagement_Models.Migrations
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
                     b.Property<string>("AnhDaiDien")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<bool?>("DaKhoa")
                         .HasColumnType("bit");
-
-                    b.Property<int?>("DanhMucNguoiDungId")
-                        .HasColumnType("int");
 
                     b.Property<string>("DiaChi")
                         .HasColumnType("nvarchar(max)");
@@ -949,7 +687,7 @@ namespace WebCourseManagement_Models.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int?>("GioiTinh")
+                    b.Property<int>("GioiTinh")
                         .HasColumnType("int");
 
                     b.Property<string>("HoVaTen")
@@ -979,7 +717,7 @@ namespace WebCourseManagement_Models.Migrations
                     b.Property<int?>("SoLanViPham")
                         .HasColumnType("int");
 
-                    b.Property<string>("TenTaiKhoan")
+                    b.Property<string>("TaiKhoan")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
@@ -995,6 +733,9 @@ namespace WebCourseManagement_Models.Migrations
                     b.Property<DateTime>("ThoiGianTao")
                         .HasColumnType("datetime2");
 
+                    b.Property<DateTime?>("ThoiGianXoa")
+                        .HasColumnType("datetime2");
+
                     b.Property<int?>("TinhThanhId")
                         .HasColumnType("int");
 
@@ -1005,8 +746,6 @@ namespace WebCourseManagement_Models.Migrations
                         .HasColumnType("int");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("DanhMucNguoiDungId");
 
                     b.HasIndex("QuanHuyenId");
 
@@ -1021,31 +760,6 @@ namespace WebCourseManagement_Models.Migrations
                     b.ToTable("nguoiDungs");
                 });
 
-            modelBuilder.Entity("WebCourseManagement_Models.Entities.NguoiDungGhiChuBaiHoc", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<int>("DiemKiemTraBaiHocId")
-                        .HasColumnType("int");
-
-                    b.Property<string>("NoiDung")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<DateTime>("ThoiGianGhiChu")
-                        .HasColumnType("datetime2");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("DiemKiemTraBaiHocId");
-
-                    b.ToTable("nguoiDungGhiChus");
-                });
-
             modelBuilder.Entity("WebCourseManagement_Models.Entities.NguoiDungThichBaiViet", b =>
                 {
                     b.Property<int>("Id")
@@ -1057,11 +771,14 @@ namespace WebCourseManagement_Models.Migrations
                     b.Property<int>("BaiVietId")
                         .HasColumnType("int");
 
-                    b.Property<bool>("DaXoa")
+                    b.Property<bool?>("DaThich")
                         .HasColumnType("bit");
 
                     b.Property<int>("NguoiDungId")
                         .HasColumnType("int");
+
+                    b.Property<DateTime?>("ThoiGianBoThich")
+                        .HasColumnType("datetime2");
 
                     b.Property<DateTime>("ThoiGianThich")
                         .HasColumnType("datetime2");
@@ -1086,20 +803,23 @@ namespace WebCourseManagement_Models.Migrations
                     b.Property<int>("BinhLuanBaiHocId")
                         .HasColumnType("int");
 
-                    b.Property<bool>("DaXoa")
+                    b.Property<bool?>("DaThich")
                         .HasColumnType("bit");
 
-                    b.Property<int>("NguoiDungId")
+                    b.Property<int>("NguoiDungThichBinhLuanId")
                         .HasColumnType("int");
 
-                    b.Property<DateTime>("ThoiGianTao")
+                    b.Property<DateTime?>("ThoiGianBoThich")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime>("ThoiGianThich")
                         .HasColumnType("datetime2");
 
                     b.HasKey("Id");
 
                     b.HasIndex("BinhLuanBaiHocId");
 
-                    b.HasIndex("NguoiDungId");
+                    b.HasIndex("NguoiDungThichBinhLuanId");
 
                     b.ToTable("nguoiDungThichBinhLuanBaiHocs");
                 });
@@ -1115,93 +835,25 @@ namespace WebCourseManagement_Models.Migrations
                     b.Property<int>("BinhLuanBaiVietId")
                         .HasColumnType("int");
 
-                    b.Property<bool>("DaXoa")
+                    b.Property<bool?>("DaThich")
                         .HasColumnType("bit");
 
-                    b.Property<int>("NguoiDungId")
+                    b.Property<int>("NguoiDungThichBinhLuanId")
                         .HasColumnType("int");
 
-                    b.Property<DateTime>("ThoiGianTao")
+                    b.Property<DateTime?>("ThoiGianBoThich")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime>("ThoiGianThich")
                         .HasColumnType("datetime2");
 
                     b.HasKey("Id");
 
                     b.HasIndex("BinhLuanBaiVietId");
 
-                    b.HasIndex("NguoiDungId");
+                    b.HasIndex("NguoiDungThichBinhLuanId");
 
                     b.ToTable("nguoiDungThichBinhLuanBaiViets");
-                });
-
-            modelBuilder.Entity("WebCourseManagement_Models.Entities.NoiDungTrangChu", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<string>("DiaChi")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Email")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Slide1")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Slide2")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Slide3")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Slide4")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Slide5")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("SoDienThoai")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("noiDungTrangChus");
-                });
-
-            modelBuilder.Entity("WebCourseManagement_Models.Entities.PhanHoc", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<int>("BaiHocId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("ChuongKhoaHocId")
-                        .HasColumnType("int");
-
-                    b.Property<DateTime>("ThoiGianThemBaiHocVaoPhanHoc")
-                        .HasColumnType("datetime2");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("BaiHocId");
-
-                    b.HasIndex("ChuongKhoaHocId");
-
-                    b.ToTable("phanHocs");
                 });
 
             modelBuilder.Entity("WebCourseManagement_Models.Entities.QuanHuyen", b =>
@@ -1212,15 +864,7 @@ namespace WebCourseManagement_Models.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
-                    b.Property<string>("Code")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
                     b.Property<string>("TenQuanHuyen")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("TenQuanHuyenEnglish")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
@@ -1242,7 +886,7 @@ namespace WebCourseManagement_Models.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
-                    b.Property<string>("MaQuyen")
+                    b.Property<string>("MaQuyenHan")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
@@ -1275,8 +919,6 @@ namespace WebCourseManagement_Models.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("NguoiDungId");
-
                     b.ToTable("refreshTokens");
                 });
 
@@ -1289,15 +931,18 @@ namespace WebCourseManagement_Models.Migrations
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
                     b.Property<string>("ChiTietDauVao")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("CodeDauVao")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<bool>("KhoaTestCase")
+                    b.Property<bool?>("KhoaTestCase")
                         .HasColumnType("bit");
 
                     b.Property<string>("MongDoiDauRa")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<int>("ThucHanhId")
@@ -1318,26 +963,27 @@ namespace WebCourseManagement_Models.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
-                    b.Property<bool>("DaXem")
+                    b.Property<bool>("DaXemThongBao")
                         .HasColumnType("bit");
 
                     b.Property<bool>("HeThongThongBao")
                         .HasColumnType("bit");
 
-                    b.Property<string>("Link")
+                    b.Property<string>("LinkThongBao")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int?>("NguoiDungGuiThongBaoId")
+                    b.Property<int>("NguoiDungGuiThongBaoId")
                         .HasColumnType("int");
 
                     b.Property<int>("NguoiDungId")
                         .HasColumnType("int");
 
-                    b.Property<string>("NoiDung")
+                    b.Property<string>("NoiDungThongBao")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<DateTime>("ThoiGianTao")
+                    b.Property<DateTime>("ThoiGianThongBao")
                         .HasColumnType("datetime2");
 
                     b.HasKey("Id");
@@ -1355,7 +1001,7 @@ namespace WebCourseManagement_Models.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
-                    b.Property<string>("LinkAnh")
+                    b.Property<string>("AnhThongBao")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
@@ -1366,7 +1012,7 @@ namespace WebCourseManagement_Models.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<DateTime>("ThoiGianTao")
+                    b.Property<DateTime>("ThoiGianThongBao")
                         .HasColumnType("datetime2");
 
                     b.Property<string>("TieuDe")
@@ -1392,36 +1038,42 @@ namespace WebCourseManagement_Models.Migrations
                         .HasColumnType("int");
 
                     b.Property<string>("CallTestCode")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("ChiTietVanDe")
+                    b.Property<string>("ChiTietDeBai")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("CodeDauVao")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("CodeKhoiDau")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("DeBai")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("GiaiThich")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("GoiY")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<bool?>("HoTroDaNgonNgu")
                         .HasColumnType("bit");
 
                     b.Property<string>("MongDoiDauRa")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<int?>("NgonNguMacDinhId")
-                        .HasColumnType("int");
-
-                    b.Property<string>("VanDe")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("NgonNguMacDinhId")
+                        .HasColumnType("int");
 
                     b.HasKey("Id");
 
@@ -1440,15 +1092,7 @@ namespace WebCourseManagement_Models.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
-                    b.Property<string>("Code")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
                     b.Property<string>("TenTinhThanh")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("TenTinhThanhEnglish")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
@@ -1508,40 +1152,6 @@ namespace WebCourseManagement_Models.Migrations
                     b.ToTable("trangThaiBinhLuans");
                 });
 
-            modelBuilder.Entity("WebCourseManagement_Models.Entities.TrangThaiBlog", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<string>("TenTrangThaiBlog")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("trangThaiBlogs");
-                });
-
-            modelBuilder.Entity("WebCourseManagement_Models.Entities.TrangThaiKhoaHoc", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<string>("TenTrangThai")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("trangThaiKhoaHocs");
-                });
-
             modelBuilder.Entity("WebCourseManagement_Models.Entities.TrangThaiNguoiDung", b =>
                 {
                     b.Property<int>("Id")
@@ -1563,76 +1173,6 @@ namespace WebCourseManagement_Models.Migrations
                     b.ToTable("trangThaiNguoiDungs");
                 });
 
-            modelBuilder.Entity("WebCourseManagement_Models.Entities.TruongHoc", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<int>("LoaiTruongHocId")
-                        .HasColumnType("int");
-
-                    b.Property<string>("TenTruongHoc")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("LoaiTruongHocId");
-
-                    b.ToTable("truongHocs");
-                });
-
-            modelBuilder.Entity("WebCourseManagement_Models.Entities.VideoBaiGiang", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<int>("BaiHocId")
-                        .HasColumnType("int");
-
-                    b.Property<string>("LinkBaiHoc")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("BaiHocId");
-
-                    b.ToTable("videoBaiGiangs");
-                });
-
-            modelBuilder.Entity("WebCourseManagement_Models.Entities.VideoHoanThanh", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<int>("NguoiDungId")
-                        .HasColumnType("int");
-
-                    b.Property<DateTime>("ThoiGianHoanThanh")
-                        .HasColumnType("datetime2");
-
-                    b.Property<int>("VideoBaiGiangId")
-                        .HasColumnType("int");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("NguoiDungId");
-
-                    b.HasIndex("VideoBaiGiangId");
-
-                    b.ToTable("videoHoanThanhs");
-                });
-
             modelBuilder.Entity("WebCourseManagement_Models.Entities.XaPhuong", b =>
                 {
                     b.Property<int>("Id")
@@ -1641,18 +1181,10 @@ namespace WebCourseManagement_Models.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
-                    b.Property<string>("Code")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
                     b.Property<int>("QuanHuyenId")
                         .HasColumnType("int");
 
                     b.Property<string>("TenXaPhuong")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("TenXaPhuongEnglish")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
@@ -1686,22 +1218,14 @@ namespace WebCourseManagement_Models.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("NguoiDungId");
-
                     b.ToTable("xacNhanEmails");
                 });
 
             modelBuilder.Entity("WebCourseManagement_Models.Entities.BaiHoc", b =>
                 {
-                    b.HasOne("WebCourseManagement_Models.Entities.ChuongKhoaHoc", "ChuongKhoaHoc")
+                    b.HasOne("WebCourseManagement_Models.Entities.ChuongHoc", "ChuongHoc")
                         .WithMany("BaiHocs")
-                        .HasForeignKey("ChuongKhoaHocId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("WebCourseManagement_Models.Entities.LoaiBaiHoc", "LoaiBaiHoc")
-                        .WithMany()
-                        .HasForeignKey("LoaiBaiHocId")
+                        .HasForeignKey("ChuongHocId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
@@ -1711,18 +1235,22 @@ namespace WebCourseManagement_Models.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.Navigation("ChuongKhoaHoc");
-
-                    b.Navigation("LoaiBaiHoc");
+                    b.Navigation("ChuongHoc");
 
                     b.Navigation("TrangThaiBaiHoc");
                 });
 
             modelBuilder.Entity("WebCourseManagement_Models.Entities.BaiViet", b =>
                 {
-                    b.HasOne("WebCourseManagement_Models.Entities.NguoiDung", "NguoiDungTaoBai")
-                        .WithMany()
-                        .HasForeignKey("NguoiDungTaoBaiId")
+                    b.HasOne("WebCourseManagement_Models.Entities.LoaiBaiViet", "LoaiBaiViet")
+                        .WithMany("BaiViets")
+                        .HasForeignKey("LoaiBaiVietId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("WebCourseManagement_Models.Entities.NguoiDung", "NguoiTaoBaiViet")
+                        .WithMany("BaiViets")
+                        .HasForeignKey("NguoiTaoBaiVietId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
@@ -1732,7 +1260,9 @@ namespace WebCourseManagement_Models.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.Navigation("NguoiDungTaoBai");
+                    b.Navigation("LoaiBaiViet");
+
+                    b.Navigation("NguoiTaoBaiViet");
 
                     b.Navigation("TrangThaiBaiViet");
                 });
@@ -1745,15 +1275,15 @@ namespace WebCourseManagement_Models.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("WebCourseManagement_Models.Entities.NguoiDung", "NguoiDung")
-                        .WithMany()
-                        .HasForeignKey("NguoiDungId")
+                    b.HasOne("WebCourseManagement_Models.Entities.NguoiDung", "NguoiGuiBaoCao")
+                        .WithMany("BaoCaos")
+                        .HasForeignKey("NguoiGuiBaoCaoId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.Navigation("LoaiBaoCao");
 
-                    b.Navigation("NguoiDung");
+                    b.Navigation("NguoiGuiBaoCao");
                 });
 
             modelBuilder.Entity("WebCourseManagement_Models.Entities.BinhLuanBaiHoc", b =>
@@ -1764,19 +1294,21 @@ namespace WebCourseManagement_Models.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("WebCourseManagement_Models.Entities.NguoiDung", "NguoiDung")
-                        .WithMany()
-                        .HasForeignKey("NguoiDungId");
+                    b.HasOne("WebCourseManagement_Models.Entities.NguoiDung", "NguoiBinhLuan")
+                        .WithMany("BinhLuanBaiHocs")
+                        .HasForeignKey("NguoiBinhLuanId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.HasOne("WebCourseManagement_Models.Entities.TrangThaiBinhLuan", "TrangThaiBinhLuan")
-                        .WithMany("BinhLuanBaiHocs")
+                        .WithMany()
                         .HasForeignKey("TrangThaiBinhLuanId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.Navigation("BaiHoc");
 
-                    b.Navigation("NguoiDung");
+                    b.Navigation("NguoiBinhLuan");
 
                     b.Navigation("TrangThaiBinhLuan");
                 });
@@ -1784,59 +1316,53 @@ namespace WebCourseManagement_Models.Migrations
             modelBuilder.Entity("WebCourseManagement_Models.Entities.BinhLuanBaiViet", b =>
                 {
                     b.HasOne("WebCourseManagement_Models.Entities.BaiViet", "BaiViet")
-                        .WithMany()
+                        .WithMany("BinhLuanBaiViets")
                         .HasForeignKey("BaiVietId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("WebCourseManagement_Models.Entities.NguoiDung", "NguoiDung")
-                        .WithMany()
-                        .HasForeignKey("NguoiDungId");
+                    b.HasOne("WebCourseManagement_Models.Entities.NguoiDung", "NguoiBinhLuan")
+                        .WithMany("BinhLuanBaiViets")
+                        .HasForeignKey("NguoiBinhLuanId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.HasOne("WebCourseManagement_Models.Entities.TrangThaiBinhLuan", "TrangThaiBinhLuan")
-                        .WithMany("BinhLuanBaiViets")
+                        .WithMany()
                         .HasForeignKey("TrangThaiBinhLuanId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.Navigation("BaiViet");
 
-                    b.Navigation("NguoiDung");
+                    b.Navigation("NguoiBinhLuan");
 
                     b.Navigation("TrangThaiBinhLuan");
                 });
 
-            modelBuilder.Entity("WebCourseManagement_Models.Entities.Blog", b =>
+            modelBuilder.Entity("WebCourseManagement_Models.Entities.CauTraLoi", b =>
                 {
-                    b.HasOne("WebCourseManagement_Models.Entities.LoaiBlog", "LoaiBlog")
-                        .WithMany("Blogs")
-                        .HasForeignKey("LoaiBlogId")
+                    b.HasOne("WebCourseManagement_Models.Entities.DatCauHoi", "CauHoi")
+                        .WithMany("CauTraLois")
+                        .HasForeignKey("CauHoiId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("WebCourseManagement_Models.Entities.NguoiDung", "NguoiDangBai")
-                        .WithMany()
-                        .HasForeignKey("NguoiDangBaiId")
+                    b.HasOne("WebCourseManagement_Models.Entities.NguoiDung", "NguoiTraLoi")
+                        .WithMany("CauTraLois")
+                        .HasForeignKey("NguoiTraLoiId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("WebCourseManagement_Models.Entities.TrangThaiBlog", "TrangThaiBlog")
-                        .WithMany("Blogs")
-                        .HasForeignKey("TrangThaiBlogId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                    b.Navigation("CauHoi");
 
-                    b.Navigation("LoaiBlog");
-
-                    b.Navigation("NguoiDangBai");
-
-                    b.Navigation("TrangThaiBlog");
+                    b.Navigation("NguoiTraLoi");
                 });
 
-            modelBuilder.Entity("WebCourseManagement_Models.Entities.ChuongKhoaHoc", b =>
+            modelBuilder.Entity("WebCourseManagement_Models.Entities.ChuongHoc", b =>
                 {
                     b.HasOne("WebCourseManagement_Models.Entities.KhoaHoc", "KhoaHoc")
-                        .WithMany("ChuongKhoaHocs")
+                        .WithMany("ChuongHocs")
                         .HasForeignKey("KhoaHocId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -1863,97 +1389,42 @@ namespace WebCourseManagement_Models.Migrations
                     b.Navigation("ThucHanh");
                 });
 
-            modelBuilder.Entity("WebCourseManagement_Models.Entities.DanhHieuNguoiDung", b =>
-                {
-                    b.HasOne("WebCourseManagement_Models.Entities.DanhHieu", "DanhHieu")
-                        .WithMany()
-                        .HasForeignKey("DanhHieuId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("WebCourseManagement_Models.Entities.NguoiDung", "NguoiDung")
-                        .WithMany()
-                        .HasForeignKey("NguoiDungId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("DanhHieu");
-
-                    b.Navigation("NguoiDung");
-                });
-
             modelBuilder.Entity("WebCourseManagement_Models.Entities.DatCauHoi", b =>
                 {
                     b.HasOne("WebCourseManagement_Models.Entities.BaiHoc", "BaiHoc")
-                        .WithMany()
+                        .WithMany("DatCauHois")
                         .HasForeignKey("BaiHocId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.Navigation("BaiHoc");
-                });
-
-            modelBuilder.Entity("WebCourseManagement_Models.Entities.DiemKiemTraBaiHocCuaNguoiDung", b =>
-                {
-                    b.HasOne("WebCourseManagement_Models.Entities.BaiHoc", "BaiHoc")
-                        .WithMany()
-                        .HasForeignKey("BaiHocId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("WebCourseManagement_Models.Entities.NguoiDung", "NguoiDung")
-                        .WithMany()
-                        .HasForeignKey("NguoiDungId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("BaiHoc");
-
-                    b.Navigation("NguoiDung");
                 });
 
             modelBuilder.Entity("WebCourseManagement_Models.Entities.HoanThanhThucHanh", b =>
                 {
-                    b.HasOne("WebCourseManagement_Models.Entities.ThucHanh", "BaiHocThucHanh")
+                    b.HasOne("WebCourseManagement_Models.Entities.NgonNgu", "NgonNgu")
                         .WithMany()
-                        .HasForeignKey("BaiHocThucHanhId")
+                        .HasForeignKey("NgonNguId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("WebCourseManagement_Models.Entities.NgonNgu", "NgonNgu")
-                        .WithMany()
-                        .HasForeignKey("NgonNguId");
-
                     b.HasOne("WebCourseManagement_Models.Entities.NguoiDung", "NguoiDung")
-                        .WithMany()
+                        .WithMany("HoanThanhThucHanhs")
                         .HasForeignKey("NguoiDungId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.Navigation("BaiHocThucHanh");
+                    b.HasOne("WebCourseManagement_Models.Entities.ThucHanh", "ThucHanh")
+                        .WithMany()
+                        .HasForeignKey("ThucHanhId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.Navigation("NgonNgu");
 
                     b.Navigation("NguoiDung");
-                });
 
-            modelBuilder.Entity("WebCourseManagement_Models.Entities.HoanThanhTraLoiCauHoi", b =>
-                {
-                    b.HasOne("WebCourseManagement_Models.Entities.DatCauHoi", "CauHoi")
-                        .WithMany()
-                        .HasForeignKey("CauHoiId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("WebCourseManagement_Models.Entities.NguoiDung", "NguoiDung")
-                        .WithMany()
-                        .HasForeignKey("NguoiDungId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("CauHoi");
-
-                    b.Navigation("NguoiDung");
+                    b.Navigation("ThucHanh");
                 });
 
             modelBuilder.Entity("WebCourseManagement_Models.Entities.KhoaHoc", b =>
@@ -1964,95 +1435,59 @@ namespace WebCourseManagement_Models.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("WebCourseManagement_Models.Entities.TrangThaiKhoaHoc", "TrangThaiKhoaHoc")
-                        .WithMany()
-                        .HasForeignKey("TrangThaiKhoaHocId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
                     b.Navigation("LoaiKhoaHoc");
-
-                    b.Navigation("TrangThaiKhoaHoc");
                 });
 
             modelBuilder.Entity("WebCourseManagement_Models.Entities.KhoaHocCuaNguoiDung", b =>
                 {
-                    b.HasOne("WebCourseManagement_Models.Entities.BaiHoc", "BaiHoc")
+                    b.HasOne("WebCourseManagement_Models.Entities.BaiHoc", "BaiHocHienTai")
+                        .WithMany("KhoaHocCuaNguoiDungs")
+                        .HasForeignKey("BaiHocHienTaiId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("WebCourseManagement_Models.Entities.DanhGia", "DanhGia")
                         .WithMany()
-                        .HasForeignKey("BaiHocId")
+                        .HasForeignKey("DanhGiaId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.HasOne("WebCourseManagement_Models.Entities.KhoaHoc", "KhoaHoc")
-                        .WithMany()
-                        .HasForeignKey("KhoaHocId");
+                        .WithMany("KhoaHocCuaNguoiDungs")
+                        .HasForeignKey("KhoaHocId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.HasOne("WebCourseManagement_Models.Entities.NguoiDung", "NguoiDung")
-                        .WithMany()
-                        .HasForeignKey("NguoiDungId");
+                        .WithMany("KhoaHocCuaNguoiDungs")
+                        .HasForeignKey("NguoiDungId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
-                    b.Navigation("BaiHoc");
+                    b.Navigation("BaiHocHienTai");
+
+                    b.Navigation("DanhGia");
 
                     b.Navigation("KhoaHoc");
 
                     b.Navigation("NguoiDung");
                 });
 
-            modelBuilder.Entity("WebCourseManagement_Models.Entities.KinhNghiem", b =>
-                {
-                    b.HasOne("WebCourseManagement_Models.Entities.NguoiDung", "NguoiDung")
-                        .WithMany()
-                        .HasForeignKey("NguoiDungId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("NguoiDung");
-                });
-
-            modelBuilder.Entity("WebCourseManagement_Models.Entities.KinhNghiemHocTap", b =>
-                {
-                    b.HasOne("WebCourseManagement_Models.Entities.ChuyenNganh", "ChuyenNganh")
-                        .WithMany()
-                        .HasForeignKey("ChuyenNganhId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("WebCourseManagement_Models.Entities.NguoiDung", "NguoiDung")
-                        .WithMany()
-                        .HasForeignKey("NguoiDungId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("WebCourseManagement_Models.Entities.TruongHoc", "TruongHoc")
-                        .WithMany()
-                        .HasForeignKey("TruongHocId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("ChuyenNganh");
-
-                    b.Navigation("NguoiDung");
-
-                    b.Navigation("TruongHoc");
-                });
-
-            modelBuilder.Entity("WebCourseManagement_Models.Entities.LienHe", b =>
+            modelBuilder.Entity("WebCourseManagement_Models.Entities.LienHeAdmin", b =>
                 {
                     b.HasOne("WebCourseManagement_Models.Entities.NguoiDung", "NguoiLienHe")
-                        .WithMany()
-                        .HasForeignKey("NguoiLienHeId");
+                        .WithMany("LienHeAdmins")
+                        .HasForeignKey("NguoiLienHeId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.Navigation("NguoiLienHe");
                 });
 
             modelBuilder.Entity("WebCourseManagement_Models.Entities.NguoiDung", b =>
                 {
-                    b.HasOne("WebCourseManagement_Models.Entities.DanhMucNguoiDung", "DanhMucNguoiDung")
-                        .WithMany()
-                        .HasForeignKey("DanhMucNguoiDungId");
-
                     b.HasOne("WebCourseManagement_Models.Entities.QuanHuyen", "QuanHuyen")
-                        .WithMany()
+                        .WithMany("NguoiDungs")
                         .HasForeignKey("QuanHuyenId");
 
                     b.HasOne("WebCourseManagement_Models.Entities.QuyenHan", "QuyenHan")
@@ -2062,7 +1497,7 @@ namespace WebCourseManagement_Models.Migrations
                         .IsRequired();
 
                     b.HasOne("WebCourseManagement_Models.Entities.TinhThanh", "TinhThanh")
-                        .WithMany()
+                        .WithMany("NguoiDungs")
                         .HasForeignKey("TinhThanhId");
 
                     b.HasOne("WebCourseManagement_Models.Entities.TrangThaiNguoiDung", "TrangThaiNguoiDung")
@@ -2072,10 +1507,8 @@ namespace WebCourseManagement_Models.Migrations
                         .IsRequired();
 
                     b.HasOne("WebCourseManagement_Models.Entities.XaPhuong", "XaPhuong")
-                        .WithMany()
+                        .WithMany("NguoiDungs")
                         .HasForeignKey("XaPhuongId");
-
-                    b.Navigation("DanhMucNguoiDung");
 
                     b.Navigation("QuanHuyen");
 
@@ -2088,27 +1521,16 @@ namespace WebCourseManagement_Models.Migrations
                     b.Navigation("XaPhuong");
                 });
 
-            modelBuilder.Entity("WebCourseManagement_Models.Entities.NguoiDungGhiChuBaiHoc", b =>
-                {
-                    b.HasOne("WebCourseManagement_Models.Entities.DiemKiemTraBaiHocCuaNguoiDung", "DiemKiemTraBaiHoc")
-                        .WithMany()
-                        .HasForeignKey("DiemKiemTraBaiHocId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("DiemKiemTraBaiHoc");
-                });
-
             modelBuilder.Entity("WebCourseManagement_Models.Entities.NguoiDungThichBaiViet", b =>
                 {
                     b.HasOne("WebCourseManagement_Models.Entities.BaiViet", "BaiViet")
-                        .WithMany()
+                        .WithMany("NguoiDungThichBaiViets")
                         .HasForeignKey("BaiVietId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.HasOne("WebCourseManagement_Models.Entities.NguoiDung", "NguoiDung")
-                        .WithMany()
+                        .WithMany("NguoiDungThichBaiViets")
                         .HasForeignKey("NguoiDungId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -2121,64 +1543,45 @@ namespace WebCourseManagement_Models.Migrations
             modelBuilder.Entity("WebCourseManagement_Models.Entities.NguoiDungThichBinhLuanBaiHoc", b =>
                 {
                     b.HasOne("WebCourseManagement_Models.Entities.BinhLuanBaiHoc", "BinhLuanBaiHoc")
-                        .WithMany()
+                        .WithMany("NguoiDungThichBinhLuanBaiHocs")
                         .HasForeignKey("BinhLuanBaiHocId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("WebCourseManagement_Models.Entities.NguoiDung", "NguoiDung")
-                        .WithMany()
-                        .HasForeignKey("NguoiDungId")
+                    b.HasOne("WebCourseManagement_Models.Entities.NguoiDung", "NguoiDungThichBinhLuan")
+                        .WithMany("NguoiDungThichBinhLuanBaiHocs")
+                        .HasForeignKey("NguoiDungThichBinhLuanId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.Navigation("BinhLuanBaiHoc");
 
-                    b.Navigation("NguoiDung");
+                    b.Navigation("NguoiDungThichBinhLuan");
                 });
 
             modelBuilder.Entity("WebCourseManagement_Models.Entities.NguoiDungThichBinhLuanBaiViet", b =>
                 {
                     b.HasOne("WebCourseManagement_Models.Entities.BinhLuanBaiViet", "BinhLuanBaiViet")
-                        .WithMany()
+                        .WithMany("NguoiDungThichBinhLuanBaiViets")
                         .HasForeignKey("BinhLuanBaiVietId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("WebCourseManagement_Models.Entities.NguoiDung", "NguoiDung")
-                        .WithMany()
-                        .HasForeignKey("NguoiDungId")
+                    b.HasOne("WebCourseManagement_Models.Entities.NguoiDung", "NguoiDungThichBinhLuan")
+                        .WithMany("NguoiDungThichBinhLuanBaiViets")
+                        .HasForeignKey("NguoiDungThichBinhLuanId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.Navigation("BinhLuanBaiViet");
 
-                    b.Navigation("NguoiDung");
-                });
-
-            modelBuilder.Entity("WebCourseManagement_Models.Entities.PhanHoc", b =>
-                {
-                    b.HasOne("WebCourseManagement_Models.Entities.BaiHoc", "BaiHoc")
-                        .WithMany()
-                        .HasForeignKey("BaiHocId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("WebCourseManagement_Models.Entities.ChuongKhoaHoc", "ChuongKhoaHoc")
-                        .WithMany()
-                        .HasForeignKey("ChuongKhoaHocId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("BaiHoc");
-
-                    b.Navigation("ChuongKhoaHoc");
+                    b.Navigation("NguoiDungThichBinhLuan");
                 });
 
             modelBuilder.Entity("WebCourseManagement_Models.Entities.QuanHuyen", b =>
                 {
                     b.HasOne("WebCourseManagement_Models.Entities.TinhThanh", "TinhThanh")
-                        .WithMany()
+                        .WithMany("QuanHuyens")
                         .HasForeignKey("TinhThanhId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -2186,21 +1589,10 @@ namespace WebCourseManagement_Models.Migrations
                     b.Navigation("TinhThanh");
                 });
 
-            modelBuilder.Entity("WebCourseManagement_Models.Entities.RefreshToken", b =>
-                {
-                    b.HasOne("WebCourseManagement_Models.Entities.NguoiDung", "NguoiDung")
-                        .WithMany()
-                        .HasForeignKey("NguoiDungId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("NguoiDung");
-                });
-
             modelBuilder.Entity("WebCourseManagement_Models.Entities.TestCase", b =>
                 {
                     b.HasOne("WebCourseManagement_Models.Entities.ThucHanh", "ThucHanh")
-                        .WithMany("TestCases")
+                        .WithMany()
                         .HasForeignKey("ThucHanhId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -2211,7 +1603,7 @@ namespace WebCourseManagement_Models.Migrations
             modelBuilder.Entity("WebCourseManagement_Models.Entities.ThongBao", b =>
                 {
                     b.HasOne("WebCourseManagement_Models.Entities.NguoiDung", "NguoiDung")
-                        .WithMany()
+                        .WithMany("ThongBaos")
                         .HasForeignKey("NguoiDungId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -2233,65 +1625,26 @@ namespace WebCourseManagement_Models.Migrations
             modelBuilder.Entity("WebCourseManagement_Models.Entities.ThucHanh", b =>
                 {
                     b.HasOne("WebCourseManagement_Models.Entities.BaiHoc", "BaiHoc")
-                        .WithMany()
+                        .WithMany("ThucHanhs")
                         .HasForeignKey("BaiHocId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.HasOne("WebCourseManagement_Models.Entities.NgonNgu", "NgonNguMacDinh")
                         .WithMany()
-                        .HasForeignKey("NgonNguMacDinhId");
+                        .HasForeignKey("NgonNguMacDinhId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.Navigation("BaiHoc");
 
                     b.Navigation("NgonNguMacDinh");
                 });
 
-            modelBuilder.Entity("WebCourseManagement_Models.Entities.TruongHoc", b =>
-                {
-                    b.HasOne("WebCourseManagement_Models.Entities.LoaiTruongHoc", "LoaiTruongHoc")
-                        .WithMany()
-                        .HasForeignKey("LoaiTruongHocId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("LoaiTruongHoc");
-                });
-
-            modelBuilder.Entity("WebCourseManagement_Models.Entities.VideoBaiGiang", b =>
-                {
-                    b.HasOne("WebCourseManagement_Models.Entities.BaiHoc", "BaiHoc")
-                        .WithMany()
-                        .HasForeignKey("BaiHocId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("BaiHoc");
-                });
-
-            modelBuilder.Entity("WebCourseManagement_Models.Entities.VideoHoanThanh", b =>
-                {
-                    b.HasOne("WebCourseManagement_Models.Entities.NguoiDung", "NguoiDung")
-                        .WithMany()
-                        .HasForeignKey("NguoiDungId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("WebCourseManagement_Models.Entities.VideoBaiGiang", "VideoBaiGiang")
-                        .WithMany()
-                        .HasForeignKey("VideoBaiGiangId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("NguoiDung");
-
-                    b.Navigation("VideoBaiGiang");
-                });
-
             modelBuilder.Entity("WebCourseManagement_Models.Entities.XaPhuong", b =>
                 {
                     b.HasOne("WebCourseManagement_Models.Entities.QuanHuyen", "QuanHuyen")
-                        .WithMany()
+                        .WithMany("XaPhuongs")
                         .HasForeignKey("QuanHuyenId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -2299,35 +1652,54 @@ namespace WebCourseManagement_Models.Migrations
                     b.Navigation("QuanHuyen");
                 });
 
-            modelBuilder.Entity("WebCourseManagement_Models.Entities.XacNhanEmail", b =>
-                {
-                    b.HasOne("WebCourseManagement_Models.Entities.NguoiDung", "NguoiDung")
-                        .WithMany()
-                        .HasForeignKey("NguoiDungId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("NguoiDung");
-                });
-
             modelBuilder.Entity("WebCourseManagement_Models.Entities.BaiHoc", b =>
                 {
                     b.Navigation("BinhLuanBaiHocs");
+
+                    b.Navigation("DatCauHois");
+
+                    b.Navigation("KhoaHocCuaNguoiDungs");
+
+                    b.Navigation("ThucHanhs");
                 });
 
-            modelBuilder.Entity("WebCourseManagement_Models.Entities.ChuongKhoaHoc", b =>
+            modelBuilder.Entity("WebCourseManagement_Models.Entities.BaiViet", b =>
+                {
+                    b.Navigation("BinhLuanBaiViets");
+
+                    b.Navigation("NguoiDungThichBaiViets");
+                });
+
+            modelBuilder.Entity("WebCourseManagement_Models.Entities.BinhLuanBaiHoc", b =>
+                {
+                    b.Navigation("NguoiDungThichBinhLuanBaiHocs");
+                });
+
+            modelBuilder.Entity("WebCourseManagement_Models.Entities.BinhLuanBaiViet", b =>
+                {
+                    b.Navigation("NguoiDungThichBinhLuanBaiViets");
+                });
+
+            modelBuilder.Entity("WebCourseManagement_Models.Entities.ChuongHoc", b =>
                 {
                     b.Navigation("BaiHocs");
                 });
 
-            modelBuilder.Entity("WebCourseManagement_Models.Entities.KhoaHoc", b =>
+            modelBuilder.Entity("WebCourseManagement_Models.Entities.DatCauHoi", b =>
                 {
-                    b.Navigation("ChuongKhoaHocs");
+                    b.Navigation("CauTraLois");
                 });
 
-            modelBuilder.Entity("WebCourseManagement_Models.Entities.LoaiBlog", b =>
+            modelBuilder.Entity("WebCourseManagement_Models.Entities.KhoaHoc", b =>
                 {
-                    b.Navigation("Blogs");
+                    b.Navigation("ChuongHocs");
+
+                    b.Navigation("KhoaHocCuaNguoiDungs");
+                });
+
+            modelBuilder.Entity("WebCourseManagement_Models.Entities.LoaiBaiViet", b =>
+                {
+                    b.Navigation("BaiViets");
                 });
 
             modelBuilder.Entity("WebCourseManagement_Models.Entities.LoaiKhoaHoc", b =>
@@ -2335,21 +1707,50 @@ namespace WebCourseManagement_Models.Migrations
                     b.Navigation("KhoaHocs");
                 });
 
-            modelBuilder.Entity("WebCourseManagement_Models.Entities.ThucHanh", b =>
+            modelBuilder.Entity("WebCourseManagement_Models.Entities.NguoiDung", b =>
                 {
-                    b.Navigation("TestCases");
-                });
+                    b.Navigation("BaiViets");
 
-            modelBuilder.Entity("WebCourseManagement_Models.Entities.TrangThaiBinhLuan", b =>
-                {
+                    b.Navigation("BaoCaos");
+
                     b.Navigation("BinhLuanBaiHocs");
 
                     b.Navigation("BinhLuanBaiViets");
+
+                    b.Navigation("CauTraLois");
+
+                    b.Navigation("HoanThanhThucHanhs");
+
+                    b.Navigation("KhoaHocCuaNguoiDungs");
+
+                    b.Navigation("LienHeAdmins");
+
+                    b.Navigation("NguoiDungThichBaiViets");
+
+                    b.Navigation("NguoiDungThichBinhLuanBaiHocs");
+
+                    b.Navigation("NguoiDungThichBinhLuanBaiViets");
+
+                    b.Navigation("ThongBaos");
                 });
 
-            modelBuilder.Entity("WebCourseManagement_Models.Entities.TrangThaiBlog", b =>
+            modelBuilder.Entity("WebCourseManagement_Models.Entities.QuanHuyen", b =>
                 {
-                    b.Navigation("Blogs");
+                    b.Navigation("NguoiDungs");
+
+                    b.Navigation("XaPhuongs");
+                });
+
+            modelBuilder.Entity("WebCourseManagement_Models.Entities.TinhThanh", b =>
+                {
+                    b.Navigation("NguoiDungs");
+
+                    b.Navigation("QuanHuyens");
+                });
+
+            modelBuilder.Entity("WebCourseManagement_Models.Entities.XaPhuong", b =>
+                {
+                    b.Navigation("NguoiDungs");
                 });
 #pragma warning restore 612, 618
         }

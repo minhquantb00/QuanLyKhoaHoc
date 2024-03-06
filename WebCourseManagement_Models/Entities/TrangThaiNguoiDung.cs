@@ -9,6 +9,6 @@ namespace WebCourseManagement_Models.Entities
     public class TrangThaiNguoiDung : BaseEntity
     {
         public string MaTrangThai { get; set; }
-        public string TenTrangThai { get; set; }    
+        public string TenTrangThai { get; set; }
     }
 }
