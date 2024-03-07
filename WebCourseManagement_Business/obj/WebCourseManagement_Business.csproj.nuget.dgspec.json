@@ -1,20 +1,20 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\viett\\Source\\Repos\\QuanLyKhoaHoc\\WebCourseManagement_Business\\WebCourseManagement_Business.csproj": {}
+    "C:\\Users\\quang\\Source\\Repos\\QuanLyKhoaHoc\\WebCourseManagement_Business\\WebCourseManagement_Business.csproj": {}
   },
   "projects": {
-    "C:\\Users\\viett\\Source\\Repos\\QuanLyKhoaHoc\\WebCourseManagement_Business\\WebCourseManagement_Business.csproj": {
+    "C:\\Users\\quang\\Source\\Repos\\QuanLyKhoaHoc\\WebCourseManagement_Business\\WebCourseManagement_Business.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\viett\\Source\\Repos\\QuanLyKhoaHoc\\WebCourseManagement_Business\\WebCourseManagement_Business.csproj",
+        "projectUniqueName": "C:\\Users\\quang\\Source\\Repos\\QuanLyKhoaHoc\\WebCourseManagement_Business\\WebCourseManagement_Business.csproj",
         "projectName": "WebCourseManagement_Business",
-        "projectPath": "C:\\Users\\viett\\Source\\Repos\\QuanLyKhoaHoc\\WebCourseManagement_Business\\WebCourseManagement_Business.csproj",
-        "packagesPath": "C:\\Users\\viett\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\viett\\Source\\Repos\\QuanLyKhoaHoc\\WebCourseManagement_Business\\obj\\",
+        "projectPath": "C:\\Users\\quang\\Source\\Repos\\QuanLyKhoaHoc\\WebCourseManagement_Business\\WebCourseManagement_Business.csproj",
+        "packagesPath": "C:\\Users\\quang\\.nuget\\packages\\",
+        "outputPath": "C:\\Users\\quang\\Source\\Repos\\QuanLyKhoaHoc\\WebCourseManagement_Business\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
-          "C:\\Users\\viett\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Users\\quang\\AppData\\Roaming\\NuGet\\NuGet.Config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
         ],
         "originalTargetFrameworks": [
@@ -28,11 +28,11 @@
           "net6.0": {
             "targetAlias": "net6.0",
             "projectReferences": {
-              "C:\\Users\\viett\\Source\\Repos\\QuanLyKhoaHoc\\WebCourseManagement_Models\\WebCourseManagement_Models.csproj": {
-                "projectPath": "C:\\Users\\viett\\Source\\Repos\\QuanLyKhoaHoc\\WebCourseManagement_Models\\WebCourseManagement_Models.csproj"
+              "C:\\Users\\quang\\Source\\Repos\\QuanLyKhoaHoc\\WebCourseManagement_Models\\WebCourseManagement_Models.csproj": {
+                "projectPath": "C:\\Users\\quang\\Source\\Repos\\QuanLyKhoaHoc\\WebCourseManagement_Models\\WebCourseManagement_Models.csproj"
               },
-              "C:\\Users\\viett\\Source\\Repos\\QuanLyKhoaHoc\\WebCourseManagement_Repositories\\WebCourseManagement_Repositories.csproj": {
-                "projectPath": "C:\\Users\\viett\\Source\\Repos\\QuanLyKhoaHoc\\WebCourseManagement_Repositories\\WebCourseManagement_Repositories.csproj"
+              "C:\\Users\\quang\\Source\\Repos\\QuanLyKhoaHoc\\WebCourseManagement_Repositories\\WebCourseManagement_Repositories.csproj": {
+                "projectPath": "C:\\Users\\quang\\Source\\Repos\\QuanLyKhoaHoc\\WebCourseManagement_Repositories\\WebCourseManagement_Repositories.csproj"
               }
             }
           }
@@ -41,11 +41,6 @@
           "warnAsError": [
             "NU1605"
           ]
-        },
-        "restoreAuditProperties": {
-          "enableAudit": "true",
-          "auditLevel": "low",
-          "auditMode": "direct"
         }
       },
       "frameworks": {
@@ -108,40 +103,26 @@
           ],
           "assetTargetFallback": true,
           "warn": true,
-          "downloadDependencies": [
-            {
-              "name": "Microsoft.AspNetCore.App.Ref",
-              "version": "[6.0.27, 6.0.27]"
-            },
-            {
-              "name": "Microsoft.NETCore.App.Ref",
-              "version": "[6.0.27, 6.0.27]"
-            },
-            {
-              "name": "Microsoft.WindowsDesktop.App.Ref",
-              "version": "[6.0.27, 6.0.27]"
-            }
-          ],
           "frameworkReferences": {
             "Microsoft.NETCore.App": {
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\8.0.200\\RuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\8.0.101\\RuntimeIdentifierGraph.json"
         }
       }
     },
-    "C:\\Users\\viett\\Source\\Repos\\QuanLyKhoaHoc\\WebCourseManagement_Commons\\WebCourseManagement_Commons.csproj": {
+    "C:\\Users\\quang\\Source\\Repos\\QuanLyKhoaHoc\\WebCourseManagement_Commons\\WebCourseManagement_Commons.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\viett\\Source\\Repos\\QuanLyKhoaHoc\\WebCourseManagement_Commons\\WebCourseManagement_Commons.csproj",
+        "projectUniqueName": "C:\\Users\\quang\\Source\\Repos\\QuanLyKhoaHoc\\WebCourseManagement_Commons\\WebCourseManagement_Commons.csproj",
         "projectName": "WebCourseManagement_Commons",
-        "projectPath": "C:\\Users\\viett\\Source\\Repos\\QuanLyKhoaHoc\\WebCourseManagement_Commons\\WebCourseManagement_Commons.csproj",
-        "packagesPath": "C:\\Users\\viett\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\viett\\Source\\Repos\\QuanLyKhoaHoc\\WebCourseManagement_Commons\\obj\\",
+        "projectPath": "C:\\Users\\quang\\Source\\Repos\\QuanLyKhoaHoc\\WebCourseManagement_Commons\\WebCourseManagement_Commons.csproj",
+        "packagesPath": "C:\\Users\\quang\\.nuget\\packages\\",
+        "outputPath": "C:\\Users\\quang\\Source\\Repos\\QuanLyKhoaHoc\\WebCourseManagement_Commons\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
-          "C:\\Users\\viett\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Users\\quang\\AppData\\Roaming\\NuGet\\NuGet.Config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
         ],
         "originalTargetFrameworks": [
@@ -161,11 +142,6 @@
           "warnAsError": [
             "NU1605"
           ]
-        },
-        "restoreAuditProperties": {
-          "enableAudit": "true",
-          "auditLevel": "low",
-          "auditMode": "direct"
         }
       },
       "frameworks": {
@@ -192,40 +168,26 @@
           ],
           "assetTargetFallback": true,
           "warn": true,
-          "downloadDependencies": [
-            {
-              "name": "Microsoft.AspNetCore.App.Ref",
-              "version": "[6.0.27, 6.0.27]"
-            },
-            {
-              "name": "Microsoft.NETCore.App.Ref",
-              "version": "[6.0.27, 6.0.27]"
-            },
-            {
-              "name": "Microsoft.WindowsDesktop.App.Ref",
-              "version": "[6.0.27, 6.0.27]"
-            }
-          ],
           "frameworkReferences": {
             "Microsoft.NETCore.App": {
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\8.0.200\\RuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\8.0.101\\RuntimeIdentifierGraph.json"
         }
       }
     },
-    "C:\\Users\\viett\\Source\\Repos\\QuanLyKhoaHoc\\WebCourseManagement_Models\\WebCourseManagement_Models.csproj": {
+    "C:\\Users\\quang\\Source\\Repos\\QuanLyKhoaHoc\\WebCourseManagement_Models\\WebCourseManagement_Models.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\viett\\Source\\Repos\\QuanLyKhoaHoc\\WebCourseManagement_Models\\WebCourseManagement_Models.csproj",
+        "projectUniqueName": "C:\\Users\\quang\\Source\\Repos\\QuanLyKhoaHoc\\WebCourseManagement_Models\\WebCourseManagement_Models.csproj",
         "projectName": "WebCourseManagement_Models",
-        "projectPath": "C:\\Users\\viett\\Source\\Repos\\QuanLyKhoaHoc\\WebCourseManagement_Models\\WebCourseManagement_Models.csproj",
-        "packagesPath": "C:\\Users\\viett\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\viett\\Source\\Repos\\QuanLyKhoaHoc\\WebCourseManagement_Models\\obj\\",
+        "projectPath": "C:\\Users\\quang\\Source\\Repos\\QuanLyKhoaHoc\\WebCourseManagement_Models\\WebCourseManagement_Models.csproj",
+        "packagesPath": "C:\\Users\\quang\\.nuget\\packages\\",
+        "outputPath": "C:\\Users\\quang\\Source\\Repos\\QuanLyKhoaHoc\\WebCourseManagement_Models\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
-          "C:\\Users\\viett\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Users\\quang\\AppData\\Roaming\\NuGet\\NuGet.Config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
         ],
         "originalTargetFrameworks": [
@@ -239,8 +201,8 @@
           "net6.0": {
             "targetAlias": "net6.0",
             "projectReferences": {
-              "C:\\Users\\viett\\Source\\Repos\\QuanLyKhoaHoc\\WebCourseManagement_Commons\\WebCourseManagement_Commons.csproj": {
-                "projectPath": "C:\\Users\\viett\\Source\\Repos\\QuanLyKhoaHoc\\WebCourseManagement_Commons\\WebCourseManagement_Commons.csproj"
+              "C:\\Users\\quang\\Source\\Repos\\QuanLyKhoaHoc\\WebCourseManagement_Commons\\WebCourseManagement_Commons.csproj": {
+                "projectPath": "C:\\Users\\quang\\Source\\Repos\\QuanLyKhoaHoc\\WebCourseManagement_Commons\\WebCourseManagement_Commons.csproj"
               }
             }
           }
@@ -249,11 +211,6 @@
           "warnAsError": [
             "NU1605"
           ]
-        },
-        "restoreAuditProperties": {
-          "enableAudit": "true",
-          "auditLevel": "low",
-          "auditMode": "direct"
         }
       },
       "frameworks": {
@@ -296,40 +253,26 @@
           ],
           "assetTargetFallback": true,
           "warn": true,
-          "downloadDependencies": [
-            {
-              "name": "Microsoft.AspNetCore.App.Ref",
-              "version": "[6.0.27, 6.0.27]"
-            },
-            {
-              "name": "Microsoft.NETCore.App.Ref",
-              "version": "[6.0.27, 6.0.27]"
-            },
-            {
-              "name": "Microsoft.WindowsDesktop.App.Ref",
-              "version": "[6.0.27, 6.0.27]"
-            }
-          ],
           "frameworkReferences": {
             "Microsoft.NETCore.App": {
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\8.0.200\\RuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\8.0.101\\RuntimeIdentifierGraph.json"
         }
       }
     },
-    "C:\\Users\\viett\\Source\\Repos\\QuanLyKhoaHoc\\WebCourseManagement_Repositories\\WebCourseManagement_Repositories.csproj": {
+    "C:\\Users\\quang\\Source\\Repos\\QuanLyKhoaHoc\\WebCourseManagement_Repositories\\WebCourseManagement_Repositories.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\viett\\Source\\Repos\\QuanLyKhoaHoc\\WebCourseManagement_Repositories\\WebCourseManagement_Repositories.csproj",
+        "projectUniqueName": "C:\\Users\\quang\\Source\\Repos\\QuanLyKhoaHoc\\WebCourseManagement_Repositories\\WebCourseManagement_Repositories.csproj",
         "projectName": "WebCourseManagement_Repositories",
-        "projectPath": "C:\\Users\\viett\\Source\\Repos\\QuanLyKhoaHoc\\WebCourseManagement_Repositories\\WebCourseManagement_Repositories.csproj",
-        "packagesPath": "C:\\Users\\viett\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\viett\\Source\\Repos\\QuanLyKhoaHoc\\WebCourseManagement_Repositories\\obj\\",
+        "projectPath": "C:\\Users\\quang\\Source\\Repos\\QuanLyKhoaHoc\\WebCourseManagement_Repositories\\WebCourseManagement_Repositories.csproj",
+        "packagesPath": "C:\\Users\\quang\\.nuget\\packages\\",
+        "outputPath": "C:\\Users\\quang\\Source\\Repos\\QuanLyKhoaHoc\\WebCourseManagement_Repositories\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
-          "C:\\Users\\viett\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Users\\quang\\AppData\\Roaming\\NuGet\\NuGet.Config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
         ],
         "originalTargetFrameworks": [
@@ -343,11 +286,11 @@
           "net6.0": {
             "targetAlias": "net6.0",
             "projectReferences": {
-              "C:\\Users\\viett\\Source\\Repos\\QuanLyKhoaHoc\\WebCourseManagement_Commons\\WebCourseManagement_Commons.csproj": {
-                "projectPath": "C:\\Users\\viett\\Source\\Repos\\QuanLyKhoaHoc\\WebCourseManagement_Commons\\WebCourseManagement_Commons.csproj"
+              "C:\\Users\\quang\\Source\\Repos\\QuanLyKhoaHoc\\WebCourseManagement_Commons\\WebCourseManagement_Commons.csproj": {
+                "projectPath": "C:\\Users\\quang\\Source\\Repos\\QuanLyKhoaHoc\\WebCourseManagement_Commons\\WebCourseManagement_Commons.csproj"
               },
-              "C:\\Users\\viett\\Source\\Repos\\QuanLyKhoaHoc\\WebCourseManagement_Models\\WebCourseManagement_Models.csproj": {
-                "projectPath": "C:\\Users\\viett\\Source\\Repos\\QuanLyKhoaHoc\\WebCourseManagement_Models\\WebCourseManagement_Models.csproj"
+              "C:\\Users\\quang\\Source\\Repos\\QuanLyKhoaHoc\\WebCourseManagement_Models\\WebCourseManagement_Models.csproj": {
+                "projectPath": "C:\\Users\\quang\\Source\\Repos\\QuanLyKhoaHoc\\WebCourseManagement_Models\\WebCourseManagement_Models.csproj"
               }
             }
           }
@@ -356,11 +299,6 @@
           "warnAsError": [
             "NU1605"
           ]
-        },
-        "restoreAuditProperties": {
-          "enableAudit": "true",
-          "auditLevel": "low",
-          "auditMode": "direct"
         }
       },
       "frameworks": {
@@ -411,26 +349,12 @@
           ],
           "assetTargetFallback": true,
           "warn": true,
-          "downloadDependencies": [
-            {
-              "name": "Microsoft.AspNetCore.App.Ref",
-              "version": "[6.0.27, 6.0.27]"
-            },
-            {
-              "name": "Microsoft.NETCore.App.Ref",
-              "version": "[6.0.27, 6.0.27]"
-            },
-            {
-              "name": "Microsoft.WindowsDesktop.App.Ref",
-              "version": "[6.0.27, 6.0.27]"
-            }
-          ],
           "frameworkReferences": {
             "Microsoft.NETCore.App": {
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\8.0.200\\RuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\8.0.101\\RuntimeIdentifierGraph.json"
         }
       }
     }

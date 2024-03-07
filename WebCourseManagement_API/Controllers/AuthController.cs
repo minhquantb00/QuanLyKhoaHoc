@@ -1,4 +1,6 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using WebCourseManagement_Business.Interfaces;
 using WebCourseManagement_Models.RequestModels.AuthRequests;
@@ -75,6 +77,27 @@ namespace WebCourseManagement_API.Controllers
                 default:
                     return StatusCode(500, result);
             }
+        }
+
+        [HttpPut("DoiMatKhau")]
+        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
+        public async Task<IActionResult> DoiMatKhau([FromBody] Request_DoiMatKhau request)
+        {
+            int id = int.Parse(HttpContext.User.FindFirst("Id").Value);
+            var result = await _authService.DoiMatKhau(id, request);
+            return Ok(result);
+        }
+
+        [HttpPost("XacNhanQuenMatKhau")]
+        public async Task<IActionResult> XacNhanQuenMatKhau([FromBody] Request_XacNhanQuenMatKhau request)
+        {
+            var result = await _authService.XacNhanQuenMatKhau(request);
+            return Ok(result);
+        }
+        [HttpPut("TaoMatKhauMoi")]
+        public async Task<IActionResult> TaoMatKhauMoi([FromBody] Request_TaoMatKhauMoi request)
+        {
+            return Ok(await _authService.TaoMatKhauMoi(request));
         }
     }
 }

@@ -225,42 +225,146 @@ namespace WebCourseManagement_Business.Implements
             return _responseTokenObject.ResponseSuccess("Đăng nhập thành công", GenerateAccessToken(nguoiDung));
         }
         #endregion
-        public Task<string> DoiMatKhau(Request_DoiMatKhau request)
-        {
-            throw new NotImplementedException();
-        }
-
-        public Task<ResponseObject<DataResponseToken>> RenewAccessToken(Request_RenewToken request)
-        {
-            throw new NotImplementedException();
-        }
-
-        public Task<string> TaoMatKhauMoi(Request_TaoMatKhauMoi request)
-        {
-            throw new NotImplementedException();
-        }
-
+        #region Chức năng xác thực đăng ký tài khoản
         public async Task<ResponseObject<DataResponseNguoiDung>> XacNhanDangKyTaiKhoan(Request_XacNhanDangKyTaiKhoan request)
         {
             var confirmEmail = await _context.xacNhanEmails.SingleOrDefaultAsync(x => x.MaXacNhan.Equals(request.MaXacNhan));
-            if(confirmEmail == null)
+            if (confirmEmail == null)
             {
                 return _responseObject.ResponseError(StatusCodes.Status404NotFound, "Mã xác nhận không chính xác", null);
             }
             var nguoiDung = await _context.nguoiDungs.SingleOrDefaultAsync(x => x.Id == confirmEmail.NguoiDungId);
-            if(confirmEmail.ThoiGianHetHan < DateTime.Now)
+            if (confirmEmail.ThoiGianHetHan < DateTime.Now)
             {
                 return _responseObject.ResponseError(StatusCodes.Status400BadRequest, "Mã xác nhận đã hết hạn", null);
             }
             nguoiDung.TrangThaiNguoiDungId = 2;
-             _context.SaveChanges();
+            confirmEmail.DaXacNhan = true;
+            _context.SaveChanges();
 
             return _responseObject.ResponseSuccess("Kích hoạt tài khoản thành công", _converter.EntityToDTO(nguoiDung));
         }
-
-        public Task<string> XacNhanQuenMatKhau(Request_XacNhanQuenMatKhau request)
+        #endregion
+        #region Chức năng đổi mật khẩu
+        public async Task<string> DoiMatKhau(int nguoiDungId, Request_DoiMatKhau request)
         {
-            throw new NotImplementedException();
+            var nguoiDung = await _context.nguoiDungs.SingleOrDefaultAsync(x => x.Id == nguoiDungId);
+            if (!BcryptNet.Verify(request.MatKhauCu, nguoiDung.MatKhau))
+            {
+                return "Mật khẩu không chính xác";
+            }
+            if (BcryptNet.Verify(request.MatKhauMoi, nguoiDung.MatKhau))
+            {
+                return "Bạn đã đặt mật khẩu này trước đó! Vui lòng đặt mật khẩu khác";
+            }
+            if(!request.MatKhauMoi.Equals(request.XacNhanMatKhauMoi))
+            {
+                return "Mật khẩu không trùng khớp";
+            }
+            nguoiDung.MatKhau = BcryptNet.HashPassword(request.MatKhauMoi);
+            _context.SaveChanges();
+            return "Đổi mật khẩu thành công";
         }
+        #endregion
+        #region Chức năng RenewAccessToken
+        public ResponseObject<DataResponseToken> RenewAccessToken(Request_RenewToken request)
+        {
+            try
+            {
+                var jwtTokenHandler = new JwtSecurityTokenHandler();
+                var secretKey = _configuration.GetSection("AppSettings:SecretKey").Value;
+
+                var tokenValidation = new TokenValidationParameters
+                {
+                    ValidateIssuerSigningKey = true,
+                    ValidateAudience = false,
+                    ValidateIssuer = false,
+                    IssuerSigningKey = new SymmetricSecurityKey(System.Text.Encoding.UTF8.GetBytes(secretKey))
+                };
+
+                var tokenAuthentication = jwtTokenHandler.ValidateToken(request.AccessToken, tokenValidation, out var validatedToken);
+                if (!(validatedToken is JwtSecurityToken jwtSecurityToken) || jwtSecurityToken.Header.Alg != SecurityAlgorithms.HmacSha256)
+                {
+                    return _responseTokenObject.ResponseError(StatusCodes.Status400BadRequest, "Token không hợp lệ", null);
+                }
+                var refreshToken = _context.refreshTokens.SingleOrDefault(x => x.Token.Equals(request.RefreshToken));
+                if (refreshToken == null)
+                {
+                    return _responseTokenObject.ResponseError(StatusCodes.Status404NotFound, "RefreshToken không tồn tại trong database", null);
+                }
+                if (refreshToken.ThoiGianHetHan < DateTime.Now)
+                {
+                    return _responseTokenObject.ResponseError(StatusCodes.Status401Unauthorized, "RefreshToken đã hết hạn", null);
+                }
+                var user = _context.nguoiDungs.SingleOrDefault(x => x.Id == refreshToken.NguoiDungId);
+                if (user == null)
+                {
+                    return _responseTokenObject.ResponseError(StatusCodes.Status404NotFound, "Người dùng không tồn tại", null);
+                }
+                var newToken = GenerateAccessToken(user);
+                return _responseTokenObject.ResponseSuccess("Token đã được làm mới thành công", newToken);
+            }
+            catch (SecurityTokenValidationException ex)
+            {
+                return _responseTokenObject.ResponseError(StatusCodes.Status400BadRequest, "Lỗi xác thực token: " + ex.Message, null);
+            }
+            catch (Exception ex)
+            {
+                return _responseTokenObject.ResponseError(StatusCodes.Status500InternalServerError, "Lỗi không xác định: " + ex.Message, null);
+            }
+        }
+        #endregion
+        #region Chức năng xác nhận quên mật khẩu
+        public async Task<string> XacNhanQuenMatKhau(Request_XacNhanQuenMatKhau request)
+        {
+            var nguoiDung = await _context.nguoiDungs.SingleOrDefaultAsync(x => x.Email.Equals(request.Email));
+            if(nguoiDung == null)
+            {
+                return "Người dùng không tồn tại";
+            }
+            var xacNhanEmailList = _context.xacNhanEmails.Where(x => x.NguoiDungId == nguoiDung.Id).ToList();
+            _context.xacNhanEmails.RemoveRange(xacNhanEmailList);
+            _context.SaveChanges();
+            XacNhanEmail xacNhanEmail = new XacNhanEmail
+            {
+                DaXacNhan = false,
+                MaXacNhan = "MyBugs_" + GenerateCodeActive(),
+                NguoiDungId = nguoiDung.Id,
+                ThoiGianHetHan = DateTime.Now.AddMinutes(15)
+            };
+            _context.xacNhanEmails.Add(xacNhanEmail);
+            _context.SaveChanges();
+            string message = SendEmail(new EmailTo
+            {
+                To = nguoiDung.Email,
+                Subject = "Nhận mã xác nhận để tạo mật khẩu mới tại đây: ",
+                Content = $"Mã xác nhận của bạn là: {xacNhanEmail.MaXacNhan}"
+            });
+            return "Mã xác nhận đã gửi về email của bạn! Vui lòng kiểm tra email";
+        }
+        #endregion
+        #region Chức năng tạo mật khẩu mới
+        public async Task<string> TaoMatKhauMoi(Request_TaoMatKhauMoi request)
+        {
+            var xacNhanEmail = await _context.xacNhanEmails.SingleOrDefaultAsync(x => x.MaXacNhan.Equals(request.MaXacNhan));
+            if(xacNhanEmail == null)
+            {
+                return "Mã xác nhận không chính xác";
+            }
+            var nguoiDung = await _context.nguoiDungs.SingleOrDefaultAsync(x => x.Id == xacNhanEmail.NguoiDungId);
+            if (BcryptNet.Verify(request.MatKhauMoi, nguoiDung.MatKhau))
+            {
+                return "Mật khẩu đã được sử dụng trước đó";
+            }
+            if (!request.MatKhauMoi.Equals(request.XacNhanMatKhauMoi))
+            {
+                return "Mật khẩu không trùng khớp";
+            }
+            nguoiDung.MatKhau = BcryptNet.HashPassword(request.MatKhauMoi);
+            xacNhanEmail.DaXacNhan = true;
+            _context.SaveChanges();
+            return "Tạo mật khẩu mới thành công";
+        }
+        #endregion
     }
 }

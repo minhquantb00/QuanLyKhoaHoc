@@ -16,7 +16,7 @@ namespace WebCourseManagement_Business.Interfaces
         Task<ResponseObject<DataResponseNguoiDung>> XacNhanDangKyTaiKhoan(Request_XacNhanDangKyTaiKhoan request);
         Task<string> XacNhanQuenMatKhau(Request_XacNhanQuenMatKhau request);
         Task<string> TaoMatKhauMoi(Request_TaoMatKhauMoi request);
-        Task<string> DoiMatKhau(Request_DoiMatKhau request);
-        Task<ResponseObject<DataResponseToken>> RenewAccessToken(Request_RenewToken request);
+        Task<string> DoiMatKhau(int nguoiDungId, Request_DoiMatKhau request);
+        ResponseObject<DataResponseToken> RenewAccessToken(Request_RenewToken request);
     }
 }
