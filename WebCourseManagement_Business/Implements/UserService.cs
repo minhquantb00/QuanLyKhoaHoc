@@ -38,18 +38,21 @@ namespace WebCourseManagement_Business.Implements
             var xaPhuong = _context.xaPhuongs.SingleOrDefault(x => x.Id == request.XaPhuongId);
             var quanHuyen = _context.quanHuyens.SingleOrDefault(x => x.Id == request.QuanHuyenId);
             var tinhThanh = _context.tinhThanhs.SingleOrDefault(x => x.Id == request.TinhThanhId);
-            if (xaPhuong == null
-               || quanHuyen == null
-               || tinhThanh == null)
-            {
-                return _responseObject.ResponseError(StatusCodes.Status404NotFound, "Kiểm tra lại thông tin xã phường, quận huyện, tỉnh thành", null);
-            }
-            nguoiDung.AnhDaiDien = await HandleUploadImage.UpdateFile(nguoiDung.AnhDaiDien, request.AnhDaiDien);
+            nguoiDung.AnhDaiDien = await HandleUploadImage.Upfile(request.AnhDaiDien);
             nguoiDung.SoDienThoai = request.SoDienThoai;
-            nguoiDung.XaPhuongId = request.XaPhuongId;
-            nguoiDung.QuanHuyenId = request.QuanHuyenId;
-            nguoiDung.TinhThanhId = request.TinhThanhId;
-            nguoiDung.DiaChi = xaPhuong.TenXaPhuong + " - " + quanHuyen.TenQuanHuyen + " - " + tinhThanh.TenTinhThanh;
+            if(request.XaPhuongId.HasValue)
+            {
+                nguoiDung.XaPhuongId = request.XaPhuongId;
+            }
+            if (request.QuanHuyenId.HasValue)
+            {
+                nguoiDung.QuanHuyenId = request.QuanHuyenId;
+            }
+            if(request.TinhThanhId.HasValue)
+            {
+                nguoiDung.TinhThanhId = request.TinhThanhId;
+            }
+            nguoiDung.DiaChi = xaPhuong?.TenXaPhuong + " - " + quanHuyen?.TenQuanHuyen + " - " + tinhThanh?.TenTinhThanh ?? "";
             nguoiDung.HoVaTen = request.HoVaTen;
             nguoiDung.Email = request.Email;
             nguoiDung.GioiTinh = request.GioiTinh;
@@ -59,20 +62,20 @@ namespace WebCourseManagement_Business.Implements
 
         public async Task<PageResult<DataResponseNguoiDung>> GetAlls(int pageSize, int pageNumber)
         {
-            var query = _context.nguoiDungs.AsQueryable();
+            var query = _context.nguoiDungs.Where(x => x.IsActive == true && x.TrangThaiNguoiDungId == 2 && x.DaKhoa == false).AsQueryable();
             var result = Pagination.GetPagedData(query.Select(x => _converter.EntityToDTO(x)), pageSize, pageNumber);
             return result;
         }
 
         public async Task<ResponseObject<DataResponseNguoiDung>> GetNguoiDungById(int id)
         {
-            var nguoiDung = await _context.nguoiDungs.SingleOrDefaultAsync(x => x.Id == id);
+            var nguoiDung = await _context.nguoiDungs.SingleOrDefaultAsync(x => x.Id == id && x.IsActive == true && x.TrangThaiNguoiDungId == 2 && x.DaKhoa == false);
             return _responseObject.ResponseSuccess("Lấy thông tin người dùng thành công", _converter.EntityToDTO(nguoiDung));
         }
 
         public async Task<string> KhoaTaiKhoanNguoiDung(int id)
         {
-            var nguoiDung = await _context.nguoiDungs.SingleOrDefaultAsync(x => x.Id == id);
+            var nguoiDung = await _context.nguoiDungs.SingleOrDefaultAsync(x => x.Id == id && x.IsActive == true && x.DaKhoa == false && x.TrangThaiNguoiDungId == 2);
             var currentUser = _httpContextAccessor.HttpContext.User;
             var userId = currentUser.FindFirst("Id").Value;
             if (!currentUser.Identity.IsAuthenticated)
@@ -121,7 +124,7 @@ namespace WebCourseManagement_Business.Implements
 
         public async Task<string> NguoiDungXoaTaiKhoan(int id)
         {
-            var nguoiDung = await _context.nguoiDungs.SingleOrDefaultAsync(x => x.Id == id);
+            var nguoiDung = await _context.nguoiDungs.SingleOrDefaultAsync(x => x.Id == id && x.IsActive == true && x.TrangThaiNguoiDungId == 2 && x.DaKhoa == false);
             nguoiDung.IsActive = false;
             _context.SaveChanges();
             return "Bạn đã xóa tài khoản thành công";
