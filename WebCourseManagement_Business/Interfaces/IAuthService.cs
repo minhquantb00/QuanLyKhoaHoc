@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using WebCourseManagement_Models.RequestModels.AuthRequests;
 using WebCourseManagement_Models.ResponseModels.DataNguoiDung;
 using WebCourseManagement_Models.Responses;
+using WebCourseManagement_Repositories;
 
 namespace WebCourseManagement_Business.Interfaces
 {
@@ -18,5 +19,6 @@ namespace WebCourseManagement_Business.Interfaces
         Task<string> TaoMatKhauMoi(Request_TaoMatKhauMoi request);
         Task<string> DoiMatKhau(int nguoiDungId, Request_DoiMatKhau request);
         ResponseObject<DataResponseToken> RenewAccessToken(Request_RenewToken request);
+        string SendEmail(EmailTo emailTo);
     }
 }
