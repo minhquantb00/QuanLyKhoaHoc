@@ -17,7 +17,7 @@ namespace WebCourseManagement_Models.Entities
         public string GiaiThich { get; set; }
         public string GoiY { get; set; }
         public int BaiHocId { get; set; }
-        public virtual BaiHoc BaiHoc { get; set; }
+        public virtual BaiHoc? BaiHoc { get; set; }
         public bool? HoTroDaNgonNgu { get; set; }
         public int NgonNguMacDinhId { get; set; }
         public virtual NgonNgu NgonNguMacDinh { get; set; }

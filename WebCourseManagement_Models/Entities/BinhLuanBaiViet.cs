@@ -9,9 +9,9 @@ namespace WebCourseManagement_Models.Entities
     public class BinhLuanBaiViet : BaseEntity
     {
         public int BaiVietId { get; set; }
-        public virtual BaiViet BaiViet { get; set; }
+        public virtual BaiViet? BaiViet { get; set; }
         public int NguoiBinhLuanId { get; set; }
-        public virtual NguoiDung NguoiBinhLuan { get; set; }
+        public virtual NguoiDung? NguoiBinhLuan { get; set; }
         public string NoiDungBinhLuan { get; set; }
         public string DuongDanAnhBinhLuan { get; set; }
         public int? BinhLuanGocId { get; set; }
@@ -21,8 +21,8 @@ namespace WebCourseManagement_Models.Entities
         public DateTime? ThoiGianCapNhat { get; set; }
         public DateTime? ThoiGianXoa { get; set; }
         public int TrangThaiBinhLuanId { get; set; }
-        public virtual TrangThaiBinhLuan TrangThaiBinhLuan { get; set; }
+        public virtual TrangThaiBinhLuan? TrangThaiBinhLuan { get; set; }
         public bool IsActive { get; set; }
-        public virtual ICollection<NguoiDungThichBinhLuanBaiViet> NguoiDungThichBinhLuanBaiViets { get; set; } 
+        public virtual ICollection<NguoiDungThichBinhLuanBaiViet>? NguoiDungThichBinhLuanBaiViets { get; set; } 
     }
 }

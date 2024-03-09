@@ -19,8 +19,8 @@ namespace WebCourseManagement_Models.Entities
         public int TrangThaiBaiHocId { get; set; }
         public virtual TrangThaiBaiHoc? TrangThaiBaiHoc { get; set; }
         public virtual ICollection<DatCauHoi>? DatCauHois { get; set; }
-        public virtual ICollection<KhoaHocCuaNguoiDung> KhoaHocCuaNguoiDungs { get; set; }
-        public virtual ICollection<BinhLuanBaiHoc> BinhLuanBaiHocs { get; set; }
-        public virtual ICollection<ThucHanh> ThucHanhs { get; set; }
+        public virtual ICollection<KhoaHocCuaNguoiDung>? KhoaHocCuaNguoiDungs { get; set; }
+        public virtual ICollection<BinhLuanBaiHoc>? BinhLuanBaiHocs { get; set; }
+        public virtual ICollection<ThucHanh>? ThucHanhs { get; set; }
     }
 }

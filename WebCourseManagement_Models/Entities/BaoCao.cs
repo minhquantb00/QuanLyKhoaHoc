@@ -19,7 +19,7 @@ namespace WebCourseManagement_Models.Entities
         public int LoaiBaoCaoId { get; set; }
         public int BinhLuanId { get; set; }
         public Enums.LoaiComment LoaiBinhLuan { get; set; }
-        public virtual NguoiDung NguoiGuiBaoCao { get; set; }
-        public virtual LoaiBaoCao LoaiBaoCao { get; set; }
+        public virtual NguoiDung? NguoiGuiBaoCao { get; set; }
+        public virtual LoaiBaoCao? LoaiBaoCao { get; set; }
     }
 }

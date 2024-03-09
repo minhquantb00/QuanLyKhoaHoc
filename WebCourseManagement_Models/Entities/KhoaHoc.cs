@@ -19,10 +19,10 @@ namespace WebCourseManagement_Models.Entities
         public int SoHocVienDaHoanThanh { get; set; }
         public int NguoiTaoId { get; set; }
         public int LoaiKhoaHocId { get; set; }
-        public virtual LoaiKhoaHoc LoaiKhoaHoc { get; set; }
+        public virtual LoaiKhoaHoc? LoaiKhoaHoc { get; set; }
         public bool IsActive { get; set; }
         public bool? DaXoa { get; set; }
-        public virtual ICollection<ChuongHoc> ChuongHocs { get; set; }
-        public virtual ICollection<KhoaHocCuaNguoiDung> KhoaHocCuaNguoiDungs { get; set; }
+        public virtual ICollection<ChuongHoc>? ChuongHocs { get; set; }
+        public virtual ICollection<KhoaHocCuaNguoiDung>? KhoaHocCuaNguoiDungs { get; set; }
     }
 }

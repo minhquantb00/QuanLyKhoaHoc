@@ -4,8 +4,10 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using WebCourseManagement_Business.Interfaces;
 using WebCourseManagement_Models.RequestModels.NguoiDungRequests;
+using WebCourseManagement_Models.ResponseModels.DataLoaiKhoaHoc;
 using WebCourseManagement_Models.ResponseModels.DataNguoiDung;
 using WebCourseManagement_Models.Responses;
+using WebCourseManagement_Repositories.HandlePagination;
 
 namespace WebCourseManagement_API.Controllers
 {
@@ -14,12 +16,14 @@ namespace WebCourseManagement_API.Controllers
     public class UserController : ControllerBase
     {
         private readonly IUserService _userService;
-        public UserController(IUserService userService)
+        private readonly ILoaiKhoaHocService _loaiKhoaHocService;
+        public UserController(IUserService userService, ILoaiKhoaHocService loaiKhoaHocService)
         {
             _userService = userService;
+            _loaiKhoaHocService = loaiKhoaHocService;
         }
-        [HttpGet("GetAlls")]
-        public async Task<IActionResult> GetAlls(int pageSize = 10, int pageNumber = 1)
+        [HttpGet("GetAllsNguoiDung")]
+        public async Task<IActionResult> GetAllsNguoiDung(int pageSize = 10, int pageNumber = 1)
         {
             return Ok(await _userService.GetAlls(pageSize, pageNumber));
         }
@@ -42,6 +46,11 @@ namespace WebCourseManagement_API.Controllers
         {
             int id = int.Parse(HttpContext.User.FindFirst("Id").Value);
             return Ok(await _userService.NguoiDungXoaTaiKhoan(id));
+        }
+        [HttpGet("GetAllsLoaiKhoaHoc")]
+        public async Task<IActionResult> GetAllsLoaiKhoaHoc(int pageSize = 10, int pageNumber = 1)
+        {
+            return Ok(await _loaiKhoaHocService.GetAlls(pageSize, pageNumber));
         }
     }
 }

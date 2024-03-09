@@ -9,9 +9,9 @@ namespace WebCourseManagement_Models.Entities
     public class CauTraLoi : BaseEntity
     {
         public int CauHoiId { get; set; }
-        public virtual DatCauHoi CauHoi { get; set; }
+        public virtual DatCauHoi? CauHoi { get; set; }
         public int NguoiTraLoiId { get; set; }
-        public virtual NguoiDung NguoiTraLoi { get; set; }
+        public virtual NguoiDung? NguoiTraLoi { get; set; }
         public string CauTraLoiChiTiet { get; set; }
         public DateTime ThoiGianTraLoi { get; set; }
     }

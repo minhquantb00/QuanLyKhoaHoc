@@ -9,6 +9,6 @@ namespace WebCourseManagement_Models.Entities
     public class LoaiKhoaHoc : BaseEntity
     {
         public string TenLoaiKhoaHoc { get; set; }
-        public virtual ICollection<KhoaHoc> KhoaHocs { get; set; }
+        public virtual ICollection<KhoaHoc>? KhoaHocs { get; set; }
     }
 }

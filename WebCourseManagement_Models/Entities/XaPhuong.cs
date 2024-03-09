@@ -10,7 +10,7 @@ namespace WebCourseManagement_Models.Entities
     {
         public string TenXaPhuong { get; set; }
         public int QuanHuyenId { get; set; }
-        public virtual QuanHuyen QuanHuyen { get; set; }
-        public virtual ICollection<NguoiDung> NguoiDungs { get; set; }
+        public virtual QuanHuyen? QuanHuyen { get; set; }
+        public virtual ICollection<NguoiDung>? NguoiDungs { get; set; }
     }
 }

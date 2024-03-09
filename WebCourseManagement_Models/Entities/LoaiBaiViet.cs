@@ -9,6 +9,6 @@ namespace WebCourseManagement_Models.Entities
     public class LoaiBaiViet : BaseEntity
     {
         public string TenLoaiBaiViet { get; set; }
-        public virtual ICollection<BaiViet> BaiViets { get; set; }
+        public virtual ICollection<BaiViet>? BaiViets { get; set; }
     }
 }

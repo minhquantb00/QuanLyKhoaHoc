@@ -20,8 +20,8 @@ namespace WebCourseManagement_Models.Entities
         public DateTime? ThoiGianCapNhat { get; set; }
         public DateTime? ThoiGianXoa { get; set; }
         public int TrangThaiBinhLuanId { get; set; }
-        public virtual TrangThaiBinhLuan TrangThaiBinhLuan { get; set; }
+        public virtual TrangThaiBinhLuan? TrangThaiBinhLuan { get; set; }
         public bool IsActive { get; set; }
-        public virtual ICollection<NguoiDungThichBinhLuanBaiHoc> NguoiDungThichBinhLuanBaiHocs { get; set; }
+        public virtual ICollection<NguoiDungThichBinhLuanBaiHoc>? NguoiDungThichBinhLuanBaiHocs { get; set; }
     }
 }
