@@ -1,9 +1,14 @@
-﻿using System;
+﻿using Microsoft.AspNetCore.Http;
+using Microsoft.EntityFrameworkCore;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using WebCourseManagement_Business.Interfaces;
+using WebCourseManagement_Models.Converters;
+using WebCourseManagement_Models.DataContexts;
+using WebCourseManagement_Models.Entities;
 using WebCourseManagement_Models.RequestModels.ChuongHocRequests;
 using WebCourseManagement_Models.ResponseModels.DataChuongHoc;
 using WebCourseManagement_Models.Responses;
@@ -13,29 +18,93 @@ namespace WebCourseManagement_Business.Implements
 {
     public class ChuongHocService : IChuongHocService
     {
-        public Task<PageResult<DataResponseChuongHoc>> GetAlls(int pageSize, int pageNumber)
+        private readonly AppDbContext _context;
+        private readonly ChuongHocConverter _converter;
+        private readonly ResponseObject<DataResponseChuongHoc> _responseObject;
+        private readonly IHttpContextAccessor _httpContextAccessor;
+        public ChuongHocService(AppDbContext context, ChuongHocConverter converter, ResponseObject<DataResponseChuongHoc> responseObject, IHttpContextAccessor httpContextAccessor)
         {
-            throw new NotImplementedException();
+            _context = context;
+            _converter = converter;
+            _responseObject = responseObject;
+            _httpContextAccessor = httpContextAccessor;
+        }
+        public async Task<PageResult<DataResponseChuongHoc>> GetAlls(int pageSize, int pageNumber)
+        {
+            var query = _context.chuongHocs.Select(x => _converter.EntityToDTO(x));
+            var result = Pagination.GetPagedData(query, pageSize, pageNumber);
+            return result;
         }
 
-        public Task<ResponseObject<DataResponseChuongHoc>> GetChuongHocById(int chuongHocId)
+        public async Task<ResponseObject<DataResponseChuongHoc>> GetChuongHocById(int chuongHocId)
         {
-            throw new NotImplementedException();
+            var chuongHoc = await _context.chuongHocs.SingleOrDefaultAsync(x => x.Id == chuongHocId);
+            return _responseObject.ResponseSuccess("Lấy dữ liệu thành công", _converter.EntityToDTO(chuongHoc));
         }
 
-        public Task<ResponseObject<DataResponseChuongHoc>> SuaThongTinChuongHoc(Request_SuaThongTinChuongHoc request)
+        public async Task<ResponseObject<DataResponseChuongHoc>> SuaThongTinChuongHoc(Request_SuaThongTinChuongHoc request)
         {
-            throw new NotImplementedException();
+            var currentUser = _httpContextAccessor.HttpContext.User;
+            var chuongHoc = await _context.chuongHocs.SingleOrDefaultAsync(x => x.Id == request.ChuongHocId);
+            var khoaHoc = chuongHoc.KhoaHoc;
+            var userId = currentUser.FindFirst("Id").Value;
+            if (!currentUser.Identity.IsAuthenticated)
+            {
+                return _responseObject.ResponseError(StatusCodes.Status401Unauthorized, "Người dùng chưa được xác thực", null);
+            }
+            if(khoaHoc.NguoiTaoId != int.Parse(userId))
+            {
+                return _responseObject.ResponseError(StatusCodes.Status403Forbidden, "Người dùng không có quyền thực hiện chức năng này", null);
+            }
+            chuongHoc.TenChuong = request.TenChuongHoc;
+            chuongHoc.ThoiGianCapNhat = DateTime.Now;
+            _context.SaveChanges();
+            return _responseObject.ResponseSuccess("Cập nhật thông tin chương học thành công", _converter.EntityToDTO(chuongHoc));
         }
 
-        public Task<ResponseObject<DataResponseChuongHoc>> ThemChuongHoc(Request_ThemChuongHoc request)
+        public async Task<ResponseObject<DataResponseChuongHoc>> ThemChuongHoc(Request_ThemChuongHoc request)
         {
-            throw new NotImplementedException();
+            var currentUser = _httpContextAccessor.HttpContext.User;
+            var khoaHoc = await _context.khoaHocs.SingleOrDefaultAsync(x => x.Id == request.KhoaHocId);
+            var userId = currentUser.FindFirst("Id").Value;
+            if (!currentUser.Identity.IsAuthenticated)
+            {
+                return _responseObject.ResponseError(StatusCodes.Status401Unauthorized, "Người dùng chưa được xác thực", null);
+            }
+            if (khoaHoc.NguoiTaoId != int.Parse(userId))
+            {
+                return _responseObject.ResponseError(StatusCodes.Status403Forbidden, "Người dùng không có quyền thực hiện chức năng này", null);
+            }
+            ChuongHoc chuongHoc = new ChuongHoc
+            {
+                KhoaHocId = request.KhoaHocId,
+                SoBaiHocTrongChuong = 0,
+                TenChuong = request.TenChuong,
+                ThoiGianTao = DateTime.Now,
+                TongThoiGianHocTrongChuong = 0,
+            };
+            _context.chuongHocs.Add(chuongHoc);
+            _context.SaveChanges();
+            return _responseObject.ResponseSuccess("Thêm chương học thành công", _converter.EntityToDTO(chuongHoc));
         }
 
-        public Task<string> XoaChuongHoc(int chuongHocId)
+        public async Task<string> XoaChuongHoc(int chuongHocId)
         {
-            throw new NotImplementedException();
+            var currentUser = _httpContextAccessor.HttpContext.User;
+            var chuongHoc = await _context.chuongHocs.SingleOrDefaultAsync(x => x.Id == chuongHocId);
+            var khoaHoc = chuongHoc.KhoaHoc;
+            var userId = currentUser.FindFirst("Id").Value;
+            if (!currentUser.Identity.IsAuthenticated)
+            {
+                return "Người dùng chưa được xác thực";
+            }
+            if (khoaHoc.NguoiTaoId != int.Parse(userId))
+            {
+                return "Người dùng không có quyền thực hiện chức năng này";
+            }
+            _context.chuongHocs.Remove(chuongHoc);
+            _context.SaveChanges();
+            return "Xóa chương học thành công";
         }
     }
 }

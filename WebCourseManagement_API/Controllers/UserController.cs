@@ -3,8 +3,10 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using WebCourseManagement_Business.Interfaces;
+using WebCourseManagement_Models.RequestModels.ChuongHocRequests;
 using WebCourseManagement_Models.RequestModels.KhoaHocRequests;
 using WebCourseManagement_Models.RequestModels.NguoiDungRequests;
+using WebCourseManagement_Models.ResponseModels.DataChuongHoc;
 using WebCourseManagement_Models.ResponseModels.DataKhoaHoc;
 using WebCourseManagement_Models.ResponseModels.DataLoaiKhoaHoc;
 using WebCourseManagement_Models.ResponseModels.DataNguoiDung;
@@ -20,11 +22,13 @@ namespace WebCourseManagement_API.Controllers
         private readonly IUserService _userService;
         private readonly ILoaiKhoaHocService _loaiKhoaHocService;
         private readonly IKhoaHocService _khoaHocService;
-        public UserController(IUserService userService, ILoaiKhoaHocService loaiKhoaHocService, IKhoaHocService khoaHocService)
+        private readonly IChuongHocService _chuongHocService;
+        public UserController(IUserService userService, ILoaiKhoaHocService loaiKhoaHocService, IKhoaHocService khoaHocService, IChuongHocService chuongHocService)
         {
             _userService = userService;
             _loaiKhoaHocService = loaiKhoaHocService;
             _khoaHocService = khoaHocService;
+            _chuongHocService = chuongHocService;
         }
         [HttpGet("GetAllsNguoiDung")]
         public async Task<IActionResult> GetAllsNguoiDung(int pageSize = 10, int pageNumber = 1)
@@ -85,6 +89,34 @@ namespace WebCourseManagement_API.Controllers
         public async Task<IActionResult> XoaKhoaHoc([FromRoute] int khoaHocId)
         {
             return Ok(await _khoaHocService.XoaKhoaHoc(khoaHocId));
+        }
+        [HttpDelete("XoaChuongHoc/{chuongHocId}")]
+        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
+        public async Task<IActionResult> XoaChuongHoc([FromRoute] int chuongHocId)
+        {
+            return Ok(await _chuongHocService.XoaChuongHoc(chuongHocId));
+        }
+        [HttpPost("ThemChuongHoc")]
+        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
+        public async Task<IActionResult> ThemChuongHoc([FromBody]Request_ThemChuongHoc request)
+        {
+            return Ok(await _chuongHocService.ThemChuongHoc(request));
+        }
+        [HttpPut("SuaThongTinChuongHoc")]
+        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
+        public async Task<IActionResult> SuaThongTinChuongHoc([FromBody] Request_SuaThongTinChuongHoc request)
+        {
+            return Ok(await _chuongHocService.SuaThongTinChuongHoc(request)); 
+        }
+        [HttpGet("GetChuongHocById/{chuongHocId}")]
+        public async Task<IActionResult> GetChuongHocById([FromRoute] int chuongHocId)
+        {
+            return Ok(await _chuongHocService.GetChuongHocById(chuongHocId));
+        }
+        [HttpGet("GetAlls")]
+        public async Task<IActionResult> GetAllsChuongHoc(int pageSize = 10, int pageNumber = 1)
+        {
+            return Ok(await _chuongHocService.GetAlls(pageSize, pageNumber));
         }
     }
 }

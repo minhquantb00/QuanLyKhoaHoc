@@ -10,6 +10,5 @@ namespace WebCourseManagement_Models.RequestModels.ChuongHocRequests
     {
         public int ChuongHocId { get; set; }
         public string TenChuongHoc {  get; set; }
-        public int KhoaHocId { get; set; }
     }
 }
