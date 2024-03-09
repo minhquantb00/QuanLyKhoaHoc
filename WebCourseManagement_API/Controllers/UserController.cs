@@ -3,7 +3,9 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using WebCourseManagement_Business.Interfaces;
+using WebCourseManagement_Models.RequestModels.KhoaHocRequests;
 using WebCourseManagement_Models.RequestModels.NguoiDungRequests;
+using WebCourseManagement_Models.ResponseModels.DataKhoaHoc;
 using WebCourseManagement_Models.ResponseModels.DataLoaiKhoaHoc;
 using WebCourseManagement_Models.ResponseModels.DataNguoiDung;
 using WebCourseManagement_Models.Responses;
@@ -17,10 +19,12 @@ namespace WebCourseManagement_API.Controllers
     {
         private readonly IUserService _userService;
         private readonly ILoaiKhoaHocService _loaiKhoaHocService;
-        public UserController(IUserService userService, ILoaiKhoaHocService loaiKhoaHocService)
+        private readonly IKhoaHocService _khoaHocService;
+        public UserController(IUserService userService, ILoaiKhoaHocService loaiKhoaHocService, IKhoaHocService khoaHocService)
         {
             _userService = userService;
             _loaiKhoaHocService = loaiKhoaHocService;
+            _khoaHocService = khoaHocService;
         }
         [HttpGet("GetAllsNguoiDung")]
         public async Task<IActionResult> GetAllsNguoiDung(int pageSize = 10, int pageNumber = 1)
@@ -51,6 +55,36 @@ namespace WebCourseManagement_API.Controllers
         public async Task<IActionResult> GetAllsLoaiKhoaHoc(int pageSize = 10, int pageNumber = 1)
         {
             return Ok(await _loaiKhoaHocService.GetAlls(pageSize, pageNumber));
+        }
+        [HttpGet("GetAllsKhoaHoc")]
+        public async Task<IActionResult> GetAllsKhoaHoc(int pageSize = 10, int pageNumber = 1)
+        {
+            return Ok(await _khoaHocService.GetAlls(pageSize, pageNumber));
+        }
+        [HttpGet("GetKhoaHocById/{khoaHocId}")]
+        public async Task<IActionResult> GetKhoaHocById([FromRoute] int khoaHocId)
+        {
+            return Ok(await _khoaHocService.GetKhoaHocById(khoaHocId));
+        }
+        [HttpPost("ThemKhoaHoc")]
+        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
+        public async Task<IActionResult> ThemKhoaHoc([FromForm] Request_ThemKhoaHoc request)
+        {
+            int id = int.Parse(HttpContext.User.FindFirst("Id").Value);
+            return Ok(await _khoaHocService.ThemKhoaHoc(id, request));
+        }
+        [HttpPost("SuaThongTinKhoaHoc")]
+        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
+        public async Task<IActionResult> SuaThongTinKhoaHoc([FromForm] Request_SuaThongTinKhoaHoc request)
+        {
+            int id = int.Parse(HttpContext.User.FindFirst("Id").Value);
+            return Ok(await _khoaHocService.SuaThongTinKhoaHoc(id, request));
+        }
+        [HttpGet("XoaKhoaHoc/{khoaHocId}")]
+        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
+        public async Task<IActionResult> XoaKhoaHoc([FromRoute] int khoaHocId)
+        {
+            return Ok(await _khoaHocService.XoaKhoaHoc(khoaHocId));
         }
     }
 }

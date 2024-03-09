@@ -93,10 +93,12 @@ builder.Services.AddScoped<ThucHanhConverter>();
 builder.Services.AddScoped<ResponseObject<DataResponseBinhLuanBaiHoc>>();
 builder.Services.AddScoped<ResponseObject<DataResponseChuongHoc>>();
 builder.Services.AddScoped<ChuongHocConverter>();
+builder.Services.AddScoped<KhoaHocNguoiDungConverter>();
+builder.Services.AddScoped<DanhGiaConverter>();
+builder.Services.AddScoped<IKhoaHocService, KhoaHocService>();
+builder.Services.AddScoped<IChuongHocService, ChuongHocService>();
 //builder.Services.AddScoped<IBaiHocService, BaiHocService>();
 //builder.Services.AddScoped<IBinhLuanBaiHocService, BinhLuanBaiHocService>();
-//builder.Services.AddScoped<IChuongKhoaHocService, ChuongKhoaHocService>();
-//builder.Services.AddScoped<IKhoaHocService, KhoaHocService>();
 builder.Services.AddAuthentication(Microsoft.AspNetCore.Authentication.JwtBearer.JwtBearerDefaults.AuthenticationScheme).AddJwtBearer(options =>
 {
     options.RequireHttpsMetadata = false;
