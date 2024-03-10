@@ -143,8 +143,8 @@ namespace WebCourseManagement_Business.Implements
             {
                 return "Không tìm thấy bài học";
             }
-            var chuongHoc = baiHoc?.ChuongHoc;
-            var khoaHoc = chuongHoc?.KhoaHoc;
+            var chuongHoc = _context.chuongHocs.SingleOrDefault(x => x.Id == baiHoc.ChuongHocId);
+            var khoaHoc = _context.khoaHocs.SingleOrDefault(x => x.Id == chuongHoc.KhoaHocId);
             if (khoaHoc.NguoiTaoId != int.Parse(userId))
             {
                 return "Bạn không có quyền thực hiện chức năng này";
