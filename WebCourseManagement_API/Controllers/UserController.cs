@@ -3,9 +3,12 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using WebCourseManagement_Business.Interfaces;
+using WebCourseManagement_Models.RequestModels.BaiHocRequests;
 using WebCourseManagement_Models.RequestModels.ChuongHocRequests;
+using WebCourseManagement_Models.RequestModels.InputRequests;
 using WebCourseManagement_Models.RequestModels.KhoaHocRequests;
 using WebCourseManagement_Models.RequestModels.NguoiDungRequests;
+using WebCourseManagement_Models.ResponseModels.DataBaiHoc;
 using WebCourseManagement_Models.ResponseModels.DataChuongHoc;
 using WebCourseManagement_Models.ResponseModels.DataKhoaHoc;
 using WebCourseManagement_Models.ResponseModels.DataLoaiKhoaHoc;
@@ -23,12 +26,14 @@ namespace WebCourseManagement_API.Controllers
         private readonly ILoaiKhoaHocService _loaiKhoaHocService;
         private readonly IKhoaHocService _khoaHocService;
         private readonly IChuongHocService _chuongHocService;
-        public UserController(IUserService userService, ILoaiKhoaHocService loaiKhoaHocService, IKhoaHocService khoaHocService, IChuongHocService chuongHocService)
+        private readonly IBaiHocService _baiHocService;
+        public UserController(IUserService userService, ILoaiKhoaHocService loaiKhoaHocService, IKhoaHocService khoaHocService, IChuongHocService chuongHocService, IBaiHocService baiHocService)
         {
             _userService = userService;
             _loaiKhoaHocService = loaiKhoaHocService;
             _khoaHocService = khoaHocService;
             _chuongHocService = chuongHocService;
+            _baiHocService = baiHocService;
         }
         [HttpGet("GetAllsNguoiDung")]
         public async Task<IActionResult> GetAllsNguoiDung(int pageSize = 10, int pageNumber = 1)
@@ -117,6 +122,34 @@ namespace WebCourseManagement_API.Controllers
         public async Task<IActionResult> GetAllsChuongHoc(int pageSize = 10, int pageNumber = 1)
         {
             return Ok(await _chuongHocService.GetAlls(pageSize, pageNumber));
+        }
+        [HttpDelete("XoaBaiHoc/{baiHocId}")]
+        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
+        public async Task<IActionResult> XoaBaiHoc([FromRoute] int baiHocId)
+        {
+            return Ok(await _baiHocService.XoaBaiHoc(baiHocId));
+        }
+        [HttpPut("SuaThongTinBaiHoc")]
+        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
+        public async Task<IActionResult> SuaThongTinBaiHoc([FromBody] Request_CapNhatThongTinBaiHoc request)
+        {
+            return Ok(await _baiHocService.SuaThongTinBaiHoc(request));
+        }
+        [HttpPost("ThemBaiHoc")]
+        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
+        public async Task<IActionResult> ThemBaiHoc([FromBody] Request_ThemBaiHoc request)
+        {
+            return Ok(await _baiHocService.ThemBaiHoc(request));
+        }
+        [HttpGet("GetBaiHocById/{baiHocId}")]
+        public async Task<IActionResult> GetBaiHocById([FromRoute] int baiHocId)
+        {
+            return Ok(await _baiHocService.GetBaiHocById(baiHocId));
+        }
+        [HttpGet("GetAllsBaiHoc")]
+        public async Task<IActionResult> GetAllsBaiHoc([FromQuery] InputBaiHoc input, int pageSize = 10, int pageNumber = 1)
+        {
+            return Ok(await _baiHocService.GetAlls(input, pageSize, pageNumber));
         }
     }
 }
