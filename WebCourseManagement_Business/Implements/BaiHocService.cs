@@ -85,7 +85,7 @@ namespace WebCourseManagement_Business.Implements
             chuongHoc.TongThoiGianHocTrongChuong += baiHoc.ThoiLuongVideo;
             _context.chuongHocs.Update(chuongHoc);
             _context.SaveChanges();
-            khoaHoc.TongThoiGianKhoaHoc += chuongHoc.TongThoiGianHocTrongChuong;
+            khoaHoc.TongThoiGianKhoaHoc = chuongHoc.TongThoiGianHocTrongChuong;
             _context.SaveChanges();
             return _responseObject.ResponseSuccess("Thêm bài học thành công", _converter.EntityToDTO(baiHoc));
         }
@@ -103,7 +103,7 @@ namespace WebCourseManagement_Business.Implements
             {
                 return _responseObject.ResponseError(StatusCodes.Status404NotFound, "Không tìm thấy chương học", null);
             }
-            var khoaHoc = chuongHoc?.KhoaHoc;
+            var khoaHoc = _context.khoaHocs.SingleOrDefault(x => x.Id == chuongHoc.KhoaHocId);
             if (khoaHoc.NguoiTaoId != int.Parse(userId))
             {
                 return _responseObject.ResponseError(StatusCodes.Status403Forbidden, "Bạn không có quyền thực hiện chức năng này", null);
@@ -125,7 +125,7 @@ namespace WebCourseManagement_Business.Implements
             chuongHoc.TongThoiGianHocTrongChuong += baiHoc.ThoiLuongVideo;
             _context.chuongHocs.Update(chuongHoc);
             _context.SaveChanges();
-            khoaHoc.TongThoiGianKhoaHoc += chuongHoc.TongThoiGianHocTrongChuong;
+            khoaHoc.TongThoiGianKhoaHoc = chuongHoc.TongThoiGianHocTrongChuong;
             _context.SaveChanges();
             return _responseObject.ResponseSuccess("Cập nhật thông tin bài học thành công", _converter.EntityToDTO(baiHoc));
         }
@@ -156,7 +156,7 @@ namespace WebCourseManagement_Business.Implements
             chuongHoc.TongThoiGianHocTrongChuong -= thoiLuong;
             _context.chuongHocs.Update(chuongHoc);
             _context.SaveChanges();
-            khoaHoc.TongThoiGianKhoaHoc = _context.chuongHocs.SingleOrDefault(x => x.Id == chuongHoc.Id).TongThoiGianHocTrongChuong;
+            khoaHoc.TongThoiGianKhoaHoc = chuongHoc.TongThoiGianHocTrongChuong;
             _context.SaveChanges();
             return "Xóa bài học thành công";
         }
