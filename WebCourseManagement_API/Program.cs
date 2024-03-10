@@ -11,10 +11,12 @@ using WebCourseManagement_Models.DataContexts;
 using WebCourseManagement_Models.ResponseModels.DataBaiHoc;
 using WebCourseManagement_Models.ResponseModels.DataBinhLuanBaiHoc;
 using WebCourseManagement_Models.ResponseModels.DataChuongHoc;
+using WebCourseManagement_Models.ResponseModels.DataHoaDon;
 using WebCourseManagement_Models.ResponseModels.DataKhoaHoc;
 using WebCourseManagement_Models.ResponseModels.DataLoaiKhoaHoc;
 using WebCourseManagement_Models.ResponseModels.DataNguoiDung;
 using WebCourseManagement_Models.Responses;
+using WebCourseManagement_Repositories.HandleVNPayPayment;
 
 var builder = WebApplication.CreateBuilder(args);
 builder.Logging.ClearProviders();
@@ -97,7 +99,12 @@ builder.Services.AddScoped<KhoaHocNguoiDungConverter>();
 builder.Services.AddScoped<DanhGiaConverter>();
 builder.Services.AddScoped<IKhoaHocService, KhoaHocService>();
 builder.Services.AddScoped<IChuongHocService, ChuongHocService>();
+builder.Services.AddScoped<HoaDonConverter>();
+builder.Services.AddScoped<AuthService>();
+builder.Services.AddScoped<ResponseObject<DataResponseHoaDon>>();
 builder.Services.AddScoped<IBaiHocService, BaiHocService>();
+builder.Services.AddScoped<IVNPayService, VNPayService>();
+builder.Services.AddScoped<VNPayLibrary>();
 //builder.Services.AddScoped<IBinhLuanBaiHocService, BinhLuanBaiHocService>();
 builder.Services.AddAuthentication(Microsoft.AspNetCore.Authentication.JwtBearer.JwtBearerDefaults.AuthenticationScheme).AddJwtBearer(options =>
 {

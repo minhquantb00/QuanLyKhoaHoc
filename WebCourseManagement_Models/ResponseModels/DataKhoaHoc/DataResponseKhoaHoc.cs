@@ -15,6 +15,8 @@ namespace WebCourseManagement_Models.ResponseModels.DataKhoaHoc
         public string MoTaKhoaHoc { get; set; }
         public decimal GiaKhoaHoc { get; set; }
         public string AnhKhoaHoc { get; set; }
+        public decimal? PhanTramGiamGia { get; set; }
+        public decimal? GiaKhoaHocThucTe { get; set; }
         public DateTime NgayTao { get; set; }
         public DateTime? NgayCapNhat { get; set; }
         public DateTime? NgayXoa { get; set; }

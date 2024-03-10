@@ -10,6 +10,7 @@ using WebCourseManagement_Models.RequestModels.KhoaHocRequests;
 using WebCourseManagement_Models.RequestModels.NguoiDungRequests;
 using WebCourseManagement_Models.ResponseModels.DataBaiHoc;
 using WebCourseManagement_Models.ResponseModels.DataChuongHoc;
+using WebCourseManagement_Models.ResponseModels.DataHoaDon;
 using WebCourseManagement_Models.ResponseModels.DataKhoaHoc;
 using WebCourseManagement_Models.ResponseModels.DataLoaiKhoaHoc;
 using WebCourseManagement_Models.ResponseModels.DataNguoiDung;
@@ -27,13 +28,15 @@ namespace WebCourseManagement_API.Controllers
         private readonly IKhoaHocService _khoaHocService;
         private readonly IChuongHocService _chuongHocService;
         private readonly IBaiHocService _baiHocService;
-        public UserController(IUserService userService, ILoaiKhoaHocService loaiKhoaHocService, IKhoaHocService khoaHocService, IChuongHocService chuongHocService, IBaiHocService baiHocService)
+        private readonly IVNPayService _vnpayService;
+        public UserController(IUserService userService, ILoaiKhoaHocService loaiKhoaHocService, IKhoaHocService khoaHocService, IChuongHocService chuongHocService, IBaiHocService baiHocService, IVNPayService vnpayService)
         {
             _userService = userService;
             _loaiKhoaHocService = loaiKhoaHocService;
             _khoaHocService = khoaHocService;
             _chuongHocService = chuongHocService;
             _baiHocService = baiHocService;
+            _vnpayService = vnpayService;
         }
         [HttpGet("GetAllsNguoiDung")]
         public async Task<IActionResult> GetAllsNguoiDung(int pageSize = 10, int pageNumber = 1)
@@ -150,6 +153,27 @@ namespace WebCourseManagement_API.Controllers
         public async Task<IActionResult> GetAllsBaiHoc([FromQuery] InputBaiHoc input, int pageSize = 10, int pageNumber = 1)
         {
             return Ok(await _baiHocService.GetAlls(input, pageSize, pageNumber));
+        }
+        [HttpPost("DangKyKhoaHoc")]
+        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
+        public async Task<IActionResult> DangKyKhoaHoc([FromBody] Request_DangKyKhoaHoc request)
+        {
+            int id = int.Parse(HttpContext.User.FindFirst("Id").Value);
+            return Ok(await _khoaHocService.DangKyKhoaHoc(id, request));
+        }
+        [HttpPost("TaoDuongDanThanhToan/{hoaDonId}")]
+        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
+        public async Task<IActionResult> TaoDuongDanThanhToan([FromRoute] int hoaDonId)
+        {
+            int id = int.Parse(HttpContext.User.FindFirst("Id").Value);
+            return Ok(await _vnpayService.TaoDuongDanThanhToan(hoaDonId, HttpContext, id));
+        }
+        [HttpGet("Return")]
+        public async Task<IActionResult> Return()
+        {
+            var vnpayData = HttpContext.Request.Query;
+
+            return Ok(await _vnpayService.VNPayReturn(vnpayData));
         }
     }
 }

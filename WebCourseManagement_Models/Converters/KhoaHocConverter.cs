@@ -31,11 +31,13 @@ namespace WebCourseManagement_Models.Converters
                 NgayCapNhat = khoaHoc.NgayCapNhat,
                 NgayTao = khoaHoc.NgayTao,
                 NgayXoa = khoaHoc.NgayXoa,
+                PhanTramGiamGia = khoaHoc.PhanTramGiamGia,
                 NguoiTao = _nguoiDungConverter.EntityToDTO(_context.nguoiDungs.SingleOrDefault(x => x.Id == khoaHoc.NguoiTaoId)),
                 SoHocVienDaHoanThanh = khoaHoc.SoHocVienDaHoanThanh,
                 TieuDeKhoaHoc = khoaHoc.TieuDeKhoaHoc,
                 TongThoiGianKhoaHoc = khoaHoc.TongThoiGianKhoaHoc,
-                ChuongHocs = _context.chuongHocs.Where(x => x.KhoaHocId == khoaHoc.Id).Select(x => _chuongHocConverter.EntityToDTO(x))
+                ChuongHocs = _context.chuongHocs.Where(x => x.KhoaHocId == khoaHoc.Id).Select(x => _chuongHocConverter.EntityToDTO(x)),
+                GiaKhoaHocThucTe = khoaHoc.GiaKhoaHocThucTe
             };
         }
     }

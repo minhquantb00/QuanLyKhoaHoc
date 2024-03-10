@@ -11,6 +11,8 @@ namespace WebCourseManagement_Models.Entities
         public string TieuDeKhoaHoc { get; set; }
         public string MoTaKhoaHoc { get; set; }
         public decimal GiaKhoaHoc { get; set; }
+        public decimal? PhanTramGiamGia { get; set; } = 0;
+        public decimal? GiaKhoaHocThucTe { get; set; }
         public string AnhKhoaHoc { get; set; }
         public DateTime NgayTao { get; set; }
         public DateTime? NgayCapNhat { get; set; }

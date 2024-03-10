@@ -10,6 +10,7 @@ using WebCourseManagement_Models.Converters;
 using WebCourseManagement_Models.DataContexts;
 using WebCourseManagement_Models.Entities;
 using WebCourseManagement_Models.RequestModels.KhoaHocRequests;
+using WebCourseManagement_Models.ResponseModels.DataHoaDon;
 using WebCourseManagement_Models.ResponseModels.DataKhoaHoc;
 using WebCourseManagement_Models.Responses;
 using WebCourseManagement_Repositories.HandleImage;
@@ -23,12 +24,16 @@ namespace WebCourseManagement_Business.Implements
         private readonly ResponseObject<DataResponseKhoaHoc> _responseObject;
         private readonly KhoaHocConverter _converter;
         private readonly IHttpContextAccessor _httpContextAccessor;
-        public KhoaHocService(AppDbContext context, KhoaHocConverter converter, ResponseObject<DataResponseKhoaHoc> responseObject, IHttpContextAccessor httpContextAccessor)
+        private readonly ResponseObject<DataResponseHoaDon> _responseObjectHoaDon;
+        private readonly HoaDonConverter _hoaDonConverter;
+        public KhoaHocService(AppDbContext context, KhoaHocConverter converter, ResponseObject<DataResponseKhoaHoc> responseObject, IHttpContextAccessor httpContextAccessor, HoaDonConverter hoaDonConverter, ResponseObject<DataResponseHoaDon> responseObjectHoaDon)
         {
             _context = context;
             _responseObject = responseObject;
             _converter = converter;
             _httpContextAccessor = httpContextAccessor;
+            _hoaDonConverter = hoaDonConverter;
+            _responseObjectHoaDon = responseObjectHoaDon;
         }
         public async Task<PageResult<DataResponseKhoaHoc>> GetAlls(int pageSize, int pageNumber)
         {
@@ -62,6 +67,8 @@ namespace WebCourseManagement_Business.Implements
                 DaXoa = false,
                 GiaKhoaHoc = request.GiaKhoaHoc,
                 LoaiKhoaHocId = request.LoaiKhoaHocId,
+                PhanTramGiamGia = request.PhanTramGiamGia == 0 ? 0 : request.PhanTramGiamGia,
+                GiaKhoaHocThucTe = request.PhanTramGiamGia == 0 ? request.GiaKhoaHoc : request.GiaKhoaHoc * request.PhanTramGiamGia,
                 MoTaKhoaHoc = request.MoTaKhoaHoc,
                 NgayTao = DateTime.Now,
                 NguoiTaoId = nguoiTaoId,
@@ -93,6 +100,8 @@ namespace WebCourseManagement_Business.Implements
             khoaHoc.MoTaKhoaHoc = request.MoTaKhoaHoc;
             khoaHoc.AnhKhoaHoc = await HandleUploadImage.Upfile(request.AnhKhoaHoc);
             khoaHoc.NgayCapNhat = DateTime.Now;
+            khoaHoc.GiaKhoaHocThucTe = request.PhanTramGiamGia == 0 ? request.GiaKhoaHoc : request.GiaKhoaHoc * request.PhanTramGiamGia;
+            khoaHoc.PhanTramGiamGia = request.PhanTramGiamGia == 0 ? 0 : request.PhanTramGiamGia;
             khoaHoc.GiaKhoaHoc = request.GiaKhoaHoc;
             khoaHoc.LoaiKhoaHocId = request.LoaiKhoaHocId;
             khoaHoc.TieuDeKhoaHoc = request.TieuDeKhoaHoc;
@@ -121,6 +130,28 @@ namespace WebCourseManagement_Business.Implements
             _context.khoaHocs.Remove(khoaHoc);
             _context.SaveChanges();
             return "Xóa khóa học thành công";
+        }
+
+        public async Task<ResponseObject<DataResponseHoaDon>> DangKyKhoaHoc(int nguoiDungId, Request_DangKyKhoaHoc request)
+        {
+            var nguoiDung = await _context.nguoiDungs.SingleOrDefaultAsync(x => x.Id == nguoiDungId);
+            var khoaHoc = await _context.khoaHocs.SingleOrDefaultAsync(x => x.Id == request.KhoaHocId);
+            if(khoaHoc == null)
+            {
+                return _responseObjectHoaDon.ResponseError(StatusCodes.Status404NotFound, "Khóa học không tồn tại", null);
+            }
+            HoaDonDangKy hoaDon = new HoaDonDangKy
+            {
+                KhoaHocId = request.KhoaHocId,
+                MaGiaoDich = "MyBugs_" + DateTime.Now.Ticks.ToString() + new Random().Next(10000,99999).ToString(),
+                NguoiDungId = nguoiDungId,
+                ThoiGianTao = DateTime.Now,
+                TongTien = khoaHoc.GiaKhoaHocThucTe,
+                TrangThaiHoaDonId = 1
+            };
+            _context.hoaDonDangKies.Add(hoaDon);
+            _context.SaveChanges();
+            return _responseObjectHoaDon.ResponseSuccess("Đã hoàn tất yêu cầu đăng ký khóa học! Vui lòng thanh toán", _hoaDonConverter.EntityToDTO(hoaDon));
         }
     }
 }
