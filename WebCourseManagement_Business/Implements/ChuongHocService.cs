@@ -31,14 +31,14 @@ namespace WebCourseManagement_Business.Implements
         }
         public async Task<PageResult<DataResponseChuongHoc>> GetAlls(int pageSize, int pageNumber)
         {
-            var query = _context.chuongHocs.Select(x => _converter.EntityToDTO(x));
+            var query = _context.chuongHocs.Where(x => x.IsActive == true).Select(x => _converter.EntityToDTO(x));
             var result = Pagination.GetPagedData(query, pageSize, pageNumber);
             return result;
         }
 
         public async Task<ResponseObject<DataResponseChuongHoc>> GetChuongHocById(int chuongHocId)
         {
-            var chuongHoc = await _context.chuongHocs.SingleOrDefaultAsync(x => x.Id == chuongHocId);
+            var chuongHoc = await _context.chuongHocs.SingleOrDefaultAsync(x => x.Id == chuongHocId && x.IsActive == true);
             return _responseObject.ResponseSuccess("Lấy dữ liệu thành công", _converter.EntityToDTO(chuongHoc));
         }
 
@@ -82,6 +82,7 @@ namespace WebCourseManagement_Business.Implements
                 TenChuong = request.TenChuong,
                 ThoiGianTao = DateTime.Now,
                 TongThoiGianHocTrongChuong = 0,
+                IsActive = true
             };
             _context.chuongHocs.Add(chuongHoc);
             _context.SaveChanges();
@@ -102,7 +103,7 @@ namespace WebCourseManagement_Business.Implements
             {
                 return "Người dùng không có quyền thực hiện chức năng này";
             }
-            _context.chuongHocs.Remove(chuongHoc);
+            chuongHoc.IsActive = false;
             _context.SaveChanges();
             return "Xóa chương học thành công";
         }

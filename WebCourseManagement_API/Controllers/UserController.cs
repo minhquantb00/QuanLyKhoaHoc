@@ -85,14 +85,14 @@ namespace WebCourseManagement_API.Controllers
             int id = int.Parse(HttpContext.User.FindFirst("Id").Value);
             return Ok(await _khoaHocService.ThemKhoaHoc(id, request));
         }
-        [HttpPost("SuaThongTinKhoaHoc")]
+        [HttpPut("SuaThongTinKhoaHoc")]
         [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
         public async Task<IActionResult> SuaThongTinKhoaHoc([FromForm] Request_SuaThongTinKhoaHoc request)
         {
             int id = int.Parse(HttpContext.User.FindFirst("Id").Value);
             return Ok(await _khoaHocService.SuaThongTinKhoaHoc(id, request));
         }
-        [HttpGet("XoaKhoaHoc/{khoaHocId}")]
+        [HttpDelete("XoaKhoaHoc/{khoaHocId}")]
         [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
         public async Task<IActionResult> XoaKhoaHoc([FromRoute] int khoaHocId)
         {

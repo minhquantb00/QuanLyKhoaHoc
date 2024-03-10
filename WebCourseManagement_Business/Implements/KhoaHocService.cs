@@ -1,11 +1,14 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
+using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using WebCourseManagement_Business.Interfaces;
+using WebCourseManagement_Models.ConfigModels.MomoPayment;
 using WebCourseManagement_Models.Converters;
 using WebCourseManagement_Models.DataContexts;
 using WebCourseManagement_Models.Entities;
@@ -26,7 +29,9 @@ namespace WebCourseManagement_Business.Implements
         private readonly IHttpContextAccessor _httpContextAccessor;
         private readonly ResponseObject<DataResponseHoaDon> _responseObjectHoaDon;
         private readonly HoaDonConverter _hoaDonConverter;
-        public KhoaHocService(AppDbContext context, KhoaHocConverter converter, ResponseObject<DataResponseKhoaHoc> responseObject, IHttpContextAccessor httpContextAccessor, HoaDonConverter hoaDonConverter, ResponseObject<DataResponseHoaDon> responseObjectHoaDon)
+        private readonly AuthService _authService;
+        private readonly IConfiguration _configuration;
+        public KhoaHocService(AppDbContext context, KhoaHocConverter converter, ResponseObject<DataResponseKhoaHoc> responseObject, IHttpContextAccessor httpContextAccessor, HoaDonConverter hoaDonConverter, ResponseObject<DataResponseHoaDon> responseObjectHoaDon, AuthService authService, IConfiguration configuration)
         {
             _context = context;
             _responseObject = responseObject;
@@ -34,17 +39,19 @@ namespace WebCourseManagement_Business.Implements
             _httpContextAccessor = httpContextAccessor;
             _hoaDonConverter = hoaDonConverter;
             _responseObjectHoaDon = responseObjectHoaDon;
+            _authService = authService;
+            _configuration = configuration;
         }
         public async Task<PageResult<DataResponseKhoaHoc>> GetAlls(int pageSize, int pageNumber)
         {
-            var query = _context.khoaHocs.Select(x => _converter.EntityToDTO(x));
+            var query = _context.khoaHocs.Where(x => x.IsActive == true).Select(x => _converter.EntityToDTO(x));
             var result = Pagination.GetPagedData(query, pageSize, pageNumber);
             return result;
         }
 
         public async Task<ResponseObject<DataResponseKhoaHoc>> GetKhoaHocById(int khoaHocId)
         {
-            var khoaHoc = await _context.khoaHocs.SingleOrDefaultAsync(x => x.Id  == khoaHocId);
+            var khoaHoc = await _context.khoaHocs.SingleOrDefaultAsync(x => x.Id  == khoaHocId && x.IsActive == true);
             if (khoaHoc == null)
             {
                 return _responseObject.ResponseError(StatusCodes.Status404NotFound, "Không tìm thấy khóa học", null);
@@ -68,7 +75,7 @@ namespace WebCourseManagement_Business.Implements
                 GiaKhoaHoc = request.GiaKhoaHoc,
                 LoaiKhoaHocId = request.LoaiKhoaHocId,
                 PhanTramGiamGia = request.PhanTramGiamGia == 0 ? 0 : request.PhanTramGiamGia,
-                GiaKhoaHocThucTe = request.PhanTramGiamGia == 0 ? request.GiaKhoaHoc : request.GiaKhoaHoc * request.PhanTramGiamGia,
+                GiaKhoaHocThucTe = request.PhanTramGiamGia == 0 ? request.GiaKhoaHoc : request.GiaKhoaHoc - request.GiaKhoaHoc * request.PhanTramGiamGia,
                 MoTaKhoaHoc = request.MoTaKhoaHoc,
                 NgayTao = DateTime.Now,
                 NguoiTaoId = nguoiTaoId,
@@ -100,7 +107,7 @@ namespace WebCourseManagement_Business.Implements
             khoaHoc.MoTaKhoaHoc = request.MoTaKhoaHoc;
             khoaHoc.AnhKhoaHoc = await HandleUploadImage.Upfile(request.AnhKhoaHoc);
             khoaHoc.NgayCapNhat = DateTime.Now;
-            khoaHoc.GiaKhoaHocThucTe = request.PhanTramGiamGia == 0 ? request.GiaKhoaHoc : request.GiaKhoaHoc * request.PhanTramGiamGia;
+            khoaHoc.GiaKhoaHocThucTe = request.PhanTramGiamGia == 0 ? request.GiaKhoaHoc : request.GiaKhoaHoc - request.GiaKhoaHoc * request.PhanTramGiamGia;
             khoaHoc.PhanTramGiamGia = request.PhanTramGiamGia == 0 ? 0 : request.PhanTramGiamGia;
             khoaHoc.GiaKhoaHoc = request.GiaKhoaHoc;
             khoaHoc.LoaiKhoaHocId = request.LoaiKhoaHocId;
@@ -127,7 +134,7 @@ namespace WebCourseManagement_Business.Implements
             {
                 return "Bạn không có quyền thực hiện chức năng này";
             }
-            _context.khoaHocs.Remove(khoaHoc);
+            khoaHoc.IsActive = false;
             _context.SaveChanges();
             return "Xóa khóa học thành công";
         }
@@ -151,7 +158,66 @@ namespace WebCourseManagement_Business.Implements
             };
             _context.hoaDonDangKies.Add(hoaDon);
             _context.SaveChanges();
-            return _responseObjectHoaDon.ResponseSuccess("Đã hoàn tất yêu cầu đăng ký khóa học! Vui lòng thanh toán", _hoaDonConverter.EntityToDTO(hoaDon));
+            _authService.SendEmail(new WebCourseManagement_Repositories.EmailTo
+            {
+                To = nguoiDung.Email,
+                Subject = "Thông báo đăng ký học",
+                Content = "Bạn đã đăng ký học thành công! Vui lòng thanh toán"
+            });
+            return _responseObjectHoaDon.ResponseSuccess(PaymentMomo(hoaDon.Id), _hoaDonConverter.EntityToDTO(hoaDon));
+        }
+        private string PaymentMomo(int hoaDonId)
+        {
+            var hoaDon = _context.hoaDonDangKies.SingleOrDefault(x => x.Id == hoaDonId);
+            var tongTien = hoaDon.TongTien;
+
+            string endpoint = "https://test-payment.momo.vn/gw_payment/transactionProcessor";
+            string partnerCode = "MOMOV2NN20220607";
+            string accessKey = "zanxjP13gFbJCX2t";
+            string serectkey = "slOO415FigGnrQzZQkk02qWcdCUFkbH2";
+            string orderInfo = "test";
+            string returnUrl = $"https://localhost:7046/api/user/DangKyKhoaHoc";
+            string notifyurl = "https://momo.vn/notify";
+            string amount = tongTien + "";
+            string orderid = DateTime.Now.Ticks.ToString();
+            string requestId = DateTime.Now.Ticks.ToString();
+            string extraData = "";
+
+            string rawHash = "partnerCode=" +
+                partnerCode + "&accessKey=" +
+                accessKey + "&requestId=" +
+                requestId + "&amount=" +
+                amount + "&orderId=" +
+                orderid + "&orderInfo=" +
+                orderInfo + "&returnUrl=" +
+                returnUrl + "&notifyUrl=" +
+            notifyurl + "&extraData=" +
+            extraData;
+
+            MomoSecurity crypto = new MomoSecurity();
+            string signature = crypto.signSHA256(rawHash, serectkey);
+
+            JObject message = new JObject
+            {
+                { "partnerCode", partnerCode },
+                { "accessKey", accessKey },
+                { "requestId", requestId },
+                { "amount", amount },
+                { "orderId", orderid },
+                { "orderInfo", orderInfo },
+                { "returnUrl", returnUrl },
+                { "notifyUrl", notifyurl },
+                { "extraData", extraData },
+                { "requestType", "captureMoMoWallet"},
+                { "signature", signature }
+
+            };
+
+            string responseFromMomo = PaymentRequest.sendPaymentRequest(endpoint, message.ToString());
+
+            JObject jmessage = JObject.Parse(responseFromMomo);
+
+            return jmessage.GetValue("payUrl").ToString();
         }
     }
 }

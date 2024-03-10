@@ -17,13 +17,13 @@ namespace WebCourseManagement_Business.Implements
     public class VNPayService : IVNPayService
     {
         private readonly AppDbContext _context;
-        private readonly VNPayLibrary _library;
+        private readonly VNPayLibrary pay;
         private readonly IConfiguration _configuration;
         private readonly AuthService _authService;
-        public VNPayService(AppDbContext context, VNPayLibrary library, IConfiguration configuration, AuthService authService)
+        public VNPayService(AppDbContext context, VNPayLibrary pay, IConfiguration configuration, AuthService authService)
         {
             _context = context;
-            _library = library;
+            this.pay = pay;
             _configuration = configuration;
             _authService = authService;
         }
@@ -39,20 +39,20 @@ namespace WebCourseManagement_Business.Implements
                 }
                 if (hoaDon.TrangThaiHoaDonId == 1 && hoaDon.TongTien != 0 && hoaDon.TongTien != null)
                 {
-                    _library.AddRequestData("vnp_Version", "2.1.0");
-                    _library.AddRequestData("vnp_Command", "pay");
-                    _library.AddRequestData("vnp_TmnCode", "YIK14C5R");
-                    _library.AddRequestData("vnp_Amount", (hoaDon.TongTien * 1000).ToString());
-                    _library.AddRequestData("vnp_CreateDate", DateTime.Now.ToString("yyyyMMddHHmmss"));
-                    _library.AddRequestData("vnp_CurrCode", "VND");
-                    _library.AddRequestData("vnp_IpAddr", Utils.GetIpAddress(httpContext));
-                    _library.AddRequestData("vnp_Locale", "vn");
-                    _library.AddRequestData("vnp_OrderInfo", $"Thanh toans hóa đơn: {hoaDonId}");
-                    _library.AddRequestData("vnp_OrderType", "other");
-                    _library.AddRequestData("vnp_ReturnUrl", _configuration.GetSection("VnPay:vnp_ReturnUrl").Value);
-                    _library.AddRequestData("vnp_TxnRef", hoaDonId.ToString());
+                    pay.AddRequestData("vnp_Version", "2.1.0");
+                    pay.AddRequestData("vnp_Command", "pay");
+                    pay.AddRequestData("vnp_TmnCode", "YIK14C5R");
+                    pay.AddRequestData("vnp_Amount", (hoaDon.TongTien * 1000).ToString());
+                    pay.AddRequestData("vnp_CreateDate", DateTime.Now.ToString("yyyyMMddHHmmss"));
+                    pay.AddRequestData("vnp_CurrCode", "VND");
+                    pay.AddRequestData("vnp_IpAddr", Utils.GetIpAddress(httpContext));
+                    pay.AddRequestData("vnp_Locale", "vn");
+                    pay.AddRequestData("vnp_OrderInfo", $"Thanh toán hóa đơn: {hoaDonId}");
+                    pay.AddRequestData("vnp_OrderType", "other");
+                    pay.AddRequestData("vnp_ReturnUrl", _configuration.GetSection("VnPay:vnp_ReturnUrl").Value);
+                    pay.AddRequestData("vnp_TxnRef", hoaDonId.ToString());
 
-                    string duongDanThanhToan = _library.CreateRequestUrl(_configuration.GetSection("VnPay:vnp_Url").Value, _configuration.GetSection("VnPay:vnp_HashSecret").Value);
+                    string duongDanThanhToan = pay.CreateRequestUrl(_configuration.GetSection("VnPay:vnp_Url").Value, _configuration.GetSection("VnPay:vnp_HashSecret").Value);
                     return duongDanThanhToan;
                 }
 
@@ -83,7 +83,7 @@ namespace WebCourseManagement_Business.Implements
             bool check = vnPayLibrary.ValidateSignature(vnp_SecureHash, vnp_HashSecret);
 
             if (check)
-            {/**/
+            {
                 if (vnp_ResponseCode == "00" && vnp_TransactionStatus == "00")
                 {
                     var hoaDon = await _context.hoaDonDangKies.FirstOrDefaultAsync(x => x.Id == Convert.ToInt32(hoaDonId));

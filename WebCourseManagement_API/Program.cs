@@ -6,6 +6,7 @@ using Microsoft.OpenApi.Models;
 using WebCourseManagement_Business.Implements;
 using WebCourseManagement_Business.Interfaces;
 using WebCourseManagement_Commons.DefaultConstants;
+using WebCourseManagement_Models.ConfigModels.MomoPayment.Config;
 using WebCourseManagement_Models.Converters;
 using WebCourseManagement_Models.DataContexts;
 using WebCourseManagement_Models.ResponseModels.DataBaiHoc;
@@ -104,6 +105,7 @@ builder.Services.AddScoped<AuthService>();
 builder.Services.AddScoped<ResponseObject<DataResponseHoaDon>>();
 builder.Services.AddScoped<IBaiHocService, BaiHocService>();
 builder.Services.AddScoped<IVNPayService, VNPayService>();
+builder.Services.AddScoped<IMomoService, MomoService>();
 builder.Services.AddScoped<VNPayLibrary>();
 //builder.Services.AddScoped<IBinhLuanBaiHocService, BinhLuanBaiHocService>();
 builder.Services.AddAuthentication(Microsoft.AspNetCore.Authentication.JwtBearer.JwtBearerDefaults.AuthenticationScheme).AddJwtBearer(options =>
@@ -119,6 +121,7 @@ builder.Services.AddAuthentication(Microsoft.AspNetCore.Authentication.JwtBearer
             builder.Configuration.GetSection(Constants.AppSettingKeys.AUTH_SECRET).Value!))
     };
 });
+builder.Services.Configure<MomoConfig>(builder.Configuration.GetSection(MomoConfig.ConfigName));
 builder.Services.AddCors(options =>
 {
     options.AddPolicy("AllowAllOrigins", builder =>

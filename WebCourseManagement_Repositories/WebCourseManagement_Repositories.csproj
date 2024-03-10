@@ -25,6 +25,7 @@
   <ItemGroup>
     <ProjectReference Include="..\WebCourseManagement_Commons\WebCourseManagement_Commons.csproj" />
     <ProjectReference Include="..\WebCourseManagement_Models\WebCourseManagement_Models.csproj" />
+    <ProjectReference Include="..\WebCourseManagement_Ultils\WebCourseManagement_Ultils.csproj" />
   </ItemGroup>
 
 </Project>
