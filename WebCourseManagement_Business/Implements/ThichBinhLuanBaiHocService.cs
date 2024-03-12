@@ -18,13 +18,9 @@ namespace WebCourseManagement_Business.Implements
     public class ThichBinhLuanBaiHocService : IThichBinhLuanBaiHocService
     {
         private readonly AppDbContext _context;
-        private readonly NguoiDungThichBinhLuanBaihocConverter _converter;
-        private readonly ResponseObject<DataResponseNguoiDungThichBinhLuanBaiHoc> _responseObject;
-        public ThichBinhLuanBaiHocService(AppDbContext context, NguoiDungThichBinhLuanBaihocConverter converter, ResponseObject<DataResponseNguoiDungThichBinhLuanBaiHoc> responseObject)
+        public ThichBinhLuanBaiHocService(AppDbContext context)
         {
             _context = context;
-            _converter = converter;
-            _responseObject = responseObject;
         }
 
         public async Task<string> ThichBinhLuanBaiHoc(int nguoiDungId, Request_ThichBinhLuanBaiHoc request)
