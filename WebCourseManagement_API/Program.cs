@@ -112,7 +112,7 @@ builder.Services.AddScoped<IBaiHocService, BaiHocService>();
 builder.Services.AddScoped<IVNPayService, VNPayService>();
 builder.Services.AddScoped<IMomoService, MomoService>();
 builder.Services.AddScoped<VNPayLibrary>();
-//builder.Services.AddScoped<IBinhLuanBaiHocService, BinhLuanBaiHocService>();
+builder.Services.AddScoped<IBinhLuanBaiHocService, BinhLuanBaiHocService>();
 builder.Services.AddAuthentication(Microsoft.AspNetCore.Authentication.JwtBearer.JwtBearerDefaults.AuthenticationScheme).AddJwtBearer(options =>
 {
     options.RequireHttpsMetadata = false;

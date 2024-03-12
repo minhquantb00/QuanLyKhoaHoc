@@ -4,11 +4,14 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using WebCourseManagement_Business.Interfaces;
 using WebCourseManagement_Models.RequestModels.BaiHocRequests;
+using WebCourseManagement_Models.RequestModels.BinhLuanBaiHocRequest;
 using WebCourseManagement_Models.RequestModels.ChuongHocRequests;
 using WebCourseManagement_Models.RequestModels.InputRequests;
 using WebCourseManagement_Models.RequestModels.KhoaHocRequests;
 using WebCourseManagement_Models.RequestModels.NguoiDungRequests;
+using WebCourseManagement_Models.RequestModels.NguoiDungThichBinhLuanBaiHocRequests;
 using WebCourseManagement_Models.ResponseModels.DataBaiHoc;
+using WebCourseManagement_Models.ResponseModels.DataBinhLuanBaiHoc;
 using WebCourseManagement_Models.ResponseModels.DataChuongHoc;
 using WebCourseManagement_Models.ResponseModels.DataHoaDon;
 using WebCourseManagement_Models.ResponseModels.DataKhoaHoc;
@@ -29,7 +32,9 @@ namespace WebCourseManagement_API.Controllers
         private readonly IChuongHocService _chuongHocService;
         private readonly IBaiHocService _baiHocService;
         private readonly IVNPayService _vnpayService;
-        public UserController(IUserService userService, ILoaiKhoaHocService loaiKhoaHocService, IKhoaHocService khoaHocService, IChuongHocService chuongHocService, IBaiHocService baiHocService, IVNPayService vnpayService)
+        private readonly IBinhLuanBaiHocService _binhLuanBaiHocService;
+        private readonly IThichBinhLuanBaiHocService _thichBinhLuanBaiHocService;
+        public UserController(IUserService userService, ILoaiKhoaHocService loaiKhoaHocService, IKhoaHocService khoaHocService, IChuongHocService chuongHocService, IBaiHocService baiHocService, IVNPayService vnpayService, IBinhLuanBaiHocService binhLuanBaiHocService, IThichBinhLuanBaiHocService thichBinhLuanBaiHocService)
         {
             _userService = userService;
             _loaiKhoaHocService = loaiKhoaHocService;
@@ -37,6 +42,8 @@ namespace WebCourseManagement_API.Controllers
             _chuongHocService = chuongHocService;
             _baiHocService = baiHocService;
             _vnpayService = vnpayService;
+            _binhLuanBaiHocService = binhLuanBaiHocService;
+            _thichBinhLuanBaiHocService = thichBinhLuanBaiHocService;
         }
         [HttpGet("GetAllsNguoiDung")]
         public async Task<IActionResult> GetAllsNguoiDung(int pageSize = 10, int pageNumber = 1)
@@ -177,6 +184,40 @@ namespace WebCourseManagement_API.Controllers
             var vnpayData = HttpContext.Request.Query;
 
             return Ok(await _vnpayService.VNPayReturn(vnpayData));
+        }
+        [HttpDelete("XoaBinhLuan/{binhLuanId}")]
+        [Authorize(AuthenticationSchemes =  JwtBearerDefaults.AuthenticationScheme)]
+        public async Task<IActionResult> XoaBinhLuan([FromRoute] int binhLuanId)
+        {
+            return Ok(await _binhLuanBaiHocService.XoaBinhLuan(binhLuanId));
+        }
+        [HttpPost("TraLoiBinhLuan")]
+        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
+        public async Task<IActionResult> TraLoiBinhLuan([FromBody] Request_TraLoiBinhLuan request)
+        {
+            int id = int.Parse(HttpContext.User.FindFirst("Id").Value);
+            return Ok(await _binhLuanBaiHocService.TraLoiBinhLuan(id, request));
+        }
+        [HttpPost("TaoBinhLuanBaiHoc")]
+        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
+        public async Task<IActionResult> TaoBinhLuanBaiHoc([FromBody] Request_TaoBinhLuanBaiHoc request)
+        {
+            int id = int.Parse(HttpContext.User.FindFirst("Id").Value);
+            return Ok(await _binhLuanBaiHocService.TaoBinhLuan(id, request));
+        }
+        [HttpPut("SuaBinhLuanBaiHoc")]
+        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
+        public async Task<IActionResult> SuaBinhLuanBaiHoc([FromBody] Request_SuaBinhLuanBaiHoc request)
+        {
+            int id = int.Parse(HttpContext.User.FindFirst("Id").Value);
+            return Ok(await _binhLuanBaiHocService.SuaBinhLuan(id, request));
+        }
+        [HttpPost("ThichBinhLuanBaiHoc")]
+        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
+        public async Task<IActionResult> ThichBinhLuanBaiHoc([FromBody] Request_ThichBinhLuanBaiHoc request)
+        {
+            int id = int.Parse(HttpContext.User.FindFirst("Id").Value);
+            return Ok(await _thichBinhLuanBaiHocService.ThichBinhLuanBaiHoc(id, request));
         }
     }
 }

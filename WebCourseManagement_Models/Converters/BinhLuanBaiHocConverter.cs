@@ -24,7 +24,7 @@ namespace WebCourseManagement_Models.Converters
         {
             return new DataResponseBinhLuanBaiHoc
             {
-                DuongDanAnhBinhLuan = binhLuanBaiHoc.DuongDanAnhBinhLuan,
+                NoiDungBinhLuan = binhLuanBaiHoc.NoiDungBinhLuan,
                 BinhLuanGocId = binhLuanBaiHoc.BinhLuanGocId,
                 Id = binhLuanBaiHoc.Id,
                 NguoiBinhLuan = _nguoiDungConverter.EntityToDTO(binhLuanBaiHoc.NguoiBinhLuan),

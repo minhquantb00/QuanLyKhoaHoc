@@ -12,7 +12,7 @@ namespace WebCourseManagement_Models.ResponseModels.DataBinhLuanBaiHoc
     public class DataResponseBinhLuanBaiHoc : DataResponseBase
     {
         public DataResponseNguoiDung NguoiBinhLuan { get; set; }
-        public string DuongDanAnhBinhLuan { get; set; }
+        public string NoiDungBinhLuan { get; set; }
         public int? BinhLuanGocId { get; set; }
         public int SoLuotThich { get; set; }
         public int SoLuotTraLoiBinhLuan { get; set; }

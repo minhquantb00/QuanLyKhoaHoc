@@ -33,7 +33,7 @@ namespace WebCourseManagement_Models.Converters
                 ThoiGianTao = baiHoc.ThoiGianTao,
                 ThoiLuongVideo = baiHoc.ThoiLuongVideo,
                 VideoBaiHoc = baiHoc.VideoBaiHoc,
-                BinhLuanBaiHocs = _context.binhLuanBaiHocs.Where(x => x.BaiHocId == baiHoc.Id).Select(x => _binhLuanBaiHocConverter.EntityToDTO(x)),
+                BinhLuanBaiHocs = _context.binhLuanBaiHocs.Where(x => x.BaiHocId == baiHoc.Id && x.IsActive == true).Select(x => _binhLuanBaiHocConverter.EntityToDTO(x)),
                 DatCauHois = _context.datCauHois.Where(x => x.BaiHocId == baiHoc.Id).Select(x => _converter.EntityToDTO(x)),
                 ThucHanhs = _context.thucHanhs.Where(x => x.BaiHocId == baiHoc.Id).Select(x => _thucHanhConverter.EntityToDTO(x))
             };

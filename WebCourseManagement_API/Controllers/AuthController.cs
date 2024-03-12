@@ -18,6 +18,7 @@ namespace WebCourseManagement_API.Controllers
             _authService = authService;
         }
         [HttpPost("DangKy")]
+        [Consumes(contentType: "multipart/form-data")]
         public async Task<IActionResult> DangKy([FromForm] Request_DangKy request)
         {
             var result = await _authService.DangKy(request);
