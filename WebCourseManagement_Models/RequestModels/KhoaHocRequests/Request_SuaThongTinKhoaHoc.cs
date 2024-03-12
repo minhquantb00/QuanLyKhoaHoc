@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Http;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -14,6 +15,7 @@ namespace WebCourseManagement_Models.RequestModels.KhoaHocRequests
         public string MoTaKhoaHoc { get; set; }
         public decimal GiaKhoaHoc { get; set; }
         public decimal? PhanTramGiamGia { get; set; }
+        [DataType(DataType.Upload)]
         public IFormFile AnhKhoaHoc { get; set; }
         public int LoaiKhoaHocId { get; set; }
     }

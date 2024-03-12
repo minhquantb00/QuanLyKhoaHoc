@@ -169,6 +169,7 @@ namespace WebCourseManagement_Business.Implements
                     new Claim("Email", nguoiDung.Email),
                     new Claim("Name", nguoiDung.HoVaTen),
                     new Claim("Username", nguoiDung.TaiKhoan),
+                    new Claim("Image", nguoiDung.AnhDaiDien),
                     new Claim(ClaimTypes.Role, role?.MaQuyenHan ?? "")
                 }),
                 Expires = DateTime.Now.AddHours(4),

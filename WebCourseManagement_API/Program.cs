@@ -8,6 +8,8 @@ using WebCourseManagement_Business.Interfaces;
 using WebCourseManagement_Commons.DefaultConstants;
 using WebCourseManagement_Models.ConfigModels.MomoPayment.Config;
 using WebCourseManagement_Models.ConfigModels.VnPayPayment;
+using WebCourseManagement_Models.ConfigModels.VnPayPayment.Config;
+using WebCourseManagement_Models.ConfigModels.ZaloPayment.Config;
 using WebCourseManagement_Models.Converters;
 using WebCourseManagement_Models.DataContexts;
 using WebCourseManagement_Models.ResponseModels.DataBaiHoc;
@@ -125,6 +127,8 @@ builder.Services.AddAuthentication(Microsoft.AspNetCore.Authentication.JwtBearer
     };
 });
 builder.Services.Configure<MomoConfig>(builder.Configuration.GetSection(MomoConfig.ConfigName));
+builder.Services.Configure<VnPayConfig>(builder.Configuration.GetSection(VnPayConfig.ConfigName));
+builder.Services.Configure<ZaloPayConfig>(builder.Configuration.GetSection(ZaloPayConfig.ConfigName));
 builder.Services.AddCors(options =>
 {
     options.AddPolicy("AllowAllOrigins", builder =>

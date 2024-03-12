@@ -51,6 +51,7 @@ namespace WebCourseManagement_API.Controllers
         }
         [HttpPut("CapNhatThongTinNguoiDung")]
         [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
+        [Consumes(contentType: "multipart/form-data")]
         public async Task<IActionResult> CapNhatThongTinNguoiDung([FromForm]Request_CapNhatThongTinNguoiDung request)
         {
             int id = int.Parse(HttpContext.User.FindFirst("Id").Value);
@@ -80,6 +81,7 @@ namespace WebCourseManagement_API.Controllers
         }
         [HttpPost("ThemKhoaHoc")]
         [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
+        [Consumes(contentType: "multipart/form-data")]
         public async Task<IActionResult> ThemKhoaHoc([FromForm] Request_ThemKhoaHoc request)
         {
             int id = int.Parse(HttpContext.User.FindFirst("Id").Value);
@@ -87,6 +89,7 @@ namespace WebCourseManagement_API.Controllers
         }
         [HttpPut("SuaThongTinKhoaHoc")]
         [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
+        [Consumes(contentType: "multipart/form-data")]
         public async Task<IActionResult> SuaThongTinKhoaHoc([FromForm] Request_SuaThongTinKhoaHoc request)
         {
             int id = int.Parse(HttpContext.User.FindFirst("Id").Value);

@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using WebCourseManagement_Business.Interfaces;
 using WebCourseManagement_Models.RequestModels.AuthRequests;
+using WebCourseManagement_Models.Responses;
 
 namespace WebCourseManagement_API.Controllers
 {
@@ -20,13 +21,14 @@ namespace WebCourseManagement_API.Controllers
         public async Task<IActionResult> DangKy([FromForm] Request_DangKy request)
         {
             var result = await _authService.DangKy(request);
-            switch(result.Status)
+
+            switch (result.Status)
             {
                 case 200:
                     return Ok(result);
                 case 404:
                     return NotFound(result);
-                case 400: 
+                case 400:
                     return BadRequest(result);
                 case 401:
                     return Unauthorized(result);
@@ -36,7 +38,6 @@ namespace WebCourseManagement_API.Controllers
                     return StatusCode(500, result);
             }
         }
-
         [HttpPost("DangNhap")]
         public async Task<IActionResult> DangNhap([FromBody] Request_DangNhap request)
         {
