@@ -12,6 +12,7 @@ namespace WebCourseManagement_Models.Entities
         public int TongThoiGianHocTrongChuong { get; set; }
         public int SoBaiHocTrongChuong { get; set; }
         public int KhoaHocId { get; set; }
+        public string? AnhChuongHoc { get; set; }
         public virtual KhoaHoc? KhoaHoc { get; set; }
         public DateTime ThoiGianTao { get; set; }
         public DateTime? ThoiGianCapNhat { get; set; }

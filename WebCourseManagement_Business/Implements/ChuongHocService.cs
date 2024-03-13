@@ -12,6 +12,7 @@ using WebCourseManagement_Models.Entities;
 using WebCourseManagement_Models.RequestModels.ChuongHocRequests;
 using WebCourseManagement_Models.ResponseModels.DataChuongHoc;
 using WebCourseManagement_Models.Responses;
+using WebCourseManagement_Repositories.HandleImage;
 using WebCourseManagement_Repositories.HandlePagination;
 
 namespace WebCourseManagement_Business.Implements
@@ -58,6 +59,7 @@ namespace WebCourseManagement_Business.Implements
             }
             chuongHoc.TenChuong = request.TenChuongHoc;
             chuongHoc.ThoiGianCapNhat = DateTime.Now;
+            chuongHoc.AnhChuongHoc = await HandleUploadImage.Upfile(request.AnhChuongHoc);
             _context.SaveChanges();
             return _responseObject.ResponseSuccess("Cập nhật thông tin chương học thành công", _converter.EntityToDTO(chuongHoc));
         }
@@ -82,7 +84,8 @@ namespace WebCourseManagement_Business.Implements
                 TenChuong = request.TenChuong,
                 ThoiGianTao = DateTime.Now,
                 TongThoiGianHocTrongChuong = 0,
-                IsActive = true
+                IsActive = true,
+                AnhChuongHoc = await HandleUploadImage.Upfile(request.AnhChuongHoc)
             };
             _context.chuongHocs.Add(chuongHoc);
             _context.SaveChanges();

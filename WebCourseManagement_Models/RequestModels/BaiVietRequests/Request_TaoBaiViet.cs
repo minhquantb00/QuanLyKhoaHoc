@@ -7,13 +7,14 @@ using System.Text;
 using System.Threading.Tasks;
 using WebCourseManagement_Models.Entities;
 
-namespace WebCourseManagement_Models.RequestModels.ChuongHocRequests
+namespace WebCourseManagement_Models.RequestModels.BaiVietRequests
 {
-    public class Request_ThemChuongHoc
+    public class Request_TaoBaiViet
     {
-        public string TenChuong { get; set; }
-        public int KhoaHocId { get; set; }
+        public string TieuDe { get; set; }
+        public string MoTa { get; set; }
         [DataType(DataType.Upload)]
-        public IFormFile? AnhChuongHoc { get; set; }
+        public IFormFile? AnhBaiViet { get; set; }
+        public int LoaiBaiVietId { get; set; }
     }
 }

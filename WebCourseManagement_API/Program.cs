@@ -13,6 +13,7 @@ using WebCourseManagement_Models.ConfigModels.ZaloPayment.Config;
 using WebCourseManagement_Models.Converters;
 using WebCourseManagement_Models.DataContexts;
 using WebCourseManagement_Models.ResponseModels.DataBaiHoc;
+using WebCourseManagement_Models.ResponseModels.DataBaiViet;
 using WebCourseManagement_Models.ResponseModels.DataBinhLuanBaiHoc;
 using WebCourseManagement_Models.ResponseModels.DataChuongHoc;
 using WebCourseManagement_Models.ResponseModels.DataHoaDon;
@@ -114,6 +115,12 @@ builder.Services.AddScoped<IMomoService, MomoService>();
 builder.Services.AddScoped<VNPayLibrary>();
 builder.Services.AddScoped<IThichBinhLuanBaiHocService, ThichBinhLuanBaiHocService>();
 builder.Services.AddScoped<IBinhLuanBaiHocService, BinhLuanBaiHocService>();
+builder.Services.AddScoped<IBaiVietService, BaiVietService>();
+builder.Services.AddScoped<ResponseObject<DataResponseBaiViet>>();
+builder.Services.AddScoped<NguoiDungThichBaiVietConverter>();
+builder.Services.AddScoped<BaiVietConverter>();
+builder.Services.AddScoped<BinhLuanBaiVietConverter>();
+builder.Services.AddScoped<NguoiDungThichBinhLuanBaiVietConverter>();
 builder.Services.AddAuthentication(Microsoft.AspNetCore.Authentication.JwtBearer.JwtBearerDefaults.AuthenticationScheme).AddJwtBearer(options =>
 {
     options.RequireHttpsMetadata = false;

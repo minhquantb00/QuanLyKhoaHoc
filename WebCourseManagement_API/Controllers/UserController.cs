@@ -34,7 +34,8 @@ namespace WebCourseManagement_API.Controllers
         private readonly IVNPayService _vnpayService;
         private readonly IBinhLuanBaiHocService _binhLuanBaiHocService;
         private readonly IThichBinhLuanBaiHocService _thichBinhLuanBaiHocService;
-        public UserController(IUserService userService, ILoaiKhoaHocService loaiKhoaHocService, IKhoaHocService khoaHocService, IChuongHocService chuongHocService, IBaiHocService baiHocService, IVNPayService vnpayService, IBinhLuanBaiHocService binhLuanBaiHocService, IThichBinhLuanBaiHocService thichBinhLuanBaiHocService)
+        private readonly IBaiHocService _baiVietService;
+        public UserController(IUserService userService, ILoaiKhoaHocService loaiKhoaHocService, IKhoaHocService khoaHocService, IChuongHocService chuongHocService, IBaiHocService baiHocService, IVNPayService vnpayService, IBinhLuanBaiHocService binhLuanBaiHocService, IThichBinhLuanBaiHocService thichBinhLuanBaiHocService, IBaiHocService baiVietService)
         {
             _userService = userService;
             _loaiKhoaHocService = loaiKhoaHocService;
@@ -44,6 +45,7 @@ namespace WebCourseManagement_API.Controllers
             _vnpayService = vnpayService;
             _binhLuanBaiHocService = binhLuanBaiHocService;
             _thichBinhLuanBaiHocService = thichBinhLuanBaiHocService;
+            _baiVietService = baiVietService;
         }
         [HttpGet("GetAllsNguoiDung")]
         public async Task<IActionResult> GetAllsNguoiDung(int pageSize = 10, int pageNumber = 1)
@@ -116,12 +118,14 @@ namespace WebCourseManagement_API.Controllers
         }
         [HttpPost("ThemChuongHoc")]
         [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
+        [Consumes(contentType: "multipart/form-data")]
         public async Task<IActionResult> ThemChuongHoc([FromBody]Request_ThemChuongHoc request)
         {
             return Ok(await _chuongHocService.ThemChuongHoc(request));
         }
         [HttpPut("SuaThongTinChuongHoc")]
         [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
+        [Consumes(contentType: "multipart/form-data")]
         public async Task<IActionResult> SuaThongTinChuongHoc([FromBody] Request_SuaThongTinChuongHoc request)
         {
             return Ok(await _chuongHocService.SuaThongTinChuongHoc(request)); 

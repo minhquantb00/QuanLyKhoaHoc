@@ -28,6 +28,7 @@ namespace WebCourseManagement_Models.Converters
                 ThoiGianCapNhat = chuongHoc.ThoiGianCapNhat,
                 ThoiGianTao = chuongHoc.ThoiGianTao,
                 TongThoiGianHocTrongChuong = chuongHoc.TongThoiGianHocTrongChuong,
+                AnhChuongHoc = chuongHoc.AnhChuongHoc,
                 BaiHocs = _context.baiHocs.Where(x => x.ChuongHocId == chuongHoc.Id).Select(x => _converter.EntityToDTO(x))
             };
         }

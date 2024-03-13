@@ -13,6 +13,7 @@ namespace WebCourseManagement_Models.ResponseModels.DataChuongHoc
         public string TenChuong { get; set; }
         public int TongThoiGianHocTrongChuong { get; set; }
         public int SoBaiHocTrongChuong { get; set; }
+        public string? AnhChuongHoc { get; set; }
         public DateTime ThoiGianTao { get; set; }
         public DateTime? ThoiGianCapNhat { get; set; }
         public IQueryable<DataResponseBaiHoc> BaiHocs { get; set; }
