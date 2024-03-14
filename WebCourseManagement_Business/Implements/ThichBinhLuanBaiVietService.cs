@@ -1,33 +1,28 @@
-﻿using Microsoft.AspNetCore.Http;
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using WebCourseManagement_Business.Interfaces;
-using WebCourseManagement_Models.Converters;
 using WebCourseManagement_Models.DataContexts;
 using WebCourseManagement_Models.Entities;
-using WebCourseManagement_Models.RequestModels.NguoiDungThichBinhLuanBaiHocRequests;
-using WebCourseManagement_Models.ResponseModels.DataNguoiDungThichBinhLuanBaiHoc;
-using WebCourseManagement_Models.Responses;
+using WebCourseManagement_Models.RequestModels.NguoiDungThichBinhLuanBaiVietRequests;
 
 namespace WebCourseManagement_Business.Implements
 {
-    public class ThichBinhLuanBaiHocService : IThichBinhLuanBaiHocService
+    public class ThichBinhLuanBaiVietService : IThichBinhLuanBaiVietService
     {
         private readonly AppDbContext _context;
-        public ThichBinhLuanBaiHocService(AppDbContext context)
+        public ThichBinhLuanBaiVietService(AppDbContext context)
         {
             _context = context;
         }
-
-        public async Task<string> ThichBinhLuanBaiHoc(int nguoiDungId, Request_ThichBinhLuanBaiHoc request)
+        public async Task<string> ThichBinhLuanBaiViet(int nguoiDungId, Request_NguoiDungThichBinhLuanBaiViet request)
         {
             var nguoiDung = await _context.nguoiDungs.SingleOrDefaultAsync(x => x.Id == nguoiDungId);
-            var binhLuan = await _context.binhLuanBaiHocs.SingleOrDefaultAsync(x => x.Id == request.BinhLuanBaiHocId && x.TrangThaiBinhLuanId == 1);
-            if(binhLuan == null)
+            var binhLuan = await _context.binhLuanBaiViets.SingleOrDefaultAsync(x => x.Id == request.BinhLuanBaiVietId && x.TrangThaiBinhLuanId == 1);
+            if (binhLuan == null)
             {
                 return "Bình luận không tồn tại";
             }
@@ -39,20 +34,20 @@ namespace WebCourseManagement_Business.Implements
             }
             else
             {
-                NguoiDungThichBinhLuanBaiHoc item = new NguoiDungThichBinhLuanBaiHoc
+                NguoiDungThichBinhLuanBaiViet item = new NguoiDungThichBinhLuanBaiViet
                 {
-                    BinhLuanBaiHocId = request.BinhLuanBaiHocId,
+                    BinhLuanBaiVietId = request.BinhLuanBaiVietId,
                     DaThich = true,
                     NguoiDungThichBinhLuanId = nguoiDungId,
                     ThoiGianThich = DateTime.Now
                 };
-                _context.nguoiDungThichBinhLuanBaiHocs.Add(item);
+                _context.nguoiDungThichBinhLuanBaiViets.Add(item);
                 _context.SaveChanges();
             }
-            
-            binhLuan.SoLuotThich = _context.nguoiDungThichBinhLuanBaiHocs.Count(x => x.BinhLuanBaiHocId == request.BinhLuanBaiHocId);
+
+            binhLuan.SoLuotThich = _context.nguoiDungThichBinhLuanBaiViets.Count(x => x.BinhLuanBaiVietId == request.BinhLuanBaiVietId);
             _context.SaveChanges();
-            return "Bạn đã thích bình luận bài học";
+            return "Bạn đã thích bình luận bài viết";
         }
     }
 }

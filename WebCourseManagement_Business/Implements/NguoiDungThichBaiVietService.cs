@@ -1,0 +1,53 @@
+﻿using Microsoft.EntityFrameworkCore;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+using WebCourseManagement_Business.Interfaces;
+using WebCourseManagement_Models.DataContexts;
+using WebCourseManagement_Models.Entities;
+using WebCourseManagement_Models.RequestModels.ThichBaiVietRequests;
+
+namespace WebCourseManagement_Business.Implements
+{
+    public class NguoiDungThichBaiVietService : INguoiDungThichBaiVietService
+    {
+        private readonly AppDbContext _context;
+        public NguoiDungThichBaiVietService(AppDbContext context)
+        {
+            _context = context;
+        }
+        public async Task<string> LikeBaiViet(int nguoiDungId, Request_ThichBaiViet request)
+        {
+            var nguoiDung = await _context.nguoiDungs.SingleOrDefaultAsync(x => x.Id == nguoiDungId && x.IsActive == true && x.DaKhoa == false && x.TrangThaiNguoiDungId == 2);
+            var baiViet = await _context.baiViets.SingleOrDefaultAsync(x => x.Id == request.BaiVietId && x.TrangThaiBaiVietId == 2);
+            if (baiViet == null)
+            {
+                return "Bài viết không tồn tại";
+            }
+            var nguoiLike = await _context.nguoiDungThichBaiViets.SingleOrDefaultAsync(x => x.NguoiDungId == nguoiDungId && x.BaiVietId == baiViet.Id);
+            if (nguoiLike != null)
+            {
+                _context.nguoiDungThichBaiViets.Remove(nguoiLike);
+                _context.SaveChanges();
+            }
+            else
+            {
+                NguoiDungThichBaiViet item = new NguoiDungThichBaiViet
+                {
+                    BaiVietId = request.BaiVietId,
+                    DaThich = true,
+                    NguoiDungId = nguoiDungId,
+                    ThoiGianThich = DateTime.Now
+                };
+                _context.nguoiDungThichBaiViets.Add(item);
+                _context.SaveChanges();
+            }
+
+            baiViet.SoLuotThich = _context.nguoiDungThichBaiViets.Count(x => x.BaiVietId == request.BaiVietId);
+            _context.SaveChanges();
+            return "Bạn đã thích bình luận bài viết";
+        }
+    }
+}

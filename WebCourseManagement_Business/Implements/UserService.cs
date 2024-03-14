@@ -34,7 +34,7 @@ namespace WebCourseManagement_Business.Implements
 
         public async Task<ResponseObject<DataResponseNguoiDung>> CapNhatThongTinNguoiDung(int nguoiDungId, Request_CapNhatThongTinNguoiDung request)
         {
-            var nguoiDung = await _context.nguoiDungs.SingleOrDefaultAsync(x => x.Id == nguoiDungId);
+            var nguoiDung = await _context.nguoiDungs.SingleOrDefaultAsync(x => x.Id == nguoiDungId && x.IsActive == true && x.DaKhoa == false && x.TrangThaiNguoiDungId == 2);
             var xaPhuong = _context.xaPhuongs.SingleOrDefault(x => x.Id == request.XaPhuongId);
             var quanHuyen = _context.quanHuyens.SingleOrDefault(x => x.Id == request.QuanHuyenId);
             var tinhThanh = _context.tinhThanhs.SingleOrDefault(x => x.Id == request.TinhThanhId);
@@ -60,11 +60,10 @@ namespace WebCourseManagement_Business.Implements
             return _responseObject.ResponseSuccess("Cập nhật thông tin thành công", _converter.EntityToDTO(nguoiDung));
         }
 
-        public async Task<PageResult<DataResponseNguoiDung>> GetAlls(int pageSize, int pageNumber)
+        public async Task<IQueryable<DataResponseNguoiDung>> GetAlls()
         {
-            var query = _context.nguoiDungs.Where(x => x.IsActive == true && x.TrangThaiNguoiDungId == 2 && x.DaKhoa == false).AsQueryable();
-            var result = Pagination.GetPagedData(query.Select(x => _converter.EntityToDTO(x)), pageSize, pageNumber);
-            return result;
+            var query = _context.nguoiDungs.Where(x => x.IsActive == true && x.TrangThaiNguoiDungId == 2 && x.DaKhoa == false).Select(x => _converter.EntityToDTO(x)).AsQueryable();
+            return query;
         }
 
         public async Task<ResponseObject<DataResponseNguoiDung>> GetNguoiDungById(int id)
@@ -100,7 +99,7 @@ namespace WebCourseManagement_Business.Implements
 
         public async Task<string> MoKhoaTaiKhanNguoiDung(int id)
         {
-            var nguoiDung = await _context.nguoiDungs.SingleOrDefaultAsync(x => x.Id == id && x.DaKhoa == true);
+            var nguoiDung = await _context.nguoiDungs.SingleOrDefaultAsync(x => x.Id == id && x.DaKhoa == true && x.IsActive == true && x.TrangThaiNguoiDungId == 2);
             var currentUser = _httpContextAccessor.HttpContext.User;
             if (!currentUser.Identity.IsAuthenticated)
             {

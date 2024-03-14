@@ -123,7 +123,9 @@ builder.Services.AddScoped<BinhLuanBaiVietConverter>();
 builder.Services.AddScoped<NguoiDungThichBinhLuanBaiVietConverter>();
 builder.Services.AddScoped<NguoiDungThichBinhLuanBaiVietConverter>();
 builder.Services.AddScoped<BinhLuanBaiVietConverter>();
+builder.Services.AddScoped<IThichBinhLuanBaiVietService, ThichBinhLuanBaiVietService>();
 builder.Services.AddScoped<ResponseObject<DataResponseBinhLuanBaiViet>>();
+builder.Services.AddScoped<INguoiDungThichBaiVietService, NguoiDungThichBaiVietService>();
 builder.Services.AddAuthentication(Microsoft.AspNetCore.Authentication.JwtBearer.JwtBearerDefaults.AuthenticationScheme).AddJwtBearer(options =>
 {
     options.RequireHttpsMetadata = false;

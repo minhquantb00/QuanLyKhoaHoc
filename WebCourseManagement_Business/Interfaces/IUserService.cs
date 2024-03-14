@@ -13,7 +13,7 @@ namespace WebCourseManagement_Business.Interfaces
 {
     public interface IUserService
     {
-        Task<PageResult<DataResponseNguoiDung>> GetAlls(int pageSize, int pageNumber);
+        Task<IQueryable<DataResponseNguoiDung>> GetAlls();
         Task<ResponseObject<DataResponseNguoiDung>> GetNguoiDungById(int id);
         Task<ResponseObject<DataResponseNguoiDung>> CapNhatThongTinNguoiDung(int nguoiDungId, Request_CapNhatThongTinNguoiDung request);
         Task<string> NguoiDungXoaTaiKhoan(int id);

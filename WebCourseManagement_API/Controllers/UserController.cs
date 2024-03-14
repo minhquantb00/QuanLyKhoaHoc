@@ -11,6 +11,8 @@ using WebCourseManagement_Models.RequestModels.InputRequests;
 using WebCourseManagement_Models.RequestModels.KhoaHocRequests;
 using WebCourseManagement_Models.RequestModels.NguoiDungRequests;
 using WebCourseManagement_Models.RequestModels.NguoiDungThichBinhLuanBaiHocRequests;
+using WebCourseManagement_Models.RequestModels.NguoiDungThichBinhLuanBaiVietRequests;
+using WebCourseManagement_Models.RequestModels.ThichBaiVietRequests;
 using WebCourseManagement_Models.ResponseModels.DataBaiHoc;
 using WebCourseManagement_Models.ResponseModels.DataBaiViet;
 using WebCourseManagement_Models.ResponseModels.DataBinhLuanBaiHoc;
@@ -38,8 +40,10 @@ namespace WebCourseManagement_API.Controllers
         private readonly IBinhLuanBaiHocService _binhLuanBaiHocService;
         private readonly IThichBinhLuanBaiHocService _thichBinhLuanBaiHocService;
         private readonly IBaiVietService _baiVietService;
+        private readonly IThichBinhLuanBaiVietService _thichBinhLuanBaiVietService;
+        private readonly INguoiDungThichBaiVietService _thichBaiVietService;
 
-        public UserController(IUserService userService, ILoaiKhoaHocService loaiKhoaHocService, IKhoaHocService khoaHocService, IChuongHocService chuongHocService, IBaiHocService baiHocService, IVNPayService vnpayService, IBinhLuanBaiHocService binhLuanBaiHocService, IThichBinhLuanBaiHocService thichBinhLuanBaiHocService, IBaiVietService baiVietService)
+        public UserController(IUserService userService, ILoaiKhoaHocService loaiKhoaHocService, IKhoaHocService khoaHocService, IChuongHocService chuongHocService, IBaiHocService baiHocService, IVNPayService vnpayService, IBinhLuanBaiHocService binhLuanBaiHocService, IThichBinhLuanBaiHocService thichBinhLuanBaiHocService, IBaiVietService baiVietService, IThichBinhLuanBaiVietService thichBinhLuanBaiVietService, INguoiDungThichBaiVietService thichBaiVietService)
         {
             _userService = userService;
             _loaiKhoaHocService = loaiKhoaHocService;
@@ -50,11 +54,13 @@ namespace WebCourseManagement_API.Controllers
             _binhLuanBaiHocService = binhLuanBaiHocService;
             _thichBinhLuanBaiHocService = thichBinhLuanBaiHocService;
             _baiVietService = baiVietService;
+            _thichBinhLuanBaiVietService = thichBinhLuanBaiVietService;
+            _thichBaiVietService = thichBaiVietService;
         }
         [HttpGet("GetAllsNguoiDung")]
-        public async Task<IActionResult> GetAllsNguoiDung(int pageSize = 10, int pageNumber = 1)
+        public async Task<IActionResult> GetAllsNguoiDung()
         {
-            return Ok(await _userService.GetAlls(pageSize, pageNumber));
+            return Ok(await _userService.GetAlls());
         }
 
         [HttpGet("GetNguoiDungById/{id}")]
@@ -288,6 +294,20 @@ namespace WebCourseManagement_API.Controllers
         public async Task<IActionResult> XoaBinhLuanBaiViet([FromRoute] int binhLuanId)
         {
             return Ok(await _baiVietService.XoaBinhLuan(binhLuanId));
+        }
+        [HttpPost("ThichBinhLuanBaiViet")]
+        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
+        public async Task<IActionResult> ThichBinhLuanBaiViet([FromBody] Request_NguoiDungThichBinhLuanBaiViet request)
+        {
+            int id = int.Parse(HttpContext.User.FindFirst("Id").Value);
+            return Ok(await _thichBinhLuanBaiVietService.ThichBinhLuanBaiViet(id, request));
+        }
+        [HttpPost("LikeBaiViet")]
+        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
+        public async Task<IActionResult> LikeBaiViet([FromBody] Request_ThichBaiViet request)
+        {
+            int id = int.Parse(HttpContext.User.FindFirst("Id").Value);
+            return Ok(await _thichBaiVietService.LikeBaiViet(id, request));
         }
     }
 }
