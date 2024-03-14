@@ -138,7 +138,10 @@ namespace WebCourseManagement_Business.Implements
             _context.SaveChanges();
             return "Xóa khóa học thành công";
         }
-
+        public async Task<IQueryable<DataResponseKhoaHoc>> GetAllsKhoahoc()
+        {
+            return _context.khoaHocs.Select(x => _converter.EntityToDTO(x)).AsQueryable();
+        }
         public async Task<ResponseObject<DataResponseHoaDon>> DangKyKhoaHoc(int nguoiDungId, Request_DangKyKhoaHoc request)
         {
             var nguoiDung = await _context.nguoiDungs.SingleOrDefaultAsync(x => x.Id == nguoiDungId);

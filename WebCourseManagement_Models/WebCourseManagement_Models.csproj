@@ -26,4 +26,8 @@
     <ProjectReference Include="..\WebCourseManagement_Ultils\WebCourseManagement_Ultils.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="RequestModels\NewFolder\" />
+  </ItemGroup>
+
 </Project>

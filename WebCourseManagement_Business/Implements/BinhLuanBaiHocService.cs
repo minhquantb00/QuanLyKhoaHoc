@@ -121,6 +121,7 @@ namespace WebCourseManagement_Business.Implements
             }
             binhLuan.TrangThaiBinhLuanId = 2;
             binhLuan.IsActive = false;
+            binhLuan.ThoiGianXoa = DateTime.Now;
             _context.SaveChanges();
             return "Xóa bình luận thành công";
         }

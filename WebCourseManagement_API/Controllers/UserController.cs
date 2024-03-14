@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using WebCourseManagement_Business.Interfaces;
 using WebCourseManagement_Models.RequestModels.BaiHocRequests;
+using WebCourseManagement_Models.RequestModels.BaiVietRequests;
 using WebCourseManagement_Models.RequestModels.BinhLuanBaiHocRequest;
 using WebCourseManagement_Models.RequestModels.ChuongHocRequests;
 using WebCourseManagement_Models.RequestModels.InputRequests;
@@ -11,6 +12,7 @@ using WebCourseManagement_Models.RequestModels.KhoaHocRequests;
 using WebCourseManagement_Models.RequestModels.NguoiDungRequests;
 using WebCourseManagement_Models.RequestModels.NguoiDungThichBinhLuanBaiHocRequests;
 using WebCourseManagement_Models.ResponseModels.DataBaiHoc;
+using WebCourseManagement_Models.ResponseModels.DataBaiViet;
 using WebCourseManagement_Models.ResponseModels.DataBinhLuanBaiHoc;
 using WebCourseManagement_Models.ResponseModels.DataChuongHoc;
 using WebCourseManagement_Models.ResponseModels.DataHoaDon;
@@ -19,6 +21,7 @@ using WebCourseManagement_Models.ResponseModels.DataLoaiKhoaHoc;
 using WebCourseManagement_Models.ResponseModels.DataNguoiDung;
 using WebCourseManagement_Models.Responses;
 using WebCourseManagement_Repositories.HandlePagination;
+using Request_TraLoiBinhLuanBaiViet = WebCourseManagement_Models.RequestModels.BaiVietRequests.Request_TraLoiBinhLuanBaiViet;
 
 namespace WebCourseManagement_API.Controllers
 {
@@ -34,8 +37,9 @@ namespace WebCourseManagement_API.Controllers
         private readonly IVNPayService _vnpayService;
         private readonly IBinhLuanBaiHocService _binhLuanBaiHocService;
         private readonly IThichBinhLuanBaiHocService _thichBinhLuanBaiHocService;
-        private readonly IBaiHocService _baiVietService;
-        public UserController(IUserService userService, ILoaiKhoaHocService loaiKhoaHocService, IKhoaHocService khoaHocService, IChuongHocService chuongHocService, IBaiHocService baiHocService, IVNPayService vnpayService, IBinhLuanBaiHocService binhLuanBaiHocService, IThichBinhLuanBaiHocService thichBinhLuanBaiHocService, IBaiHocService baiVietService)
+        private readonly IBaiVietService _baiVietService;
+
+        public UserController(IUserService userService, ILoaiKhoaHocService loaiKhoaHocService, IKhoaHocService khoaHocService, IChuongHocService chuongHocService, IBaiHocService baiHocService, IVNPayService vnpayService, IBinhLuanBaiHocService binhLuanBaiHocService, IThichBinhLuanBaiHocService thichBinhLuanBaiHocService, IBaiVietService baiVietService)
         {
             _userService = userService;
             _loaiKhoaHocService = loaiKhoaHocService;
@@ -189,13 +193,13 @@ namespace WebCourseManagement_API.Controllers
 
             return Ok(await _vnpayService.VNPayReturn(vnpayData));
         }
-        [HttpDelete("XoaBinhLuan/{binhLuanId}")]
+        [HttpDelete("XoaBinhLuanBaiHoc/{binhLuanId}")]
         [Authorize(AuthenticationSchemes =  JwtBearerDefaults.AuthenticationScheme)]
-        public async Task<IActionResult> XoaBinhLuan([FromRoute] int binhLuanId)
+        public async Task<IActionResult> XoaBinhLuanBaiHoc([FromRoute] int binhLuanId)
         {
             return Ok(await _binhLuanBaiHocService.XoaBinhLuan(binhLuanId));
         }
-        [HttpPost("TraLoiBinhLuan")]
+        [HttpPost("TraLoiBinhLuanBaiHoc")]
         [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
         public async Task<IActionResult> TraLoiBinhLuan([FromBody] Request_TraLoiBinhLuan request)
         {
@@ -222,6 +226,68 @@ namespace WebCourseManagement_API.Controllers
         {
             int id = int.Parse(HttpContext.User.FindFirst("Id").Value);
             return Ok(await _thichBinhLuanBaiHocService.ThichBinhLuanBaiHoc(id, request));
+        }
+        [HttpGet("InputBaiViet")]
+        public async Task<IActionResult> GetAllsBaiViet(InputBaiViet input, int pageSize = 10, int pageNumber = 1)
+        {
+            return Ok(await _baiVietService.GetAlls(input, pageSize, pageNumber));
+        }
+        [HttpGet("GetBaiVietById/{baiVietId}")]
+        public async Task<IActionResult> GetBaiVietById([FromRoute] int baiVietId)
+        {
+            return Ok(await _baiVietService.GetBaiVietById(baiVietId));
+        }
+        [HttpPut("SuaBaiViet")]
+        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
+        public async Task<IActionResult> SuaBaiViet([FromForm] Request_SuaBaiViet request)
+        {
+            int id = int.Parse(HttpContext.User.FindFirst("Id").Value);
+            return Ok(await _baiVietService.SuaBaiViet(id, request));
+        }
+        [HttpPost("TaoBaiViet")]
+        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
+        public async Task<IActionResult> TaoBaiViet([FromForm] Request_TaoBaiViet request)
+        {
+            int id = int.Parse(HttpContext.User.FindFirst("Id").Value);
+            return Ok(await _baiVietService.TaoBaiViet(id, request));
+        }
+        [HttpDelete("XoaBaiViet/{baiVietId}")]
+        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
+        public async Task<IActionResult> XoaBaiViet([FromBody] int baiVietId)
+        {
+            return Ok(await _baiVietService.XoaBaiViet(baiVietId));
+        }
+        [HttpGet("getkhoahoc")]
+        public async Task<IActionResult> GetAllsKhoahoc()
+        {
+            return Ok(await _khoaHocService.GetAllsKhoahoc());
+        }
+        [HttpPut("SuaBinhLuanBaiViet")]
+        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
+        public async Task<IActionResult> SuaBinhLuanBaiViet([FromBody] Request_SuaBinhLuanBaiViet request)
+        {
+            int id = int.Parse(HttpContext.User.FindFirst("Id").Value);
+            return Ok(await _baiVietService.SuaBinhLuanBaiViet(id, request));
+        }
+        [HttpPost("TaoBinhLuanBaiViet")]
+        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
+        public async Task<IActionResult> TaoBinhLuanBaiViet([FromBody] Request_TaoBinhLuanBaiViet request)
+        {
+            int id = int.Parse(HttpContext.User.FindFirst("Id").Value);
+            return Ok(await _baiVietService.TaoBinhLuanBaiViet(id, request));
+        }
+        [HttpPost("TraLoiBinhLuanBaiViet")]
+        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
+        public async Task<IActionResult> TraLoiBinhLuanBaiViet([FromBody] Request_TraLoiBinhLuanBaiViet request)
+        {
+            int id = int.Parse(HttpContext.User.FindFirst("Id").Value);
+            return Ok(await _baiVietService.TraLoiBinhLuanBaiViet(id, request));
+        }
+        [HttpDelete("XoaBinhLuanBaiViet/{binhLuanId}")]
+        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
+        public async Task<IActionResult> XoaBinhLuanBaiViet([FromRoute] int binhLuanId)
+        {
+            return Ok(await _baiVietService.XoaBinhLuan(binhLuanId));
         }
     }
 }
