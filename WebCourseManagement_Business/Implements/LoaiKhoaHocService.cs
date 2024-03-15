@@ -43,6 +43,11 @@ namespace WebCourseManagement_Business.Implements
             return _responseObject.ResponseSuccess("Cập nhật thông tin loại khóa học thành công", _converter.EntityToDTO(loaiKhoaHoc));
         }
 
+        public async Task<IQueryable<DataResponseLoaiKhoaHoc>> GetAllLoaiKhoahocs()
+        {
+            return _context.loaiKhoaHocs.Select(x => _converter.EntityToDTO(x)).AsQueryable();
+        }
+
         public async Task<PageResult<DataResponseLoaiKhoaHoc>> GetAlls(int pageSize, int pageNumber)
         {
             var query = _context.loaiKhoaHocs.AsQueryable();

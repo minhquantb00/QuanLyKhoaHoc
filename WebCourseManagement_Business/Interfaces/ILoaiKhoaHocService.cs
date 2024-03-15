@@ -16,5 +16,6 @@ namespace WebCourseManagement_Business.Interfaces
         Task<ResponseObject<DataResponseLoaiKhoaHoc>> CapNhatThongTinLoaiKhoaHoc(Request_SuaLoaiKhoaHoc request);
         Task<string> XoaLoaiKhoaHoc(int loaiKhoaHocId);
         Task<PageResult<DataResponseLoaiKhoaHoc>> GetAlls(int pageSize, int pageNumber);
+        Task<IQueryable<DataResponseLoaiKhoaHoc>> GetAllLoaiKhoahocs();
     }
 }

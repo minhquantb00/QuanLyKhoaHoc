@@ -1,7 +1,13 @@
 <template>
   <div id="content-course" class="container">
     <div class="slider">
-      <v-carousel show-arrows="hover" hide-delimiters continuous="true" cycle interval="2000">
+      <v-carousel
+        show-arrows="hover"
+        hide-delimiters
+        continuous="true"
+        cycle
+        interval="2000"
+      >
         <v-carousel-item
           src="https://img-c.udemycdn.com/notices/featured_carousel_slide/image/5bf6274c-4a57-42ce-93d6-9775b06730be.jpg"
           cover
@@ -24,19 +30,90 @@
               :key="n.id"
               v-slot="{ toggle }"
             >
-              <div class="ma-6 course-item" @click="toggle" style="width: 250px">
+              <v-sheet>
+                <router-link
+                  to="/detail-product"
+                  style="text-decoration: none; color: black"
+                >
+                  <div
+                    class="ma-6 course-item"
+                    @click="toggle"
+                    style="width: 250px"
+                  >
+                    <v-img :src="n.image" width="250px" height="141px" />
+                    <h4>{{ n.nameCourse }}</h4>
+                    <p style="margin: 0">{{ n.description }}</p>
+                    <v-rating
+                      v-model="rating"
+                      size
+                      class="my-2"
+                      active-color="orange"
+                      color="orange-lighten-1"
+                    ></v-rating>
+                    <!-- custom trên -->
+                    <p style="margin: 0">{{ n.price }}</p>
+                  </div>
+                </router-link>
+                <!-- <v-tooltip
+                  v-for="(n, index) in listCourse"
+                  :key="index"
+                  activator="parent"
+                  location="end"
+                  slot-scope="{ activatorProps }"
+                >
+                  <v-card
+                    class="my-2"
+                    max-width="244"
+                    v-bind="activatorProps"
+                    @mouseenter="showTooltip(index)"
+                    @mouseleave="hideTooltip()"
+                  >
+                    <v-card-item>
+                      <v-card-title>{{ n.nameCourse }}</v-card-title>
+                      <v-card-subtitle>
+                        Card subtitle secondary text
+                      </v-card-subtitle>
+                    </v-card-item>
+
+                    <v-card-text>
+                      Lorem ipsum dolor sit amet, consectetur adipiscing elit,
+                      sed do eiusmod tempor incididunt ut labore et dolore magna
+                      aliqua.
+                    </v-card-text>
+                  </v-card>
+                </v-tooltip> -->
+              </v-sheet>
+            </v-slide-group-item>
+          </v-slide-group>
+        </v-sheet>
+      </div>
+    </div>
+
+    <div class="course-suggest">
+      <h2 style="margin-bottom: 20px">Khóa học nổi bật</h2>
+      <div class="list-course">
+        <v-sheet class="mx-auto" elevation="4">
+          <v-slide-group v-model="model" center-active show-arrows>
+            <v-slide-group-item
+              v-for="n in listCourseHot"
+              :key="n.id"
+              v-slot="{ toggle }"
+            >
+              <div
+                class="ma-6 course-item"
+                @click="toggle"
+                style="width: 250px"
+              >
                 <v-img :src="n.image" width="250px" height="141px" />
                 <h4>{{ n.nameCourse }}</h4>
                 <p style="margin: 0">{{ n.description }}</p>
                 <v-rating
-                  half-increments
-                  hover
-                  :length="5"
-                  :size="32"
-                  :model-value="n.rating"
-                  active-color="primary"
-                  @click="changeRating(n.id, $event)"
-                />
+                  v-model="rating"
+                  size
+                  class="my-2"
+                  active-color="orange"
+                  color="orange-lighten-1"
+                ></v-rating>
                 <p style="margin: 0">{{ n.price }}</p>
               </div>
             </v-slide-group-item>
@@ -46,73 +123,46 @@
     </div>
 
     <div class="course-suggest">
-        <h2 style="margin-bottom: 20px">Khóa học nổi bật</h2>
-        <div class="list-course">
-          <v-sheet class="mx-auto" elevation="4">
-            <v-slide-group v-model="model" center-active show-arrows>
-              <v-slide-group-item
-                v-for="n in listCourseHot"
-                :key="n.id"
-                v-slot="{ toggle }"
+      <h2 style="margin-bottom: 20px">Bài viết nổi bật</h2>
+      <div class="list-course">
+        <v-sheet class="mx-auto" elevation="4">
+          <v-slide-group v-model="model" center-active show-arrows>
+            <v-slide-group-item
+              v-for="n in listCourse"
+              :key="n.id"
+              v-slot="{ toggle }"
+            >
+              <div
+                class="ma-6 course-item"
+                @click="toggle"
+                style="width: 250px"
               >
-                <div class="ma-6 course-item" @click="toggle" style="width: 250px">
-                  <v-img :src="n.image" width="250px" height="141px" />
-                  <h4>{{ n.nameCourse }}</h4>
-                  <p style="margin: 0">{{ n.description }}</p>
-                  <v-rating
-                    half-increments
-                    hover
-                    :length="5"
-                    :size="32"
-                    :model-value="n.rating"
-                    active-color="primary"
-                    @click="changeRating(n.id, $event)"
-                  />
-                  <p style="margin: 0">{{ n.price }}</p>
-                </div>
-              </v-slide-group-item>
-            </v-slide-group>
-          </v-sheet>
-        </div>
+                <v-img :src="n.image" width="250px" height="141px" />
+                <h4>{{ n.nameCourse }}</h4>
+                <p style="margin: 0">{{ n.description }}</p>
+                <v-rating
+                  v-model="rating"
+                  size
+                  class="my-2"
+                  active-color="orange"
+                  color="orange-lighten-1"
+                ></v-rating>
+                <p style="margin: 0">{{ n.price }}</p>
+              </div>
+            </v-slide-group-item>
+          </v-slide-group>
+        </v-sheet>
       </div>
-
-      <div class="course-suggest">
-        <h2 style="margin-bottom: 20px">Bài viết nổi bật</h2>
-        <div class="list-course">
-          <v-sheet class="mx-auto" elevation="4">
-            <v-slide-group v-model="model" center-active show-arrows>
-              <v-slide-group-item
-                v-for="n in listCourse"
-                :key="n.id"
-                v-slot="{ toggle }"
-              >
-                <div class="ma-6 course-item" @click="toggle" style="width: 250px">
-                  <v-img :src="n.image" width="250px" height="141px" />
-                  <h4>{{ n.nameCourse }}</h4>
-                  <p style="margin: 0">{{ n.description }}</p>
-                  <v-rating
-                    half-increments
-                    hover
-                    :length="5"
-                    :size="32"
-                    :model-value="n.rating"
-                    active-color="primary"
-                    @click="changeRating(n.id, $event)"
-                  />
-                  <p style="margin: 0">{{ n.price }}</p>
-                </div>
-              </v-slide-group-item>
-            </v-slide-group>
-          </v-sheet>
-        </div>
-      </div>
+    </div>
   </div>
 </template>
 
 <script>
+import { useRouter } from "vue-router";
 export default {
   data() {
     return {
+      router: useRouter(),
       listCourse: [
         {
           id: 1,
@@ -169,7 +219,8 @@ export default {
           image:
             "https://tenten.vn/tin-tuc/wp-content/uploads/2022/06/Java-Script-4.jpg",
           nameCourse: "Khóa học Javascript",
-          description: "JavaScript là ngôn ngữ lập trình website phổ biến hiện nay,...",
+          description:
+            "JavaScript là ngôn ngữ lập trình website phổ biến hiện nay,...",
           rating: 3,
           price: "397.000 VNĐ",
         },
@@ -178,8 +229,7 @@ export default {
           image:
             "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRSYqtlZ8hRs-1a_Wdsa-x-rSmWNxNNiaJCaA&usqp=CAU",
           nameCourse: "Khóa học NodeJs",
-          description:
-            "Node.js là một hệ thống phần mềm,...",
+          description: "Node.js là một hệ thống phần mềm,...",
           rating: 3,
           price: "397.000 VNĐ",
         },
@@ -211,17 +261,24 @@ export default {
           rating: 3,
           price: "397.000 VNĐ",
         },
-      ]
+      ],
     };
   },
   methods: {
     changeRating(courseId, event) {
       const newRating = event.target.value;
-      const course = this.listCourse.find(course => course.id === courseId);
+      const course = this.listCourse.find((course) => course.id === courseId);
       if (course) {
         course.rating = newRating;
       }
       console.log(`Updated rating for course ${courseId}: ${newRating}`);
+    },
+    showTooltip(index) {
+      console.log("Hovering over item with id:", this.listCourse[index].id);
+      // Do something when hovering over the card
+    },
+    hideTooltip() {
+      // Do something when leaving the card
     },
   },
 };
@@ -231,7 +288,7 @@ export default {
 .course-suggest {
   margin-top: 40px;
 }
-.course-item:hover{
-    cursor: pointer;
+.course-item:hover {
+  cursor: pointer;
 }
 </style>

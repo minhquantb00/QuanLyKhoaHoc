@@ -3,60 +3,93 @@
     <div class="background-register"></div>
     <div class="background-opacity"></div>
     <div class="main-register d-flex justify-content-evenly align-items-center">
-      <v-card
-        class="form-register text-white mx-auto"
-        title="Vui lòng đăng nhập tại đây!"
-      >
-        <v-container class="set-index">
-          <v-label class="input-label" :rules="taiKhoanRules"
-            >Tài khoản</v-label
+      <div class="layout">
+        <div class="form-login">
+          <div class="logo text-center mb-6">
+            <img src="../../assets/image/logo2.png" width="130" alt="" />
+          </div>
+          <a-form
+            :model="formState"
+            name="normal_login"
+            class="login-form"
+            @finish="onFinish"
+            @finishFailed="onFinishFailed"
           >
-          <v-text-field
-            v-model="inputLogin.taiKhoan"
-            color="primary"
-            placeholder="Tài khoản"
-            variant="underlined"
-          ></v-text-field>
-          <v-label class="input-label" :rules="passwordRules">Mật khẩu</v-label>
-          <v-text-field
-            v-model="inputLogin.matKhau"
-            color="primary"
-            placeholder="Mật khẩu"
-            type="password"
-            variant="underlined"
-          ></v-text-field>
-          <v-checkbox v-model="terms" color="primary" label="Nhớ mật khẩu" />
-        </v-container>
+            <a-form-item name="username" :rules="taiKhoanRules">
+              <a-input
+                v-model:value="inputLogin.taiKhoan"
+                placeholder="Username"
+                class="input-content"
+              >
+              </a-input>
+            </a-form-item>
 
-        <v-card-actions class="justify-content-evenly">
-          <v-btn color="success" :loading="loading" @click="login">
-            Đăng nhập
+            <a-form-item name="password" :rules="passwordRules">
+              <a-input-password
+                v-model:value="inputLogin.matKhau"
+                placeholder="Password"
+                class="input-content"
+              >
+              </a-input-password>
+            </a-form-item>
 
-            <v-icon icon="mdi-chevron-right" end></v-icon>
-          </v-btn>
-        </v-card-actions>
-
-        <v-card-text class="text-center">
-          <span class="mr-3">Bạn chưa có tài khoản?</span>
-          <v-btn
-            color="success"
-            @click="
-              () => {
-                router.push({ path: '/register' });
-              }
-            "
-            >Đăng ký</v-btn
-          >
-        </v-card-text>
-      </v-card>
+            <a-form-item>
+              <router-link to="/forgot-password" class="login-form-forgot"
+                >Quên mật khẩu?</router-link
+              >
+            </a-form-item>
+            <a-form-item class="text-center">
+              <a-button
+                type="primary"
+                html-type="submit"
+                class="login-form-button"
+                @click="login"
+                :loading="loading"
+              >
+                Đăng nhập
+              </a-button>
+            </a-form-item>
+            <a-form-item class="text-center">
+              <p style="font-size: 18px">Hoặc đăng nhập với</p>
+              <a href="#" class="mr-2">
+                <v-btn icon>
+                  <img src="../../assets/logo/google.png" width="30" alt="" />
+                </v-btn>
+              </a>
+              <a href="#" class="ml-2">
+                <v-btn icon>
+                  <img src="../../assets/logo/facebook.png" width="30" alt="" />
+                </v-btn>
+              </a>
+            </a-form-item>
+            <a-form-item class="text-center">
+              <span style="font-size: 17px">Chưa có tài khoản?</span>
+              <router-link to="/register" class="ml-2 content-register-link"
+                >Đăng kí</router-link
+              >
+            </a-form-item>
+          </a-form>
+        </div>
+      </div>
     </div>
   </div>
 </template>
-
+<script setup>
+import { reactive, computed } from "vue";
+const onFinish = (values) => {
+  console.log("Success:", values);
+};
+const onFinishFailed = (errorInfo) => {
+  console.log("Failed:", errorInfo);
+};
+const disabled = computed(() => {
+  return !(formState.username && formState.password);
+});
+</script>
 <script>
 import { useRouter } from "vue-router";
-import { authApi  } from '../../apis/Auth/authApi'
-import   useEmitter   from '../../helpers/useEmitter'
+import { authApi } from "../../apis/Auth/authApi";
+import useEmitter from "../../helpers/useEmitter";
 export default {
   data() {
     return {
@@ -75,6 +108,7 @@ export default {
           return "Bạn phải điền tên tài khoản";
         },
       ],
+      visible: false,
       passwordRules: [
         (value) => {
           if (value) return true;
@@ -95,34 +129,35 @@ export default {
     };
   },
   methods: {
-    async login(){
-      this.loading = true
-      const result = (await this.authenticateApi.login(this.inputLogin)).data
-      if(result.status === 200){
-        this.emitter.emit('showAlert', {
-          type: 'success',
-          content: result.message
-        })
-        if(!localStorage.getItem('accessToken')){
-          localStorage.setItem('accessToken', result.data.accessToken)
-          localStorage.setItem('refreshToken', result.data.refreshToken)
+    async login() {
+      // Xử lý đăng nhập sử dụng authApi
+      this.loading = true;
+      console.log(this.inputLogin);
+      const dataLogin = this.inputLogin;
+      console.log(dataLogin);
+      const result = (await this.authenticateApi.login(dataLogin)).data;
+      console.log(result);
+      if (result.status === 200) {
+        if (!localStorage.getItem("accessToken")) {
+          localStorage.setItem("accessToken", result.data.accessToken);
+          localStorage.setItem("refreshToken", result.data.refreshToken);
 
-          const accessToken = localStorage.getItem('accessToken')
-          var decoded = parseJwt(accessToken)
-          localStorage.setItem('userInfo', JSON.stringify(decoded))
+          const accessToken = localStorage.getItem("accessToken");
+          var decoded = this.parseJwt(accessToken); // Fix lỗi parseJwt không được định nghĩa
+          localStorage.setItem("userInfo", JSON.stringify(decoded));
         }
-        this.router.push({path: '/'})
-      }
-      else{
+        this.router.push({ path: "/" });
+      } else {
         const alert = {
-          type: 'error',
-          content: result.message
-        }
-        this.emitter.emit('showAlert', alert)
+          type: "error",
+          content: result.message,
+        };
+        this.emitter.emit("showAlert", alert);
       }
-      this.loading = false
+      this.loading = false;
     },
     parseJwt(token) {
+      // Hàm parseJwt đã được di chuyển vào phạm vi của component
       var base64Url = token.split(".")[1];
       var base64 = base64Url.replace(/-/g, "+").replace(/_/g, "/");
       var jsonPayload = decodeURIComponent(
@@ -137,17 +172,59 @@ export default {
 
       return JSON.parse(jsonPayload);
     },
+    // parseJwt(token) {
+    //   var base64Url = token.split(".")[1];
+    //   var base64 = base64Url.replace(/-/g, "+").replace(/_/g, "/");
+    //   var jsonPayload = decodeURIComponent(
+    //     window
+    //       .atob(base64)
+    //       .split("")
+    //       .map(function (c) {
+    //         return "%" + ("00" + c.charCodeAt(0).toString(16)).slice(-2);
+    //       })
+    //       .join("")
+    //   );
+
+    //   return JSON.parse(jsonPayload);
+    // },
   },
 };
 </script>
 
 <style scoped>
+.content-register-link {
+  text-decoration: none;
+  font-size: 17px;
+}
+.login-form-button {
+  width: 100%;
+  height: 60px;
+  font-size: 20px;
+  color: #ffffff;
+}
+.site-form-item-icon {
+  font-size: 20px;
+}
+.login-form-forgot {
+  text-decoration: none;
+  font-size: 17px;
+}
+.form-login {
+  background: #ffffff;
+  padding: 20px 40px 20px 40px;
+  border-radius: 10px;
+}
+.input-content {
+  width: 410px;
+  height: 60px;
+  font-size: 18px;
+}
 #register {
   width: 100%;
   height: 100%;
 }
 .background-register {
-  background-image: url(https://www.freecodecamp.org/news/content/images/2022/09/jonatan-pie-3l3RwQdHRHg-unsplash.jpg);
+  background-image: url(https://thaihoanghd.com/wp-content/uploads/2021/07/triangle-stage-with-smoke-purple-neon-light-scaled.jpg);
   background-size: cover;
   background-repeat: no-repeat;
   width: 100%;
@@ -156,10 +233,10 @@ export default {
   z-index: 1;
 }
 .background-opacity {
-  background-color: black;
+  background-color: rgb(1, 3, 32);
   width: 100%;
   height: 100%;
-  opacity: 0.8;
+  opacity: 0.2;
   position: absolute;
   top: 0;
   z-index: 2;
@@ -175,7 +252,29 @@ export default {
   width: 30%;
   border-radius: 40px;
   padding: 20px;
-  background-color: rgba(0, 0, 0, 0.75);
-  box-shadow: 0 0 10px rgba(255, 255, 255, 0.5);
+  background: #5d5be9;
+  background: -webkit-linear-gradient(to right, #ffffff, #ffffff);
+  background: linear-gradient(to right, #ffffff, #ffffff);
+
+  box-shadow: 0px 0px 10px 4px rgba(255, 255, 255, 0.5);
+}
+.or-login {
+  text-align: center;
+  margin-bottom: 10px;
+}
+.forgot-password {
+  margin-left: 90px;
+}
+.forgot-password a:hover {
+  color: rgb(65, 185, 255);
+}
+#components-form-demo-normal-login .login-form {
+  max-width: 300px;
+}
+#components-form-demo-normal-login .login-form-forgot {
+  float: right;
+}
+#components-form-demo-normal-login .login-form-button {
+  width: 100%;
 }
 </style>

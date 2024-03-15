@@ -50,5 +50,6 @@ namespace WebCourseManagement_API.Controllers
         {
             return Ok(await _loaiKhoaHocService.XoaLoaiKhoaHoc(loaiKhoaHocId));
         }
+        
     }
 }

@@ -309,5 +309,11 @@ namespace WebCourseManagement_API.Controllers
             int id = int.Parse(HttpContext.User.FindFirst("Id").Value);
             return Ok(await _thichBaiVietService.LikeBaiViet(id, request));
         }
+
+        [HttpGet("GetAllLKH")]
+        public async Task<IActionResult> GetAllLoaiKhoahocs()
+        {
+            return Ok(await _loaiKhoaHocService.GetAllLoaiKhoahocs());
+        }
     }
 }
