@@ -81,10 +81,25 @@ namespace WebCourseManagement_Business.Implements
                 NguoiTaoId = nguoiTaoId,
                 SoHocVienDaHoanThanh = 0,
                 TieuDeKhoaHoc = request.TieuDeKhoaHoc,
-                TongThoiGianKhoaHoc = 0
+                TongThoiGianKhoaHoc = 0,
+                SoHocVienHocKhoaHoc = 0,
+                TrailerKhoaHoc = request.TrailerKhoaHoc,
+                SoSaoTrungBinh = 0
             };
             _context.khoaHocs.Add(khoaHoc);
             _context.SaveChanges();
+            var item = _context.khoaHocCuaNguoiDungs.Include(x => x.DanhGia).Where(x => x.KhoaHocId == khoaHoc.Id).ToList();
+            double tongSoSao = 0;
+            int tongSoVote = 0;
+            item.ForEach(x =>
+            {
+                tongSoSao += x.DanhGia.SoSao;
+                tongSoVote = _context.danhGias.Count(y => y.Id == x.DanhGia.Id); 
+            });
+            khoaHoc.SoSaoTrungBinh = tongSoSao * 1.0 / tongSoVote;
+            _context.SaveChanges();
+
+            
             return _responseObject.ResponseSuccess("Thêm khóa học thành công", _converter.EntityToDTO(khoaHoc));
         }
         public async Task<ResponseObject<DataResponseKhoaHoc>> SuaThongTinKhoaHoc(int nguoiSuaId, Request_SuaThongTinKhoaHoc request)

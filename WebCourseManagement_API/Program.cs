@@ -122,6 +122,7 @@ builder.Services.AddScoped<BaiVietConverter>();
 builder.Services.AddScoped<BinhLuanBaiVietConverter>();
 builder.Services.AddScoped<NguoiDungThichBinhLuanBaiVietConverter>();
 builder.Services.AddScoped<NguoiDungThichBinhLuanBaiVietConverter>();
+builder.Services.AddScoped<KhoaHocNguoiDungConverter>();
 builder.Services.AddScoped<BinhLuanBaiVietConverter>();
 builder.Services.AddScoped<IThichBinhLuanBaiVietService, ThichBinhLuanBaiVietService>();
 builder.Services.AddScoped<ResponseObject<DataResponseBinhLuanBaiViet>>();

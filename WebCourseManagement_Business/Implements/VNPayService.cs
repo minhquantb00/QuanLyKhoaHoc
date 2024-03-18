@@ -91,7 +91,7 @@ namespace WebCourseManagement_Business.Implements
             {
                 if (vnp_ResponseCode == "00" && vnp_TransactionStatus == "00")
                 {
-                    var hoaDon = await _context.hoaDonDangKies.FirstOrDefaultAsync(x => x.Id == Convert.ToInt32(hoaDonId));
+                    var hoaDon = await _context.hoaDonDangKies.Include(x => x.KhoaHoc).AsNoTracking().FirstOrDefaultAsync(x => x.Id == Convert.ToInt32(hoaDonId));
 
                     if (hoaDon == null)
                     {
@@ -121,6 +121,8 @@ namespace WebCourseManagement_Business.Implements
                         NguoiDungId = hoaDon.NguoiDungId,
                     };
                     _context.khoaHocCuaNguoiDungs.Add(khoaHocCuaNguoiDung);
+                    _context.SaveChanges();
+                    hoaDon.KhoaHoc.SoHocVienHocKhoaHoc = _context.khoaHocCuaNguoiDungs.Count(x => x.KhoaHocId == hoaDon.KhoaHocId);
                     _context.SaveChanges();
                     return "Giao dịch thành công đơn hàng " + hoaDon.Id;
                 }

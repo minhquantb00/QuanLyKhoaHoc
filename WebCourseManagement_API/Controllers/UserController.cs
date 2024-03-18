@@ -129,7 +129,7 @@ namespace WebCourseManagement_API.Controllers
         [HttpPost("ThemChuongHoc")]
         [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
         [Consumes(contentType: "multipart/form-data")]
-        public async Task<IActionResult> ThemChuongHoc([FromBody]Request_ThemChuongHoc request)
+        public async Task<IActionResult> ThemChuongHoc([FromForm]Request_ThemChuongHoc request)
         {
             return Ok(await _chuongHocService.ThemChuongHoc(request));
         }

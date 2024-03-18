@@ -15,6 +15,7 @@ namespace WebCourseManagement_Models.RequestModels.KhoaHocRequests
         public string MoTaKhoaHoc { get; set; }
         public decimal GiaKhoaHoc { get; set; }
         public decimal? PhanTramGiamGia { get; set; }
+        public string? TrailerKhoaHoc { get; set; }
         [DataType(DataType.Upload)]
         public IFormFile AnhKhoaHoc { get; set; }
         public int LoaiKhoaHocId { get; set; }
