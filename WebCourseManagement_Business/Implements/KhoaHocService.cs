@@ -155,7 +155,7 @@ namespace WebCourseManagement_Business.Implements
         }
         public async Task<IQueryable<DataResponseKhoaHoc>> GetAllsKhoahoc()
         {
-            return _context.khoaHocs.Select(x => _converter.EntityToDTO(x)).AsQueryable();
+            return _context.khoaHocs.Where(x => x.IsActive == true).Select(x => _converter.EntityToDTO(x)).AsQueryable();
         }
         public async Task<ResponseObject<DataResponseHoaDon>> DangKyKhoaHoc(int nguoiDungId, Request_DangKyKhoaHoc request)
         {
