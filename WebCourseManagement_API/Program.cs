@@ -21,6 +21,7 @@ using WebCourseManagement_Models.ResponseModels.DataKhoaHoc;
 using WebCourseManagement_Models.ResponseModels.DataKhoaHocCuaNguoiDung;
 using WebCourseManagement_Models.ResponseModels.DataLoaiKhoaHoc;
 using WebCourseManagement_Models.ResponseModels.DataNguoiDung;
+using WebCourseManagement_Models.ResponseModels.DataTestCase;
 using WebCourseManagement_Models.ResponseModels.DataThucHanh;
 using WebCourseManagement_Models.Responses;
 using WebCourseManagement_Repositories.HandleVNPayPayment;
@@ -132,7 +133,8 @@ builder.Services.AddScoped<INguoiDungThichBaiVietService, NguoiDungThichBaiVietS
 builder.Services.AddScoped<ResponseObject<DataResponseKhoaHocCuaNguoiDung>>();
 builder.Services.AddScoped<ResponseObject<DataResponseThucHanh>>();
 builder.Services.AddScoped<ThucHanhConverter>();
-
+builder.Services.AddScoped<ResponseObject<DataResponseTestCaseResult>>();
+builder.Services.AddScoped<ITestCaseService, TestCaseService>();
 builder.Services.AddAuthentication(Microsoft.AspNetCore.Authentication.JwtBearer.JwtBearerDefaults.AuthenticationScheme).AddJwtBearer(options =>
 {
     options.RequireHttpsMetadata = false;
