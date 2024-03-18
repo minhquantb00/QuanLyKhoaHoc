@@ -13,6 +13,7 @@ using WebCourseManagement_Models.RequestModels.KhoaHocRequests;
 using WebCourseManagement_Models.RequestModels.NguoiDungRequests;
 using WebCourseManagement_Models.RequestModels.NguoiDungThichBinhLuanBaiHocRequests;
 using WebCourseManagement_Models.RequestModels.NguoiDungThichBinhLuanBaiVietRequests;
+using WebCourseManagement_Models.RequestModels.TestCaseRequests;
 using WebCourseManagement_Models.RequestModels.ThichBaiVietRequests;
 using WebCourseManagement_Models.ResponseModels.DataBaiHoc;
 using WebCourseManagement_Models.ResponseModels.DataBaiViet;
@@ -23,6 +24,7 @@ using WebCourseManagement_Models.ResponseModels.DataKhoaHoc;
 using WebCourseManagement_Models.ResponseModels.DataKhoaHocCuaNguoiDung;
 using WebCourseManagement_Models.ResponseModels.DataLoaiKhoaHoc;
 using WebCourseManagement_Models.ResponseModels.DataNguoiDung;
+using WebCourseManagement_Models.ResponseModels.DataTestCase;
 using WebCourseManagement_Models.Responses;
 using WebCourseManagement_Repositories.HandlePagination;
 using Request_TraLoiBinhLuanBaiViet = WebCourseManagement_Models.RequestModels.BaiVietRequests.Request_TraLoiBinhLuanBaiViet;
@@ -45,8 +47,9 @@ namespace WebCourseManagement_API.Controllers
         private readonly IThichBinhLuanBaiVietService _thichBinhLuanBaiVietService;
         private readonly INguoiDungThichBaiVietService _thichBaiVietService;
         private readonly IKhoaHocNguoiDungService _khoaHocNguoiDungService;
+        private readonly ITestCaseService _testCaseService;
 
-        public UserController(IUserService userService, ILoaiKhoaHocService loaiKhoaHocService, IKhoaHocService khoaHocService, IChuongHocService chuongHocService, IBaiHocService baiHocService, IVNPayService vnpayService, IBinhLuanBaiHocService binhLuanBaiHocService, IThichBinhLuanBaiHocService thichBinhLuanBaiHocService, IBaiVietService baiVietService, IThichBinhLuanBaiVietService thichBinhLuanBaiVietService, INguoiDungThichBaiVietService thichBaiVietService, IKhoaHocNguoiDungService khoaHocNguoiDungService)
+        public UserController(IUserService userService, ILoaiKhoaHocService loaiKhoaHocService, IKhoaHocService khoaHocService, IChuongHocService chuongHocService, IBaiHocService baiHocService, IVNPayService vnpayService, IBinhLuanBaiHocService binhLuanBaiHocService, IThichBinhLuanBaiHocService thichBinhLuanBaiHocService, IBaiVietService baiVietService, IThichBinhLuanBaiVietService thichBinhLuanBaiVietService, INguoiDungThichBaiVietService thichBaiVietService, IKhoaHocNguoiDungService khoaHocNguoiDungService, ITestCaseService testCaseService)
         {
             _userService = userService;
             _loaiKhoaHocService = loaiKhoaHocService;
@@ -60,6 +63,7 @@ namespace WebCourseManagement_API.Controllers
             _thichBinhLuanBaiVietService = thichBinhLuanBaiVietService;
             _thichBaiVietService = thichBaiVietService;
             _khoaHocNguoiDungService = khoaHocNguoiDungService;
+            _testCaseService = testCaseService;
         }
         [HttpGet("GetAllsNguoiDung")]
         public async Task<IActionResult> GetAllsNguoiDung()
@@ -329,6 +333,11 @@ namespace WebCourseManagement_API.Controllers
         public async Task<IActionResult> DanhGiaKhoaHoc([FromBody] Request_DanhGiaKhoaHoc request)
         {
             return Ok(await _khoaHocNguoiDungService.DanhGiaKhoaHoc(request));
+        }
+        [HttpPost("TaoTestCase")]
+        public async Task<IActionResult> TaoTestCase([FromBody] Request_TaoTestCase request)
+        {
+            return Ok(await _testCaseService.TaoTestCase(request));
         }
     }
 }
