@@ -26,6 +26,6 @@ namespace WebCourseManagement_Models.ResponseModels.DataKhoaHoc
         public int TongThoiGianKhoaHoc { get; set; }
         public int SoHocVienDaHoanThanh { get; set; }
         public DataResponseNguoiDung NguoiTao { get; set; }
-        public  IQueryable<DataResponseChuongHoc> ChuongHocs { get; set; }
+        public IQueryable<DataResponseChuongHoc> ChuongHocs { get; set; }
     }
 }

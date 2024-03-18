@@ -88,16 +88,16 @@ namespace WebCourseManagement_Business.Implements
             };
             _context.khoaHocs.Add(khoaHoc);
             _context.SaveChanges();
-            var item = _context.khoaHocCuaNguoiDungs.Include(x => x.DanhGia).Where(x => x.KhoaHocId == khoaHoc.Id).ToList();
-            double tongSoSao = 0;
-            int tongSoVote = 0;
-            item.ForEach(x =>
-            {
-                tongSoSao += x.DanhGia.SoSao;
-                tongSoVote = _context.danhGias.Count(y => y.Id == x.DanhGia.Id); 
-            });
-            khoaHoc.SoSaoTrungBinh = tongSoSao * 1.0 / tongSoVote;
-            _context.SaveChanges();
+            //var item = _context.khoaHocCuaNguoiDungs.Include(x => x.DanhGia).Where(x => x.KhoaHocId == khoaHoc.Id).ToList();
+            //double tongSoSao = 0;
+            //int tongSoVote = 0;
+            //item.ForEach(x =>
+            //{
+            //    tongSoSao += x.DanhGia.SoSao;
+            //    tongSoVote = _context.danhGias.Count(y => y.Id == x.DanhGia.Id); 
+            //});
+            //khoaHoc.SoSaoTrungBinh = tongSoSao * 1.0 / tongSoVote;
+            //_context.SaveChanges();
 
             
             return _responseObject.ResponseSuccess("Thêm khóa học thành công", _converter.EntityToDTO(khoaHoc));
@@ -236,6 +236,12 @@ namespace WebCourseManagement_Business.Implements
             JObject jmessage = JObject.Parse(responseFromMomo);
 
             return jmessage.GetValue("payUrl").ToString();
+        }
+
+        public async Task<IQueryable<DataResponseKhoaHoc>> GetKhoaHocByNguoiDung(int nguoiDungId)
+        {
+            var result = _context.khoaHocs.Where(x => x.NguoiTaoId == nguoiDungId).Select(x => _converter.EntityToDTO(x));
+            return result;
         }
     }
 }
