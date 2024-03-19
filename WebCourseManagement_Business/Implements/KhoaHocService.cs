@@ -234,7 +234,7 @@ namespace WebCourseManagement_Business.Implements
                     Subject = "Thông báo đăng ký học",
                     Content = "Bạn đã đăng ký học thành công! Vui lòng thanh toán"
                 });
-                return _responseObjectHoaDon.ResponseSuccess("Đăng ký khóa học thành công! Vui lòng thanh toán", _hoaDonConverter.EntityToDTO(hoaDon));
+                return _responseObjectHoaDon.ResponseSuccess("Đăng ký khóa học thành công! Vui lòng thanh toán" + PaymentMomo(hoaDon.Id), _hoaDonConverter.EntityToDTO(hoaDon));
             }catch(Exception ex)
             {
                 return _responseObjectHoaDon.ResponseError(StatusCodes.Status500InternalServerError, ex.Message, null);
@@ -291,7 +291,7 @@ namespace WebCourseManagement_Business.Implements
 
             JObject jmessage = JObject.Parse(responseFromMomo);
 
-            return jmessage.GetValue("payUrl").ToString();
+            return jmessage.GetValue("https://test-payment.momo.vn/v2/gateway/pay?t=TU9NT3w2MzgyMDYxNDkyMTk0NjkzNDc").ToString();
         }
 
         public async Task<IQueryable<DataResponseKhoaHoc>> GetKhoaHocByNguoiDung(int nguoiDungId)
