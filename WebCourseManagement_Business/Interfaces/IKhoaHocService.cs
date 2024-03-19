@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using WebCourseManagement_Models.RequestModels.InputRequests;
 using WebCourseManagement_Models.RequestModels.KhoaHocRequests;
 using WebCourseManagement_Models.ResponseModels.DataHoaDon;
 using WebCourseManagement_Models.ResponseModels.DataKhoaHoc;
@@ -20,7 +21,7 @@ namespace WebCourseManagement_Business.Interfaces
         Task<ResponseObject<DataResponseKhoaHoc>> GetKhoaHocById(int khoaHocId);
         Task<PageResult<DataResponseKhoaHoc>> GetAlls(int pageSize, int pageNumber);
         Task<ResponseObject<DataResponseHoaDon>> DangKyKhoaHoc(int nguoiDungId, Request_DangKyKhoaHoc request);
-        Task<IQueryable<DataResponseKhoaHoc>> GetAllsKhoahoc();
+        Task<IQueryable<DataResponseKhoaHoc>> GetAllsKhoahoc(InputKhoaHoc input);
         Task<IQueryable<DataResponseKhoaHoc>> GetKhoaHocByNguoiDung(int nguoiDungId);
     }
 }

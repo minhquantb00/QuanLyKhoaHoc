@@ -60,7 +60,8 @@ namespace WebCourseManagement_Business.Implements
                 khoaHoc.KhoaHoc.SoSaoTrungBinh = tongSoSao * 1.0 / tongSoVote;
                 _context.SaveChanges();
                 return _responseObject.ResponseSuccess("Đánh giá khóa học thành công", _converter.EntityToDTO(khoaHoc));
-            }catch(Exception ex)
+            }
+            catch (Exception ex)
             {
                 return _responseObject.ResponseError(StatusCodes.Status500InternalServerError, ex.Message, null);
             }

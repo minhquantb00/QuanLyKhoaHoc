@@ -12,5 +12,6 @@ namespace WebCourseManagement_Business.Interfaces
     public interface ITestCaseService
     {
         Task<ResponseObject<DataResponseTestCaseResult>> TaoTestCase(Request_TaoTestCase request);
+        //Task<ResponseObject<TestCaseResult>> RunTestCase(Request_TaoTestCase testCase);
     }
 }

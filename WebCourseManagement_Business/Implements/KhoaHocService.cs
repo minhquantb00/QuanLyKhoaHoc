@@ -12,6 +12,7 @@ using WebCourseManagement_Models.ConfigModels.MomoPayment;
 using WebCourseManagement_Models.Converters;
 using WebCourseManagement_Models.DataContexts;
 using WebCourseManagement_Models.Entities;
+using WebCourseManagement_Models.RequestModels.InputRequests;
 using WebCourseManagement_Models.RequestModels.KhoaHocRequests;
 using WebCourseManagement_Models.ResponseModels.DataHoaDon;
 using WebCourseManagement_Models.ResponseModels.DataKhoaHoc;
@@ -90,6 +91,26 @@ namespace WebCourseManagement_Business.Implements
                 };
                 _context.khoaHocs.Add(khoaHoc);
                 _context.SaveChanges();
+
+                List<ThongBao> listThongBao = new List<ThongBao>();
+                List<KhoaHocCuaNguoiDung> listKhoaHoc = _context.khoaHocCuaNguoiDungs.Include(x => x.KhoaHoc).Include(x => x.NguoiDung).Where(x => x.KhoaHoc.NguoiTaoId == khoaHoc.NguoiTaoId).ToList();
+                for(int i = 0; i < listKhoaHoc.Count; i++)
+                {
+                    ThongBao thongBao = new ThongBao
+                    {
+                        DaXemThongBao = false,
+                        HeThongThongBao =true,
+                        LinkThongBao = "",
+                        NguoiDungGuiThongBaoId = _context.nguoiDungs.SingleOrDefaultAsync(x => x.Id == khoaHoc.NguoiTaoId).Id,
+                        NguoiDungId = listKhoaHoc[i].NguoiDungId,
+                        NoiDungThongBao = $"Một giảng viên bạn từng học đã tạo khóa học mới! Hãy tìm hiểu xem",
+                        ThoiGianThongBao = DateTime.Now,
+                        AnhThongBao = khoaHoc.AnhKhoaHoc
+                    };
+                    listThongBao.Add(thongBao);
+                }
+                _context.thongBaos.AddRange(listThongBao);
+                _context.SaveChanges();
                 return _responseObject.ResponseSuccess("Thêm khóa học thành công", _converter.EntityToDTO(khoaHoc));
             }catch(Exception ex)
             {
@@ -159,9 +180,32 @@ namespace WebCourseManagement_Business.Implements
                 return "Error: " + ex.Message;
             }
         }
-        public async Task<IQueryable<DataResponseKhoaHoc>> GetAllsKhoahoc()
+        public async Task<IQueryable<DataResponseKhoaHoc>> GetAllsKhoahoc(InputKhoaHoc input)
         {
-            return _context.khoaHocs.Where(x => x.IsActive == true).Select(x => _converter.EntityToDTO(x)).AsQueryable();
+            var result = _context.khoaHocs.Where(x => x.IsActive == true).AsQueryable();
+            if (input.LoaiKhoaHocId.HasValue)
+            {
+                result = result.Where(x => x.LoaiKhoaHocId == input.LoaiKhoaHocId);
+            }
+            if (!string.IsNullOrWhiteSpace(input.TieuDeKhoaHoc))
+            {
+                result = result.Where(x => x.TieuDeKhoaHoc.ToLower().Contains(input.TieuDeKhoaHoc.ToLower()));
+            }
+            if (input.NguoiTaoId.HasValue)
+            {
+                result = result.Where(x => x.NguoiTaoId == input.NguoiTaoId);
+            }
+            if(input.TuNgay.HasValue && input.DenNgay.HasValue)
+            {
+                result = result.Where(x => x.NgayTao >= input.TuNgay && x.NgayTao <= input.DenNgay);
+            }
+            if(input.GiaTu.HasValue && input.GiaDen.HasValue)
+            {
+                result = result.Where(x => x.GiaKhoaHocThucTe >= input.GiaTu && x.GiaKhoaHocThucTe <= input.GiaDen);
+            }
+
+            return result.OrderByDescending(x => x.SoSaoTrungBinh).Select(x => _converter.EntityToDTO(x));
+
         }
         public async Task<ResponseObject<DataResponseHoaDon>> DangKyKhoaHoc(int nguoiDungId, Request_DangKyKhoaHoc request)
         {
@@ -190,7 +234,7 @@ namespace WebCourseManagement_Business.Implements
                     Subject = "Thông báo đăng ký học",
                     Content = "Bạn đã đăng ký học thành công! Vui lòng thanh toán"
                 });
-                return _responseObjectHoaDon.ResponseSuccess(PaymentMomo(hoaDon.Id), _hoaDonConverter.EntityToDTO(hoaDon));
+                return _responseObjectHoaDon.ResponseSuccess("Đăng ký khóa học thành công! Vui lòng thanh toán", _hoaDonConverter.EntityToDTO(hoaDon));
             }catch(Exception ex)
             {
                 return _responseObjectHoaDon.ResponseError(StatusCodes.Status500InternalServerError, ex.Message, null);

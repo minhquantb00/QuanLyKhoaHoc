@@ -35,7 +35,7 @@ namespace WebCourseManagement_Business.Implements
             var query = _context.baiHocs.ToList();
             if(input.ChuongHocId.HasValue)
             {
-                query = query.Where(x => x.ChuongHocId == input.ChuongHocId).ToList();
+                query = query.Where(x => x.ChuongHocId == input.ChuongHocId).OrderByDescending(x => x.ThoiGianTao).ToList();
             }
             var result = Pagination.GetPagedData(query.Select(x => _converter.EntityToDTO(x)).AsQueryable(), pageSize, pageNumber);
             return result;

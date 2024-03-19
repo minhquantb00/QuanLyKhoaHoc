@@ -272,9 +272,9 @@ namespace WebCourseManagement_API.Controllers
             return Ok(await _baiVietService.XoaBaiViet(baiVietId));
         }
         [HttpGet("getkhoahoc")]
-        public async Task<IActionResult> GetAllsKhoahoc()
+        public async Task<IActionResult> GetAllsKhoahoc([FromBody] InputKhoaHoc input)
         {
-            return Ok(await _khoaHocService.GetAllsKhoahoc());
+            return Ok(await _khoaHocService.GetAllsKhoahoc(input));
         }
         [HttpPut("SuaBinhLuanBaiViet")]
         [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]

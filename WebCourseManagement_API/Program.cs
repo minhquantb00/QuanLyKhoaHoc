@@ -131,6 +131,7 @@ builder.Services.AddScoped<IThichBinhLuanBaiVietService, ThichBinhLuanBaiVietSer
 builder.Services.AddScoped<ResponseObject<DataResponseBinhLuanBaiViet>>();
 builder.Services.AddScoped<INguoiDungThichBaiVietService, NguoiDungThichBaiVietService>();
 builder.Services.AddScoped<ResponseObject<DataResponseKhoaHocCuaNguoiDung>>();
+builder.Services.AddScoped<IKhoaHocNguoiDungService, KhoaHocNguoiDungService>();
 builder.Services.AddScoped<ResponseObject<DataResponseThucHanh>>();
 builder.Services.AddScoped<ThucHanhConverter>();
 builder.Services.AddScoped<ResponseObject<DataResponseTestCaseResult>>();

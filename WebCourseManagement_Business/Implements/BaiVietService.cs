@@ -39,7 +39,7 @@ namespace WebCourseManagement_Business.Implements
 
         public async Task<PageResult<DataResponseBaiViet>> GetAlls(InputBaiViet input, int pageSize, int pageNumber)
         {
-            var baiViet = _context.baiViets.Where(x => x.TrangThaiBaiVietId == 2);
+            var baiViet = _context.baiViets.Where(x => x.TrangThaiBaiVietId == 2).OrderByDescending(x => x.ThoiGianTao).AsQueryable();
             if (input.NguoiTaoId.HasValue)
             {
                 baiViet = baiViet.Where(x => x.NguoiTaoBaiVietId == input.NguoiTaoId);
