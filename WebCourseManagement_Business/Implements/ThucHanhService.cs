@@ -31,36 +31,42 @@ namespace WebCourseManagement_Business.Implements
 
         public async Task<ResponseObject<DataResponseThucHanh>> ThemYeuCauThucHanh(Request_ThemYeuCauThucHanh request)
         {
-            var baiHoc = await _context.baiHocs.SingleOrDefaultAsync(x => x.Id == request.BaiHocId);
-            var chuongHoc = await _context.chuongHocs.SingleOrDefaultAsync(x => x.Id == baiHoc.ChuongHocId);
-            var khoaHoc = await _context.khoaHocs.SingleOrDefaultAsync(x => x.Id == chuongHoc.KhoaHocId);
-            var currentUser = _httpContextAccessor.HttpContext.User;
-            string userId = currentUser.FindFirst("Id").Value;
-            if (!currentUser.Identity.IsAuthenticated)
+            try
             {
-                return _responseObject.ResponseError(StatusCodes.Status401Unauthorized, "Người dùng này chưa được xác thực", null);
+                var baiHoc = await _context.baiHocs.SingleOrDefaultAsync(x => x.Id == request.BaiHocId);
+                var chuongHoc = await _context.chuongHocs.SingleOrDefaultAsync(x => x.Id == baiHoc.ChuongHocId);
+                var khoaHoc = await _context.khoaHocs.SingleOrDefaultAsync(x => x.Id == chuongHoc.KhoaHocId);
+                var currentUser = _httpContextAccessor.HttpContext.User;
+                string userId = currentUser.FindFirst("Id").Value;
+                if (!currentUser.Identity.IsAuthenticated)
+                {
+                    return _responseObject.ResponseError(StatusCodes.Status401Unauthorized, "Người dùng này chưa được xác thực", null);
+                }
+                if (int.Parse(userId) != khoaHoc.NguoiTaoId)
+                {
+                    return _responseObject.ResponseError(StatusCodes.Status403Forbidden, "Bạn không có quyền thực hiện chức năng này", null);
+                }
+                ThucHanh thucHanh = new ThucHanh
+                {
+                    BaiHocId = request.BaiHocId,
+                    CallTestCode = request.CallTestCode,
+                    ChiTietDeBai = request.ChiTietDeBai,
+                    CodeDauVao = request.CodeDauVao,
+                    CodeKhoiDau = request.CodeKhoiDau,
+                    DeBai = request.DeBai,
+                    GiaiThich = request.GiaiThich,
+                    GoiY = request.GoiY,
+                    HoTroDaNgonNgu = true,
+                    MongDoiDauRa = request.MongDoiDauRa,
+                    NgonNguMacDinhId = request.NgonNguMacDinhId
+                };
+                _context.thucHanhs.Add(thucHanh);
+                _context.SaveChanges();
+                return _responseObject.ResponseSuccess("Thêm yêu cầu thực hành thành công", _converter.EntityToDTO(thucHanh));
+            }catch(Exception ex)
+            {
+                return _responseObject.ResponseError(StatusCodes.Status500InternalServerError, ex.Message, null);
             }
-            if(int.Parse(userId) != khoaHoc.NguoiTaoId)
-            {
-                return _responseObject.ResponseError(StatusCodes.Status403Forbidden, "Bạn không có quyền thực hiện chức năng này", null);
-            }
-            ThucHanh thucHanh = new ThucHanh
-            {
-                BaiHocId = request.BaiHocId,
-                CallTestCode = request.CallTestCode,
-                ChiTietDeBai = request.ChiTietDeBai,
-                CodeDauVao = request.CodeDauVao,
-                CodeKhoiDau = request.CodeKhoiDau,
-                DeBai = request.DeBai,
-                GiaiThich = request.GiaiThich,
-                GoiY = request.GoiY,
-                HoTroDaNgonNgu = true,
-                MongDoiDauRa = request.MongDoiDauRa,
-                NgonNguMacDinhId = request.NgonNguMacDinhId
-            };
-            _context.thucHanhs.Add(thucHanh);
-            _context.SaveChanges();
-            return _responseObject.ResponseSuccess("Thêm yêu cầu thực hành thành công", _converter.EntityToDTO(thucHanh));
         }
     }
 }

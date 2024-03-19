@@ -25,34 +25,40 @@ namespace WebCourseManagement_Business.Implements
 
         public async Task<string> ThichBinhLuanBaiHoc(int nguoiDungId, Request_ThichBinhLuanBaiHoc request)
         {
-            var nguoiDung = await _context.nguoiDungs.SingleOrDefaultAsync(x => x.Id == nguoiDungId);
-            var binhLuan = await _context.binhLuanBaiHocs.SingleOrDefaultAsync(x => x.Id == request.BinhLuanBaiHocId && x.TrangThaiBinhLuanId == 1);
-            if(binhLuan == null)
+            try
             {
-                return "Bình luận không tồn tại";
-            }
-            var nguoiLike = await _context.nguoiDungThichBinhLuanBaiHocs.SingleOrDefaultAsync(x => x.NguoiDungThichBinhLuanId == nguoiDungId && x.BinhLuanBaiHocId == binhLuan.Id);
-            if (binhLuan != null)
-            {
-                _context.nguoiDungThichBinhLuanBaiHocs.Remove(nguoiLike);
-                _context.SaveChanges();
-            }
-            else
-            {
-                NguoiDungThichBinhLuanBaiHoc item = new NguoiDungThichBinhLuanBaiHoc
+                var nguoiDung = await _context.nguoiDungs.SingleOrDefaultAsync(x => x.Id == nguoiDungId);
+                var binhLuan = await _context.binhLuanBaiHocs.SingleOrDefaultAsync(x => x.Id == request.BinhLuanBaiHocId && x.TrangThaiBinhLuanId == 1);
+                if (binhLuan == null)
                 {
-                    BinhLuanBaiHocId = request.BinhLuanBaiHocId,
-                    DaThich = true,
-                    NguoiDungThichBinhLuanId = nguoiDungId,
-                    ThoiGianThich = DateTime.Now
-                };
-                _context.nguoiDungThichBinhLuanBaiHocs.Add(item);
+                    return "Bình luận không tồn tại";
+                }
+                var nguoiLike = await _context.nguoiDungThichBinhLuanBaiHocs.SingleOrDefaultAsync(x => x.NguoiDungThichBinhLuanId == nguoiDungId && x.BinhLuanBaiHocId == binhLuan.Id);
+                if (binhLuan != null)
+                {
+                    _context.nguoiDungThichBinhLuanBaiHocs.Remove(nguoiLike);
+                    _context.SaveChanges();
+                }
+                else
+                {
+                    NguoiDungThichBinhLuanBaiHoc item = new NguoiDungThichBinhLuanBaiHoc
+                    {
+                        BinhLuanBaiHocId = request.BinhLuanBaiHocId,
+                        DaThich = true,
+                        NguoiDungThichBinhLuanId = nguoiDungId,
+                        ThoiGianThich = DateTime.Now
+                    };
+                    _context.nguoiDungThichBinhLuanBaiHocs.Add(item);
+                    _context.SaveChanges();
+                }
+
+                binhLuan.SoLuotThich = _context.nguoiDungThichBinhLuanBaiHocs.Count(x => x.BinhLuanBaiHocId == request.BinhLuanBaiHocId);
                 _context.SaveChanges();
+                return "Bạn đã thích bình luận bài học";
+            }catch(Exception ex)
+            {
+                return "Error: " + ex.Message;
             }
-            
-            binhLuan.SoLuotThich = _context.nguoiDungThichBinhLuanBaiHocs.Count(x => x.BinhLuanBaiHocId == request.BinhLuanBaiHocId);
-            _context.SaveChanges();
-            return "Bạn đã thích bình luận bài học";
         }
     }
 }

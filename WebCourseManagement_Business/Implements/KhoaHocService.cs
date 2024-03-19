@@ -61,97 +61,103 @@ namespace WebCourseManagement_Business.Implements
 
         public async Task<ResponseObject<DataResponseKhoaHoc>> ThemKhoaHoc(int nguoiTaoId, Request_ThemKhoaHoc request)
         {
-            var nguoiDung = await _context.nguoiDungs.SingleOrDefaultAsync(x => x.Id == nguoiTaoId);
-            var loaiKhoaHoc = await _context.loaiKhoaHocs.SingleOrDefaultAsync(x => x.Id == request.LoaiKhoaHocId);
-            if(loaiKhoaHoc == null)
+            try
             {
-                return _responseObject.ResponseError(StatusCodes.Status404NotFound, "Không tìm thấy loại khóa học", null);
+                var nguoiDung = await _context.nguoiDungs.SingleOrDefaultAsync(x => x.Id == nguoiTaoId);
+                var loaiKhoaHoc = await _context.loaiKhoaHocs.SingleOrDefaultAsync(x => x.Id == request.LoaiKhoaHocId);
+                if (loaiKhoaHoc == null)
+                {
+                    return _responseObject.ResponseError(StatusCodes.Status404NotFound, "Không tìm thấy loại khóa học", null);
+                }
+                KhoaHoc khoaHoc = new KhoaHoc
+                {
+                    AnhKhoaHoc = await HandleUploadImage.Upfile(request.AnhKhoaHoc),
+                    IsActive = true,
+                    DaXoa = false,
+                    GiaKhoaHoc = request.GiaKhoaHoc,
+                    LoaiKhoaHocId = request.LoaiKhoaHocId,
+                    PhanTramGiamGia = request.PhanTramGiamGia == 0 ? 0 : request.PhanTramGiamGia,
+                    GiaKhoaHocThucTe = request.PhanTramGiamGia == 0 ? request.GiaKhoaHoc : request.GiaKhoaHoc - request.GiaKhoaHoc * request.PhanTramGiamGia,
+                    MoTaKhoaHoc = request.MoTaKhoaHoc,
+                    NgayTao = DateTime.Now,
+                    NguoiTaoId = nguoiTaoId,
+                    SoHocVienDaHoanThanh = 0,
+                    TieuDeKhoaHoc = request.TieuDeKhoaHoc,
+                    TongThoiGianKhoaHoc = 0,
+                    SoHocVienHocKhoaHoc = 0,
+                    TrailerKhoaHoc = request.TrailerKhoaHoc,
+                    SoSaoTrungBinh = 0
+                };
+                _context.khoaHocs.Add(khoaHoc);
+                _context.SaveChanges();
+                return _responseObject.ResponseSuccess("Thêm khóa học thành công", _converter.EntityToDTO(khoaHoc));
+            }catch(Exception ex)
+            {
+                return _responseObject.ResponseError(StatusCodes.Status500InternalServerError, ex.Message, null);
             }
-            KhoaHoc khoaHoc = new KhoaHoc
-            {
-                AnhKhoaHoc = await HandleUploadImage.Upfile(request.AnhKhoaHoc),
-                IsActive = true,
-                DaXoa = false,
-                GiaKhoaHoc = request.GiaKhoaHoc,
-                LoaiKhoaHocId = request.LoaiKhoaHocId,
-                PhanTramGiamGia = request.PhanTramGiamGia == 0 ? 0 : request.PhanTramGiamGia,
-                GiaKhoaHocThucTe = request.PhanTramGiamGia == 0 ? request.GiaKhoaHoc : request.GiaKhoaHoc - request.GiaKhoaHoc * request.PhanTramGiamGia,
-                MoTaKhoaHoc = request.MoTaKhoaHoc,
-                NgayTao = DateTime.Now,
-                NguoiTaoId = nguoiTaoId,
-                SoHocVienDaHoanThanh = 0,
-                TieuDeKhoaHoc = request.TieuDeKhoaHoc,
-                TongThoiGianKhoaHoc = 0,
-                SoHocVienHocKhoaHoc = 0,
-                TrailerKhoaHoc = request.TrailerKhoaHoc,
-                SoSaoTrungBinh = 0
-            };
-            _context.khoaHocs.Add(khoaHoc);
-            _context.SaveChanges();
-            //var item = _context.khoaHocCuaNguoiDungs.Include(x => x.DanhGia).Where(x => x.KhoaHocId == khoaHoc.Id).ToList();
-            //double tongSoSao = 0;
-            //int tongSoVote = 0;
-            //item.ForEach(x =>
-            //{
-            //    tongSoSao += x.DanhGia.SoSao;
-            //    tongSoVote = _context.danhGias.Count(y => y.Id == x.DanhGia.Id); 
-            //});
-            //khoaHoc.SoSaoTrungBinh = tongSoSao * 1.0 / tongSoVote;
-            //_context.SaveChanges();
-
-            
-            return _responseObject.ResponseSuccess("Thêm khóa học thành công", _converter.EntityToDTO(khoaHoc));
         }
         public async Task<ResponseObject<DataResponseKhoaHoc>> SuaThongTinKhoaHoc(int nguoiSuaId, Request_SuaThongTinKhoaHoc request)
         {
-            var nguoiDung = await _context.nguoiDungs.SingleOrDefaultAsync(x => x.Id == nguoiSuaId);
-            var khoaHoc = await _context.khoaHocs.SingleOrDefaultAsync(x => x.Id == request.KhoaHocId);
-            var loaiKhoaHoc = await _context.loaiKhoaHocs.SingleOrDefaultAsync(x => x.Id == request.LoaiKhoaHocId);
-            if(khoaHoc == null)
+            try
             {
-                return _responseObject.ResponseError(StatusCodes.Status404NotFound, "Không tìm thấy khóa học", null);
-            }
-            if(loaiKhoaHoc == null)
+                var nguoiDung = await _context.nguoiDungs.SingleOrDefaultAsync(x => x.Id == nguoiSuaId);
+                var khoaHoc = await _context.khoaHocs.SingleOrDefaultAsync(x => x.Id == request.KhoaHocId);
+                var loaiKhoaHoc = await _context.loaiKhoaHocs.SingleOrDefaultAsync(x => x.Id == request.LoaiKhoaHocId);
+                if (khoaHoc == null)
+                {
+                    return _responseObject.ResponseError(StatusCodes.Status404NotFound, "Không tìm thấy khóa học", null);
+                }
+                if (loaiKhoaHoc == null)
+                {
+                    return _responseObject.ResponseError(StatusCodes.Status404NotFound, "Không tìm thấy loại khóa học", null);
+                }
+                if (nguoiSuaId != khoaHoc.NguoiTaoId)
+                {
+                    return _responseObject.ResponseError(StatusCodes.Status400BadRequest, "Bạn không có quyền thực hiện chức năng này", null);
+                }
+                khoaHoc.MoTaKhoaHoc = request.MoTaKhoaHoc;
+                khoaHoc.AnhKhoaHoc = await HandleUploadImage.Upfile(request.AnhKhoaHoc);
+                khoaHoc.NgayCapNhat = DateTime.Now;
+                khoaHoc.GiaKhoaHocThucTe = request.PhanTramGiamGia == 0 ? request.GiaKhoaHoc : request.GiaKhoaHoc - request.GiaKhoaHoc * request.PhanTramGiamGia;
+                khoaHoc.PhanTramGiamGia = request.PhanTramGiamGia == 0 ? 0 : request.PhanTramGiamGia;
+                khoaHoc.GiaKhoaHoc = request.GiaKhoaHoc;
+                khoaHoc.LoaiKhoaHocId = request.LoaiKhoaHocId;
+                khoaHoc.TieuDeKhoaHoc = request.TieuDeKhoaHoc;
+                _context.SaveChanges();
+                return _responseObject.ResponseSuccess("Cập nhật thông tin khóa học thành công", _converter.EntityToDTO(khoaHoc));
+            }catch(Exception ex)
             {
-                return _responseObject.ResponseError(StatusCodes.Status404NotFound, "Không tìm thấy loại khóa học", null);
+                return _responseObject.ResponseError(StatusCodes.Status500InternalServerError, ex.Message, null);
             }
-            if(nguoiSuaId != khoaHoc.NguoiTaoId)
-            {
-                return _responseObject.ResponseError(StatusCodes.Status400BadRequest, "Bạn không có quyền thực hiện chức năng này", null);
-            }
-            khoaHoc.MoTaKhoaHoc = request.MoTaKhoaHoc;
-            khoaHoc.AnhKhoaHoc = await HandleUploadImage.Upfile(request.AnhKhoaHoc);
-            khoaHoc.NgayCapNhat = DateTime.Now;
-            khoaHoc.GiaKhoaHocThucTe = request.PhanTramGiamGia == 0 ? request.GiaKhoaHoc : request.GiaKhoaHoc - request.GiaKhoaHoc * request.PhanTramGiamGia;
-            khoaHoc.PhanTramGiamGia = request.PhanTramGiamGia == 0 ? 0 : request.PhanTramGiamGia;
-            khoaHoc.GiaKhoaHoc = request.GiaKhoaHoc;
-            khoaHoc.LoaiKhoaHocId = request.LoaiKhoaHocId;
-            khoaHoc.TieuDeKhoaHoc = request.TieuDeKhoaHoc;
-            _context.SaveChanges();
-            return _responseObject.ResponseSuccess("Cập nhật thông tin khóa học thành công", _converter.EntityToDTO(khoaHoc));
         }
 
 
         public async Task<string> XoaKhoaHoc(int khoaHocId)
         {
-            var khoaHoc = await _context.khoaHocs.SingleOrDefaultAsync(x => x.Id == khoaHocId);
-            var currentUser = _httpContextAccessor.HttpContext.User;
-            var userId = currentUser.FindFirst("Id").Value;
-            if (!currentUser.Identity.IsAuthenticated)
+            try
             {
-                return "Người dùng chưa được xác thực";
-            }
-            if(khoaHoc == null)
+                var khoaHoc = await _context.khoaHocs.SingleOrDefaultAsync(x => x.Id == khoaHocId);
+                var currentUser = _httpContextAccessor.HttpContext.User;
+                var userId = currentUser.FindFirst("Id").Value;
+                if (!currentUser.Identity.IsAuthenticated)
+                {
+                    return "Người dùng chưa được xác thực";
+                }
+                if (khoaHoc == null)
+                {
+                    return "Khóa học không tồn tại";
+                }
+                if (int.Parse(userId) != khoaHoc.NguoiTaoId)
+                {
+                    return "Bạn không có quyền thực hiện chức năng này";
+                }
+                khoaHoc.IsActive = false;
+                _context.SaveChanges();
+                return "Xóa khóa học thành công";
+            }catch(Exception ex)
             {
-                return "Khóa học không tồn tại";
+                return "Error: " + ex.Message;
             }
-            if(int.Parse(userId) != khoaHoc.NguoiTaoId)
-            {
-                return "Bạn không có quyền thực hiện chức năng này";
-            }
-            khoaHoc.IsActive = false;
-            _context.SaveChanges();
-            return "Xóa khóa học thành công";
         }
         public async Task<IQueryable<DataResponseKhoaHoc>> GetAllsKhoahoc()
         {
@@ -159,30 +165,36 @@ namespace WebCourseManagement_Business.Implements
         }
         public async Task<ResponseObject<DataResponseHoaDon>> DangKyKhoaHoc(int nguoiDungId, Request_DangKyKhoaHoc request)
         {
-            var nguoiDung = await _context.nguoiDungs.SingleOrDefaultAsync(x => x.Id == nguoiDungId);
-            var khoaHoc = await _context.khoaHocs.SingleOrDefaultAsync(x => x.Id == request.KhoaHocId);
-            if(khoaHoc == null)
+            try
             {
-                return _responseObjectHoaDon.ResponseError(StatusCodes.Status404NotFound, "Khóa học không tồn tại", null);
+                var nguoiDung = await _context.nguoiDungs.SingleOrDefaultAsync(x => x.Id == nguoiDungId);
+                var khoaHoc = await _context.khoaHocs.SingleOrDefaultAsync(x => x.Id == request.KhoaHocId);
+                if (khoaHoc == null)
+                {
+                    return _responseObjectHoaDon.ResponseError(StatusCodes.Status404NotFound, "Khóa học không tồn tại", null);
+                }
+                HoaDonDangKy hoaDon = new HoaDonDangKy
+                {
+                    KhoaHocId = request.KhoaHocId,
+                    MaGiaoDich = "MyBugs_" + DateTime.Now.Ticks.ToString() + new Random().Next(10000, 99999).ToString(),
+                    NguoiDungId = nguoiDungId,
+                    ThoiGianTao = DateTime.Now,
+                    TongTien = khoaHoc.GiaKhoaHocThucTe,
+                    TrangThaiHoaDonId = 1
+                };
+                _context.hoaDonDangKies.Add(hoaDon);
+                _context.SaveChanges();
+                _authService.SendEmail(new WebCourseManagement_Repositories.EmailTo
+                {
+                    To = nguoiDung.Email,
+                    Subject = "Thông báo đăng ký học",
+                    Content = "Bạn đã đăng ký học thành công! Vui lòng thanh toán"
+                });
+                return _responseObjectHoaDon.ResponseSuccess(PaymentMomo(hoaDon.Id), _hoaDonConverter.EntityToDTO(hoaDon));
+            }catch(Exception ex)
+            {
+                return _responseObjectHoaDon.ResponseError(StatusCodes.Status500InternalServerError, ex.Message, null);
             }
-            HoaDonDangKy hoaDon = new HoaDonDangKy
-            {
-                KhoaHocId = request.KhoaHocId,
-                MaGiaoDich = "MyBugs_" + DateTime.Now.Ticks.ToString() + new Random().Next(10000,99999).ToString(),
-                NguoiDungId = nguoiDungId,
-                ThoiGianTao = DateTime.Now,
-                TongTien = khoaHoc.GiaKhoaHocThucTe,
-                TrangThaiHoaDonId = 1
-            };
-            _context.hoaDonDangKies.Add(hoaDon);
-            _context.SaveChanges();
-            _authService.SendEmail(new WebCourseManagement_Repositories.EmailTo
-            {
-                To = nguoiDung.Email,
-                Subject = "Thông báo đăng ký học",
-                Content = "Bạn đã đăng ký học thành công! Vui lòng thanh toán"
-            });
-            return _responseObjectHoaDon.ResponseSuccess(PaymentMomo(hoaDon.Id), _hoaDonConverter.EntityToDTO(hoaDon));
         }
         private string PaymentMomo(int hoaDonId)
         {

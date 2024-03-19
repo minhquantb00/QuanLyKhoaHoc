@@ -20,6 +20,13 @@ namespace WebCourseManagement_Models.Entities
         public DateTime? ThoiGianXoa { get; set; }
         public DateTime? NgaySinh { get; set; }
         public int QuyenHanId { get; set; }
+        public string? GioiThieuBanThan { get; set; }
+        public string? MoTaBanThan { get; set; }
+        public string? ChungNhan { get;set; }
+        public string? BietDanh { get; set; }
+        public string? LinkYoutube { get; set; }
+        public string? LinkFacebook { get; set; }
+        public string? LinkInstagram { get; set; }
         public virtual QuyenHan? QuyenHan { get; set; }
         public Enums.GioiTinh GioiTinh { get; set; }
         public int TrangThaiNguoiDungId { get; set; }
