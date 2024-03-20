@@ -243,7 +243,7 @@ namespace WebCourseManagement_Business.Implements
         private string PaymentMomo(int hoaDonId)
         {
             var hoaDon = _context.hoaDonDangKies.SingleOrDefault(x => x.Id == hoaDonId);
-            var tongTien = hoaDon.TongTien;
+            var tongTien = double.Parse((hoaDon.TongTien).ToString());
 
             string endpoint = "https://test-payment.momo.vn/gw_payment/transactionProcessor";
             string partnerCode = "MOMOV2NN20220607";
@@ -291,7 +291,7 @@ namespace WebCourseManagement_Business.Implements
 
             JObject jmessage = JObject.Parse(responseFromMomo);
 
-            return jmessage.GetValue("https://test-payment.momo.vn/v2/gateway/pay?t=TU9NT3w2MzgyMDYxNDkyMTk0NjkzNDc").ToString();
+            return jmessage.GetValue("payUrl").ToString();
         }
 
         public async Task<IQueryable<DataResponseKhoaHoc>> GetKhoaHocByNguoiDung(int nguoiDungId)

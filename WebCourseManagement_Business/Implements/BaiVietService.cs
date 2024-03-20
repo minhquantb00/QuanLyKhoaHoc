@@ -332,5 +332,75 @@ namespace WebCourseManagement_Business.Implements
                 return _responseObjectLoaiBaiViet.ResponseError(StatusCodes.Status500InternalServerError, ex.Message, null);
             }
         }
+
+        public async Task<ResponseObject<DataResponseLoaiBaiViet>> SuaLoaiBaiViet(Request_SuaLoaiBaiViet request)
+        {
+            try
+            {
+                if(request.LoaiBaiVietId == null || request.LoaiBaiVietId == 0)
+                {
+                    return _responseObjectLoaiBaiViet.ResponseError(StatusCodes.Status400BadRequest, "Vui lòng chọn loại bài viết muốn sửa", null);
+                }
+                if (string.IsNullOrWhiteSpace(request.TenLoaiBaiViet))
+                {
+                    return _responseObjectLoaiBaiViet.ResponseError(StatusCodes.Status400BadRequest, "Vui lòng điền thông tin", null);
+                }
+                var loaiBaiViet = await _context.loaiBaiViets.SingleOrDefaultAsync(x => x.Id == request.LoaiBaiVietId);
+                if(loaiBaiViet == null)
+                {
+                    return _responseObjectLoaiBaiViet.ResponseError(StatusCodes.Status404NotFound, "Loại bài viết không tồn tại", null);
+                }
+                loaiBaiViet.TenLoaiBaiViet = request.TenLoaiBaiViet;
+                _context.SaveChanges();
+                return _responseObjectLoaiBaiViet.ResponseSuccess("Sửa loại bài viết thành công", _loaiBaiVietConverter.EntityToDTO(loaiBaiViet));
+            }catch(Exception ex)
+            {
+                return _responseObjectLoaiBaiViet.ResponseError(StatusCodes.Status500InternalServerError, ex.Message, null);
+            }
+        }
+
+        public async Task<string> XoaLoaiBaiViet(int loaiBaiVietId)
+        {
+            try
+            {
+                if (loaiBaiVietId == null || loaiBaiVietId == 0)
+                {
+                    return "Vui lòng chọn loại bài viết muốn xóa";
+                }
+                var loaiBaiViet = await _context.loaiBaiViets.SingleOrDefaultAsync(x => x.Id == loaiBaiVietId);
+                if(loaiBaiViet == null)
+                {
+                    return "Loại bài viết không tồn tại";
+                }
+                var listBaiViet = loaiBaiViet.BaiViets.ToList();
+                if(listBaiViet != null)
+                {
+                    _context.baiViets.RemoveRange(listBaiViet);
+                    _context.SaveChanges();
+                }
+                _context.loaiBaiViets.Remove(loaiBaiViet);
+                _context.SaveChanges();
+                return "Xóa loại bài viết thành công";
+            }catch(Exception ex)
+            {
+                return "Error: " + ex.Message;
+            }
+        }
+
+        public async Task<IQueryable<DataResponseLoaiBaiViet>> GetAllsLoaiBaiViet(string? tenLoaiBaiViet)
+        {
+            var loaiBaiViets = _context.loaiBaiViets.AsQueryable();
+            if(!string.IsNullOrWhiteSpace(tenLoaiBaiViet))
+            {
+                loaiBaiViets = loaiBaiViets.Where(x => x.TenLoaiBaiViet.ToLower().Contains(tenLoaiBaiViet.ToLower()));
+            }
+            return loaiBaiViets.Select(x => _loaiBaiVietConverter.EntityToDTO(x));
+        }
+
+        public async Task<ResponseObject<DataResponseLoaiBaiViet>> GetLoaiBaiVietById(int loaiBaiVietId)
+        {
+            var loaiBaiViet = _context.loaiBaiViets.SingleOrDefault(x => x.Id == loaiBaiVietId);
+            return _responseObjectLoaiBaiViet.ResponseSuccess("Lấy dữ liệu thành công", _loaiBaiVietConverter.EntityToDTO(loaiBaiViet));
+        }
     }
 }

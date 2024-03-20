@@ -24,6 +24,10 @@ namespace WebCourseManagement_Business.Interfaces
         Task<ResponseObject<DataResponseBinhLuanBaiViet>> TraLoiBinhLuanBaiViet(int nguoiDungId, Request_TraLoiBinhLuanBaiViet request);
         Task<string> DuyetBaiViet(int baiVietId);
         Task<ResponseObject<DataResponseLoaiBaiViet>> ThemLoaiBaiViet(Request_ThemLoaiBaiViet request);
+        Task<ResponseObject<DataResponseLoaiBaiViet>> SuaLoaiBaiViet(Request_SuaLoaiBaiViet request);
+        Task<string> XoaLoaiBaiViet(int loaiBaiVietId);
+        Task<IQueryable<DataResponseLoaiBaiViet>> GetAllsLoaiBaiViet(string? tenLoaiBaiViet);
+        Task<ResponseObject<DataResponseLoaiBaiViet>> GetLoaiBaiVietById(int loaiBaiVietId);
 
     }
 }

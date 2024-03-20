@@ -339,5 +339,15 @@ namespace WebCourseManagement_API.Controllers
         {
             return Ok(await _testCaseService.TaoTestCase(request));
         }
+        [HttpGet("GetAllsLoaiBaiViet")]
+        public async Task<IActionResult> GetAllsLoaiBaiViet(string? tenLoaiBaiViet)
+        {
+            return Ok(await _baiVietService.GetAllsLoaiBaiViet(tenLoaiBaiViet));
+        }
+        [HttpGet("GetLoaiBaiVietById/{loaiBaiVietId}")]
+        public async Task<IActionResult> GetLoaiBaiVietById([FromRoute] int loaiBaiVietId)
+        {
+            return Ok(await _baiVietService.GetLoaiBaiVietById(loaiBaiVietId));
+        }
     }
 }

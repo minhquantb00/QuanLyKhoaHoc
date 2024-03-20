@@ -6,6 +6,7 @@ using WebCourseManagement_Business.Interfaces;
 using WebCourseManagement_Models.RequestModels.BaiVietRequests;
 using WebCourseManagement_Models.RequestModels.BannerRequest;
 using WebCourseManagement_Models.RequestModels.LoaiKhoaHocRequests;
+using WebCourseManagement_Models.ResponseModels.DataBaiViet;
 using WebCourseManagement_Models.ResponseModels.DataBanner;
 using WebCourseManagement_Models.ResponseModels.DataLoaiKhoaHoc;
 using WebCourseManagement_Models.Responses;
@@ -74,6 +75,18 @@ namespace WebCourseManagement_API.Controllers
         public async Task<IActionResult> ThemLoaiBaiViet([FromBody] Request_ThemLoaiBaiViet request)
         {
             return Ok(await _baivietService.ThemLoaiBaiViet(request));
+        }
+        [HttpPut("SuaLoaiBaiViet")]
+        [Authorize(Roles = "Admin")]
+        public async Task<IActionResult> SuaLoaiBaiViet([FromBody] Request_SuaLoaiBaiViet request)
+        {
+            return Ok(await _baivietService.SuaLoaiBaiViet(request));
+        }
+        [HttpDelete("XoaLoaiBaiViet/{loaiBaiVietId}")]
+        [Authorize(Roles = "Admin")]
+        public async Task<IActionResult> XoaLoaiBaiViet([FromRoute] int loaiBaiVietId)
+        {
+            return Ok(await _baivietService.XoaLoaiBaiViet(loaiBaiVietId));
         }
     }
 }

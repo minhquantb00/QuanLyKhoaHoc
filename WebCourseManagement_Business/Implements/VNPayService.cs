@@ -48,8 +48,8 @@ namespace WebCourseManagement_Business.Implements
                     pay.AddRequestData("vnp_Version", "2.1.0");
                     pay.AddRequestData("vnp_Command", "pay");
                     pay.AddRequestData("vnp_TmnCode", "77E3BAVI");
-                    pay.AddRequestData("vnp_Amount", (hoaDon.TongTien * 1000).ToString());
-                    pay.AddRequestData("vnp_CreateDate", hoaDon.ThoiGianTao.ToString("yyyyMMddHHmmss"));
+                    pay.AddRequestData("vnp_Amount", (double.Parse((hoaDon.TongTien * 100).ToString()).ToString()));
+                    pay.AddRequestData("vnp_CreateDate", DateTime.Now.ToString("yyyyMMddHHmmss"));
                     pay.AddRequestData("vnp_CurrCode", "VND");
                     pay.AddRequestData("vnp_IpAddr", Utils.GetIpAddress(httpContext));
                     pay.AddRequestData("vnp_Locale", "vn");
@@ -69,8 +69,8 @@ namespace WebCourseManagement_Business.Implements
 
         public async Task<string> VNPayReturn(IQueryCollection vnpayData)
         {
-            string vnp_TmnCode = _configuration.GetSection("VnPay:TmnCode").Value;
-            string vnp_HashSecret = _configuration.GetSection("VnPay:HashSecret").Value;
+            string vnp_TmnCode = _configuration.GetSection("VnPay:vnp_TmnCode").Value;
+            string vnp_HashSecret = _configuration.GetSection("VnPay:vnp_HashSecret").Value;
 
             VNPayLibrary vnPayLibrary = new VNPayLibrary();
             foreach (var (key, value) in vnpayData)
