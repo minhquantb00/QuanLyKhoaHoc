@@ -101,7 +101,7 @@ namespace WebCourseManagement_Business.Implements
                         DaXemThongBao = false,
                         HeThongThongBao =true,
                         LinkThongBao = "",
-                        NguoiDungGuiThongBaoId = _context.nguoiDungs.SingleOrDefaultAsync(x => x.Id == khoaHoc.NguoiTaoId).Id,
+                        NguoiDungGuiThongBaoId = khoaHoc.NguoiTaoId,
                         NguoiDungId = listKhoaHoc[i].NguoiDungId,
                         NoiDungThongBao = $"Một giảng viên bạn từng học đã tạo khóa học mới! Hãy tìm hiểu xem",
                         ThoiGianThongBao = DateTime.Now,
