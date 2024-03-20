@@ -27,7 +27,9 @@ namespace WebCourseManagement_Business.Implements
         private readonly BinhLuanBaiVietConverter _binhLuanBaiVietConverter;
         private readonly BaiVietConverter _baiVietConverter;
         private readonly IHttpContextAccessor _httpContextAccessor;
-        public BaiVietService(AppDbContext context, ResponseObject<DataResponseBaiViet> responseObject, BaiVietConverter baiVietConverter, IHttpContextAccessor httpContextAccessor, ResponseObject<DataResponseBinhLuanBaiViet> responseObjectBinhLuan, BinhLuanBaiVietConverter binhLuanBaiVietConverter)
+        private readonly ResponseObject<DataResponseLoaiBaiViet> _responseObjectLoaiBaiViet;
+        private readonly LoaiBaiVietConverter _loaiBaiVietConverter;
+        public BaiVietService(AppDbContext context, ResponseObject<DataResponseBaiViet> responseObject, BaiVietConverter baiVietConverter, IHttpContextAccessor httpContextAccessor, ResponseObject<DataResponseBinhLuanBaiViet> responseObjectBinhLuan, BinhLuanBaiVietConverter binhLuanBaiVietConverter, ResponseObject<DataResponseLoaiBaiViet> responseObjectLoaiBaiViet, LoaiBaiVietConverter loaiBaiVietConverter)
         {
             _context = context;
             _responseObject = responseObject;
@@ -35,6 +37,9 @@ namespace WebCourseManagement_Business.Implements
             _httpContextAccessor = httpContextAccessor;
             _responseObjectBinhLuan = responseObjectBinhLuan;
             _binhLuanBaiVietConverter = binhLuanBaiVietConverter;
+            _loaiBaiVietConverter = loaiBaiVietConverter;
+            _responseObjectLoaiBaiViet = responseObjectLoaiBaiViet;
+
         }
 
         public async Task<PageResult<DataResponseBaiViet>> GetAlls(InputBaiViet input, int pageSize, int pageNumber)
@@ -272,6 +277,59 @@ namespace WebCourseManagement_Business.Implements
             }catch(Exception ex)
             {
                 return "Error: " + ex.Message;
+            }
+        }
+
+        public async Task<string> DuyetBaiViet(int baiVietId)
+        {
+            try
+            {
+                var currentUser = _httpContextAccessor.HttpContext.User;
+                if (!currentUser.Identity.IsAuthenticated)
+                {
+                    return "Người dùng chưa được xác thực";
+                }
+                if (!currentUser.IsInRole("Admin"))
+                {
+                    return "Bạn không có quyền thực hiện chức năng này";
+                }
+                var baiViet = await _context.baiViets.SingleOrDefaultAsync(x => x.Id == baiVietId);
+                if (baiViet == null)
+                {
+                    return "Bài viết không tồn tại";
+                }
+                if(baiViet.TrangThaiBaiVietId == 2)
+                {
+                    return "Bài viết đã được phê duyệt từ trước";
+                }
+                baiViet.TrangThaiBaiVietId = 2;
+                _context.SaveChanges();
+                return "Duyệt bài viết thành công";
+            }catch(Exception ex)
+            {
+                return "Error: " + ex.Message;
+            }
+
+        }
+
+        public async Task<ResponseObject<DataResponseLoaiBaiViet>> ThemLoaiBaiViet(Request_ThemLoaiBaiViet request)
+        {
+            try
+            {
+                if (string.IsNullOrWhiteSpace(request.TenLoaiBaiViet))
+                {
+                    return _responseObjectLoaiBaiViet.ResponseError(StatusCodes.Status400BadRequest, "Vui lòng điền thông tin", null);
+                }
+                LoaiBaiViet loaiBaiViet = new LoaiBaiViet
+                {
+                    TenLoaiBaiViet = request.TenLoaiBaiViet
+                };
+                _context.loaiBaiViets.Add(loaiBaiViet);
+                _context.SaveChanges();
+                return _responseObjectLoaiBaiViet.ResponseSuccess("Thêm loại bài viết thành công", _loaiBaiVietConverter.EntityToDTO(loaiBaiViet));
+            }catch(Exception ex)
+            {
+                return _responseObjectLoaiBaiViet.ResponseError(StatusCodes.Status500InternalServerError, ex.Message, null);
             }
         }
     }

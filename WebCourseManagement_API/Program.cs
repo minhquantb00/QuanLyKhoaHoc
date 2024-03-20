@@ -14,6 +14,7 @@ using WebCourseManagement_Models.Converters;
 using WebCourseManagement_Models.DataContexts;
 using WebCourseManagement_Models.ResponseModels.DataBaiHoc;
 using WebCourseManagement_Models.ResponseModels.DataBaiViet;
+using WebCourseManagement_Models.ResponseModels.DataBanner;
 using WebCourseManagement_Models.ResponseModels.DataBinhLuanBaiHoc;
 using WebCourseManagement_Models.ResponseModels.DataChuongHoc;
 using WebCourseManagement_Models.ResponseModels.DataHoaDon;
@@ -136,6 +137,11 @@ builder.Services.AddScoped<ResponseObject<DataResponseThucHanh>>();
 builder.Services.AddScoped<ThucHanhConverter>();
 builder.Services.AddScoped<ResponseObject<DataResponseTestCaseResult>>();
 builder.Services.AddScoped<ITestCaseService, TestCaseService>();
+builder.Services.AddScoped<IBannerService, BannerService>();
+builder.Services.AddScoped<ResponseObject<DataResponseBanner>>();
+builder.Services.AddScoped<ResponseObject<DataResponseLoaiBaiViet>>();
+builder.Services.AddScoped<LoaiBaiVietConverter>();
+builder.Services.AddScoped<BannerConverter>();
 builder.Services.AddAuthentication(Microsoft.AspNetCore.Authentication.JwtBearer.JwtBearerDefaults.AuthenticationScheme).AddJwtBearer(options =>
 {
     options.RequireHttpsMetadata = false;
