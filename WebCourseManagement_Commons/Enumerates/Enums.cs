@@ -28,5 +28,10 @@ namespace WebCourseManagement_Commons.Enumerates
             EXCEPTION = 3,
             WAIT = 4
         }
+        public enum XacMinhViPham
+        {
+            DaViPham = 1,
+            KhongViPham = 2
+        }
     }
 }

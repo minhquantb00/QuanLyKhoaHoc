@@ -17,8 +17,9 @@ namespace WebCourseManagement_Models.Entities
         public bool? DaViPham { get; set; }
         public string GhiChuBaoCao { get; set; }
         public int LoaiBaoCaoId { get; set; }
-        public int BinhLuanId { get; set; }
-        public Enums.LoaiComment LoaiBinhLuan { get; set; }
+        public int? BinhLuanId { get; set; }
+        public int? BaiVietId { get; set; }
+        public Enums.LoaiComment? LoaiBinhLuan { get; set; }
         public virtual NguoiDung? NguoiGuiBaoCao { get; set; }
         public virtual LoaiBaoCao? LoaiBaoCao { get; set; }
     }

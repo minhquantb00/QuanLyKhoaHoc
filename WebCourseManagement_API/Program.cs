@@ -15,6 +15,7 @@ using WebCourseManagement_Models.DataContexts;
 using WebCourseManagement_Models.ResponseModels.DataBaiHoc;
 using WebCourseManagement_Models.ResponseModels.DataBaiViet;
 using WebCourseManagement_Models.ResponseModels.DataBanner;
+using WebCourseManagement_Models.ResponseModels.DataBaoCao;
 using WebCourseManagement_Models.ResponseModels.DataBinhLuanBaiHoc;
 using WebCourseManagement_Models.ResponseModels.DataChuongHoc;
 using WebCourseManagement_Models.ResponseModels.DataHoaDon;
@@ -142,6 +143,9 @@ builder.Services.AddScoped<ResponseObject<DataResponseBanner>>();
 builder.Services.AddScoped<ResponseObject<DataResponseLoaiBaiViet>>();
 builder.Services.AddScoped<LoaiBaiVietConverter>();
 builder.Services.AddScoped<BannerConverter>();
+builder.Services.AddScoped<IBaoCaoService, BaoCaoService>();
+builder.Services.AddScoped<ResponseObject<DataResponseBaoCao>>();
+builder.Services.AddScoped<BaoCaoConverter>();
 builder.Services.AddAuthentication(Microsoft.AspNetCore.Authentication.JwtBearer.JwtBearerDefaults.AuthenticationScheme).AddJwtBearer(options =>
 {
     options.RequireHttpsMetadata = false;

@@ -5,9 +5,11 @@ using Microsoft.AspNetCore.Mvc;
 using WebCourseManagement_Business.Interfaces;
 using WebCourseManagement_Models.RequestModels.BaiVietRequests;
 using WebCourseManagement_Models.RequestModels.BannerRequest;
+using WebCourseManagement_Models.RequestModels.BaoCaoRequests;
 using WebCourseManagement_Models.RequestModels.LoaiKhoaHocRequests;
 using WebCourseManagement_Models.ResponseModels.DataBaiViet;
 using WebCourseManagement_Models.ResponseModels.DataBanner;
+using WebCourseManagement_Models.ResponseModels.DataBaoCao;
 using WebCourseManagement_Models.ResponseModels.DataLoaiKhoaHoc;
 using WebCourseManagement_Models.Responses;
 
@@ -21,12 +23,14 @@ namespace WebCourseManagement_API.Controllers
         private readonly ILoaiKhoaHocService _loaiKhoaHocService;
         private readonly IBaiVietService _baivietService;
         private readonly IBannerService _bannerService;
-        public AdminController(IUserService userService, ILoaiKhoaHocService loaiKhoaHocService, IBaiVietService baiVietService, IBannerService bannerService)
+        private readonly IBaoCaoService _baoCaoService;
+        public AdminController(IUserService userService, ILoaiKhoaHocService loaiKhoaHocService, IBaiVietService baiVietService, IBannerService bannerService, IBaoCaoService baoCaoService)
         {
             _userService = userService;
             _loaiKhoaHocService = loaiKhoaHocService;
             _baivietService = baiVietService;
             _bannerService = bannerService;
+            _baoCaoService = baoCaoService;
         }
         [HttpPut("KhoaTaiKhoanNguoiDung/{id}")]
         [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
@@ -87,6 +91,13 @@ namespace WebCourseManagement_API.Controllers
         public async Task<IActionResult> XoaLoaiBaiViet([FromRoute] int loaiBaiVietId)
         {
             return Ok(await _baivietService.XoaLoaiBaiViet(loaiBaiVietId));
+        }
+        [HttpPut("DuyetBaoCao")]
+        [Authorize(Roles = "Admin")]
+        [Consumes(contentType: "multipart/form-data")]
+        public async Task<IActionResult> DuyetBaoCao([FromForm] Request_DuyetBaoCao request)
+        {
+            return Ok(await _baoCaoService.DuyetBaoCao(request));
         }
     }
 }

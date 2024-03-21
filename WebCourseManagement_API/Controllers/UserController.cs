@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Mvc;
 using WebCourseManagement_Business.Interfaces;
 using WebCourseManagement_Models.RequestModels.BaiHocRequests;
 using WebCourseManagement_Models.RequestModels.BaiVietRequests;
+using WebCourseManagement_Models.RequestModels.BaoCaoRequests;
 using WebCourseManagement_Models.RequestModels.BinhLuanBaiHocRequest;
 using WebCourseManagement_Models.RequestModels.ChuongHocRequests;
 using WebCourseManagement_Models.RequestModels.InputRequests;
@@ -17,6 +18,7 @@ using WebCourseManagement_Models.RequestModels.TestCaseRequests;
 using WebCourseManagement_Models.RequestModels.ThichBaiVietRequests;
 using WebCourseManagement_Models.ResponseModels.DataBaiHoc;
 using WebCourseManagement_Models.ResponseModels.DataBaiViet;
+using WebCourseManagement_Models.ResponseModels.DataBaoCao;
 using WebCourseManagement_Models.ResponseModels.DataBinhLuanBaiHoc;
 using WebCourseManagement_Models.ResponseModels.DataChuongHoc;
 using WebCourseManagement_Models.ResponseModels.DataHoaDon;
@@ -48,8 +50,9 @@ namespace WebCourseManagement_API.Controllers
         private readonly INguoiDungThichBaiVietService _thichBaiVietService;
         private readonly IKhoaHocNguoiDungService _khoaHocNguoiDungService;
         private readonly ITestCaseService _testCaseService;
+        private readonly IBaoCaoService _baoCaoService;
 
-        public UserController(IUserService userService, ILoaiKhoaHocService loaiKhoaHocService, IKhoaHocService khoaHocService, IChuongHocService chuongHocService, IBaiHocService baiHocService, IVNPayService vnpayService, IBinhLuanBaiHocService binhLuanBaiHocService, IThichBinhLuanBaiHocService thichBinhLuanBaiHocService, IBaiVietService baiVietService, IThichBinhLuanBaiVietService thichBinhLuanBaiVietService, INguoiDungThichBaiVietService thichBaiVietService, IKhoaHocNguoiDungService khoaHocNguoiDungService, ITestCaseService testCaseService)
+        public UserController(IUserService userService, ILoaiKhoaHocService loaiKhoaHocService, IKhoaHocService khoaHocService, IChuongHocService chuongHocService, IBaiHocService baiHocService, IVNPayService vnpayService, IBinhLuanBaiHocService binhLuanBaiHocService, IThichBinhLuanBaiHocService thichBinhLuanBaiHocService, IBaiVietService baiVietService, IThichBinhLuanBaiVietService thichBinhLuanBaiVietService, INguoiDungThichBaiVietService thichBaiVietService, IKhoaHocNguoiDungService khoaHocNguoiDungService, ITestCaseService testCaseService,IBaoCaoService baoCaoService)
         {
             _userService = userService;
             _loaiKhoaHocService = loaiKhoaHocService;
@@ -64,6 +67,7 @@ namespace WebCourseManagement_API.Controllers
             _thichBaiVietService = thichBaiVietService;
             _khoaHocNguoiDungService = khoaHocNguoiDungService;
             _testCaseService = testCaseService;
+            _baoCaoService = baoCaoService;
         }
         [HttpGet("GetAllsNguoiDung")]
         public async Task<IActionResult> GetAllsNguoiDung()
@@ -348,6 +352,14 @@ namespace WebCourseManagement_API.Controllers
         public async Task<IActionResult> GetLoaiBaiVietById([FromRoute] int loaiBaiVietId)
         {
             return Ok(await _baiVietService.GetLoaiBaiVietById(loaiBaiVietId));
+        }
+        [HttpPost("GuiBaoCao")]
+        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
+        [Consumes(contentType: "multipart/form-data")]
+        public async Task<IActionResult> GuiBaoCao([FromForm] Request_GuiBaoCao request)
+        {
+            int id = int.Parse(HttpContext.User.FindFirst("Id").Value);
+            return Ok(await _baoCaoService.GuiBaoCao(id, request));
         }
     }
 }
