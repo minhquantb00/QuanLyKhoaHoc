@@ -62,7 +62,18 @@
                             placeholder="Giá khóa học"
                             v-model="inputCreateCourse.giaKhoaHoc"
                           ></v-text-field>
-
+                          <label>
+                            <span class="obligatory mr-2">*</span>
+                            Video giới thiệu khóa học
+                          </label>
+                          <v-text-field
+                            class="mt-3"
+                            :rules="requireFieldRule"
+                            color="purple-accent-4"
+                            variant="outlined"
+                            placeholder="Link url video"
+                            v-model="inputCreateCourse.TrailerKhoaHoc"
+                          ></v-text-field>
                           <label>
                             <span class="obligatory mr-2">*</span>
                             Loại khóa học
@@ -235,6 +246,7 @@
                                           color="#9933FF"
                                           variant="flat"
                                           size="x-large"
+                                          :loading="loading"
                                           style="color: #ffffff"
                                           @click="createStudyChapter"
                                           >Thêm chương học</v-btn
@@ -720,6 +732,7 @@ export default {
         phanTramGiamGia: null,
         anhKhoaHoc: "",
         loaiKhoaHocId: null,
+        TrailerKhoaHoc: "",
       },
 
       khoaHocId: this.listCourseId,
@@ -740,18 +753,10 @@ export default {
   async mounted() {
     const id = this.$route.params.id;
     setTimeout(() => {
-      this.loadingCard = false
-    },1500);
+      this.loadingCard = false;
+    }, 1500);
     try {
-      const response = await this.courseApi.getAllCourses();
-      console.log(response);
-      console.log("ở dây nhé");
-      this.listCourse = response;
-    } catch (error) {
-      console.error("Error fetching data:", error);
-    }
-    try {
-      const response = await this.courseApi.getAllCourses();
+      const response = await this.courseApi.getAllCoursesByUserId(id);
       console.log(response);
       console.log("ở dây nhé");
       this.listCourse = response;
@@ -816,19 +821,9 @@ export default {
     async createCourse() {
       try {
         const userInfo = JSON.parse(localStorage.getItem("userInfo"));
-
-        console.log(userInfo.Id);
-        const params = {
-          TieuDeKhoaHoc: this.inputCreateCourse.tieuDeKhoaHoc,
-          MoTaKhoaHoc: this.inputCreateCourse.moTaKhoaHoc,
-          GiaKhoaHoc: this.inputCreateCourse.giaKhoaHoc,
-          PhanTramGiamGia: this.inputCreateCourse.phanTramGiamGia,
-          AnhKhoaHoc: this.inputCreateCourse.anhKhoaHoc,
-          LoaiKhoaHocId: this.inputCreateCourse.loaiKhoaHocId,
-        };
-
         const result = await this.courseApi.createCourse(
-          this.inputCreateCourse
+          this.inputCreateCourse,
+          (this.loading = true)
         );
 
         if (result) {
@@ -895,7 +890,8 @@ export default {
       try {
         const result = await this.studyChapter.createStudyChapter(
           this.inputCreateStudyChapter,
-          console.log(this.inputCreateStudyChapter)
+          console.log(this.inputCreateStudyChapter),
+          (this.loading = true)
         );
         console.log(result);
         if (result) {

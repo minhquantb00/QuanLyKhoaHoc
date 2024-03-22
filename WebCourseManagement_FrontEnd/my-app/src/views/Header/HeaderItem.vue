@@ -78,8 +78,24 @@
                             bạn trên Mybugs. Bạn đã sẵn sàng chưa ?
                           </p>
                           <div class="text-center">
-                            <!-- <router-link to="/course-product"> -->
+                            <router-link
+                              v-if="userInfo"
+                              :to="`/course-product/${userInfo.Id}`"
+                            >
+                              <v-btn
+                                :disabled="disabled"
+                                :loading="loading"
+                                class="text-none"
+                                color="black"
+                                size="x-large"
+                                variant="flat"
+                                @click="startTeaching"
+                              >
+                                Bắt đầu giảng dạy
+                              </v-btn>
+                            </router-link>
                             <v-btn
+                              v-else
                               :disabled="disabled"
                               :loading="loading"
                               class="text-none"
@@ -90,7 +106,6 @@
                             >
                               Bắt đầu giảng dạy
                             </v-btn>
-                            <!-- </router-link> -->
                           </div>
                         </div>
                       </div>
@@ -113,7 +128,7 @@
                         <div class="hover-cart">
                           <p class="mb-5 text-center">Giỏ hàng của bạn</p>
                           <div class="text-center">
-                            <router-link to="/cart-products">
+                            <router-link to="/cart-products/">
                               <v-btn
                                 :disabled="loading"
                                 :loading="loading"
@@ -178,7 +193,7 @@
                             >
                               <v-list>
                                 <v-list-item
-                                class="user-list-item"
+                                  class="user-list-item"
                                   :prepend-avatar="userInfo.Image"
                                   :subtitle="userInfo.Email"
                                   :title="userInfo.Name"
@@ -216,11 +231,20 @@
                               >
                               </router-link>
                               <router-link
-                                to="/start-teaching"
+                                v-if="userInfo"
+                                :to="`/course-product/${userInfo.Id}`"
                                 class="header-content-user-link"
-                                @click="startTeaching"
                               >
-                                <v-list-item
+                                <v-list-item @click="startTeaching"
+                                  >Bảng điều khiển của giảng viên</v-list-item
+                                >
+                              </router-link>
+                              <router-link
+                                v-else
+                                to="/course-produt"
+                                class="header-content-user-link"
+                              >
+                                <v-list-item @click="startTeaching"
                                   >Bảng điều khiển của giảng viên</v-list-item
                                 >
                               </router-link>
@@ -312,6 +336,7 @@
 import { useRouter } from "vue-router";
 import { authApi } from "../../apis/Auth/authApi";
 import useEmitter from "../../helpers/useEmitter";
+import {courseApi} from "../../apis/Course/courseApi";
 console.log(localStorage.getItem("userInfo"));
 export default {
   data() {
@@ -320,11 +345,16 @@ export default {
       menu: false,
       message: false,
       hints: true,
+      courseApi : courseApi(),
       router: useRouter(),
       userInfo: localStorage.getItem("userInfo")
         ? JSON.parse(localStorage.getItem("userInfo"))
         : null,
+        inputSearch:{
+          tieuDeKhoaHoc:"",
+        }
     };
+
   },
   created() {
     console.log(localStorage.getItem("userInfo"));
@@ -351,15 +381,26 @@ export default {
         this.router.push("/my-course");
       }
     },
+    // async searchCourse(){
+    //   const search = await this.courseApi.searchCourses(this.inputSearch);
+    //   this.list.
+    //   if(search){
+    //     this.text = "Tìm kiếm thành công",
+    //     this.snackbar = true,
+    //   }else{
+    //     this.text = "Tìm kiếm thất bại";
+    //     this.snackbar = true,
+    //   }
+    // }
   },
 };
 </script>
 
 <style scoped>
-.user-header-link{
+.user-header-link {
   text-decoration: none;
 }
-.user-list-item:hover{
+.user-list-item:hover {
   color: blueviolet;
 }
 .account-link {

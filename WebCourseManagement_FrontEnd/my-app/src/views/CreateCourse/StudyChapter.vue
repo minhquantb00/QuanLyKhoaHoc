@@ -56,9 +56,8 @@
                         <template v-slot:default="{ isActive }">
                           <div>
                             <v-card :title="c.nameCourse" class="pa-5">
-                                <v-text-field
+                              <v-text-field
                                 class="mt-3"
-                                
                                 v-model="inputAddLesson.chuongHocId"
                                 color="purple-accent-4"
                                 variant="outlined"
@@ -87,7 +86,7 @@
                                 color="purple-accent-4"
                                 variant="outlined"
                                 placeholder="Thời lượng video"
-                              ></v-text-field>                            
+                              ></v-text-field>
                               <label>
                                 <span class="obligatory mr-2">*</span>
                                 Video bài học
@@ -193,6 +192,7 @@ export default {
       snackbar: false,
       editor: ClassicEditor,
       today: new Date(),
+      loading: false,
       inputAddLesson: {
         tenBaiHoc: "",
         moTaBaiHoc: "",
@@ -235,7 +235,10 @@ export default {
     async createLesson() {
       try {
         const userInfo = JSON.parse(localStorage.getItem("userInfo"));
-        const result = await this.lessonsApi.createLessons(this.inputAddLesson);
+        const result = await this.lessonsApi.createLessons(
+          this.inputAddLesson,
+          (this.loading = true)
+        );
 
         if (result) {
           this.text = "Thêm bài học thành công";

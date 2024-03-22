@@ -139,7 +139,7 @@
               <v-card class="ma-2 course-item" @click="toggle" width="283">
                 <v-img :src="n.image" height="200px" cover />
                 <h4>{{ n.nameCourse }}</h4>
-                <p style="margin: 0">{{ n.description }}</p>
+                <p>{{ n.description }}</p>
                 <v-rating
                   v-model="rating"
                   size
@@ -147,7 +147,7 @@
                   active-color="orange"
                   color="orange-lighten-1"
                 ></v-rating>
-                <p style="margin: 0">{{ n.price }}</p>
+                <p class="ma-2">{{ n.price }}</p>
               </v-card>
             </v-slide-group-item>
           </v-slide-group>

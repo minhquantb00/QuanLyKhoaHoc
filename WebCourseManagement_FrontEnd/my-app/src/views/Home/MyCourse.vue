@@ -29,10 +29,10 @@
               <v-slide-group-item>
                 <v-hover
                   v-slot="{ isHovering, props }"
-                  v-for="c in listCourse"
-                  :key="c.id"
+                  v-for="c in listCourseApi"
+                  :key="c"
                 >
-                  <router-link to="/video-lessons" style="text-decoration:none;">
+                  <router-link :to="`/video-lessons/${c.id}`" style="text-decoration:none;">
                     <v-card
                       :loading="loading"
                       :class="{ 'on-hover': isHovering }"
@@ -50,7 +50,7 @@
                         ></v-progress-linear>
                       </template>
 
-                      <v-img :src="c.image" height="160" cover>
+                      <v-img :src="c.anhKhoaHoc" height="160" cover>
                         <div class="hover-image text-center">
                           <v-btn
                             icon="mdi-play"
@@ -63,10 +63,10 @@
                       </v-img>
 
                       <v-card-item>
-                        <v-card-title>{{ c.nameCourse }}</v-card-title>
+                        <v-card-title>{{ c.tieuDeKhoaHoc }}</v-card-title>
 
                         <v-card-subtitle>
-                          <span class="me-1">{{ c.teacher }}</span>
+                          <span class="me-1">{{ c.nguoiTao.hoVaTen }}</span>
                           <v-progress-linear
                             v-model="c.skill"
                             striped
@@ -195,6 +195,7 @@
 import HeaderItem from "../Header/HeaderItem.vue";
 import FooterItem from "../Header/FooterItem.vue";
 import { useRouter } from "vue-router";
+import {courseApi} from "../../apis/Course/courseApi"
 export default {
   components: {
     HeaderItem,
@@ -207,6 +208,8 @@ export default {
       tab: null,
       model: null,
       rating: 1,
+      courseApi: courseApi(),
+      listCourseApi: [],
       listCourse: [
         {
           id: 1,
@@ -290,7 +293,17 @@ export default {
       transparent: "rgba(255, 255, 255, 0)",
     };
   },
+  async mounted() {
+    try{
+      const res = await this.courseApi.getAllCourses()
+      this.listCourseApi = res
+      console.log(this.listCourseApi);
+    }catch(e){
+      console.error('Error fetching' + e.message);
+    }
+  },
 };
+
 </script>
 
 <style scope>

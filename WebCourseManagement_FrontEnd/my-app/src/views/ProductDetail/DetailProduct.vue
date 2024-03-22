@@ -13,11 +13,6 @@
                   <!-- gắn tiêu đề vào đaya -->
                   {{ this.listCourseApi.tieuDeKhoaHoc }}
                 </h1>
-                <v-subtitle
-                  class="my-4"
-                  v-html="this.listCourseApi.moTaKhoaHoc"
-                >
-                </v-subtitle>
                 <h5 class="my-4">
                   <!-- Số lượng học viên: {{ lc.numberOfPeopleEnrolled }} -->
                   <font-awesome-icon
@@ -57,17 +52,17 @@
                     src="https://cdn.vuetifyjs.com/images/cards/docks.jpg"
                     cover
                   > -->
-                <!-- <iframe
-                  :src="lc.linkVideo"
+                <iframe
+                  :src="this.listCourseApi.trailerKhoaHoc"
                   frameborder="0"
                   style="height: 230px; width: 390px"
-                ></iframe> -->
-                <v-img
+                ></iframe>
+                <!-- <v-img
                   :src="this.listCourseApi.anhKhoaHoc"
                   style="height: 230px; width: 390px"
                   alt=""
                   cover
-                />
+                /> -->
                 <v-card-title class="mt-4"
                   ><span style="font-size: 30px">
                     {{ formatCurrency(this.listCourseApi.giaKhoaHoc) }}
@@ -141,49 +136,7 @@
     </div>
     <div class="container" id="content-course">
       <div class="body-detail-product">
-        <v-container>
-          <v-title>
-            <h3 class="my-5">Nội dung khóa học</h3>
-            <p>
-              {{ listEvalute.length }} <span>phần</span> ❤️
-              <span>{{ listEvalute.length }} bài giảng</span>
-            </p>
-          </v-title>
-          <v-row>
-            <v-col cols="8">
-              <!--  -->
-              <div>
-                <v-expansion-panels v-model="panel" :disabled="disabled">
-                  <v-expansion-panel
-                    v-for="(chapter, index) in courseContent"
-                    :key="index"
-                  >
-                    <v-expansion-panel-title>
-                      {{ chapter.tenChuong }}
-                    </v-expansion-panel-title>
-                    <v-expansion-panel-text>
-                      <div class="list-lesson">
-                        <ul>
-                          <li
-                            v-for="(lesson, lessonIndex) in chapter.baiHocs"
-                            :key="lessonIndex"
-                          >
-                            <font-awesome-icon
-                              icon="fa-solid fa-tv"
-                            ></font-awesome-icon>
-                            <a :href="lesson.videoBaiHoc">{{
-                              lesson.tenBaiHoc
-                            }}</a>
-                          </li>
-                        </ul>
-                      </div>
-                    </v-expansion-panel-text>
-                  </v-expansion-panel>
-                </v-expansion-panels>
-              </div>
-            </v-col>
-          </v-row>
-        </v-container>
+
         <v-container>
           <div class="request">
             <v-row>
@@ -1210,7 +1163,7 @@ export default {
   color: blueviolet;
 }
 .fixed-element {
-  height: 2850px;
+  height: 2530px;
 }
 .footer {
   height: 200px; /* Chiều cao của footer */

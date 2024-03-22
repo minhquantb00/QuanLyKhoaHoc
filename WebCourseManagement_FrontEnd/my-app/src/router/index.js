@@ -45,7 +45,7 @@ const routes = [
     component: () => import("../views/ProductDetail/DetailTeacher.vue"),
   },
   {
-    path: "/course-product",
+    path: "/course-product/:id",
     name: "course-product",
     component: () => import("../views/CreateCourse/CourseProduct.vue"),
   },
@@ -115,7 +115,7 @@ const routes = [
     component: () => import("../views/CreateCourse/StudyChapter.vue"),
   },
   {
-    path: "/video-lessons",
+    path: "/video-lessons/:id",
     name: "video-lessons",
     component: () => import("../views/CreateCourse/VideoLesson.vue"),
   },

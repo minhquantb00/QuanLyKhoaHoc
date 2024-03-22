@@ -43,13 +43,36 @@ export const courseApi = defineStore("course", {
           .catch((error) => reject(error));
       });
     },
+    searchCourses(params) {
+      return new Promise((resolve, reject) => {
+        axios
+          .post("/user/getkhoahoc", { ...params })
+          .then((res) => resolve(res))
+          .catch((error) => reject(error));
+      });
+    },
     getAllCourses() {
       return new Promise((resolve, reject) => {
         axios
-          .get("/user/getkhoahoc",)
+          .get("/user/getkhoahoc")
           .then((res) => {
             if (res.status === 200) {
               resolve(res.data);
+            } else {
+              reject(error);
+            }
+          })
+          .catch((error) => reject(error));
+      });
+    },
+    getAllCoursesByUserId(id) {
+      return new Promise((resolve, reject) => {
+        axios
+          .get(`/user/GetAllKhoaHocTheoNguoiTao/${id}`)
+          .then((res) => {
+            if (res.status === 200) {
+              resolve(res.data);
+              s;
             } else {
               reject(error);
             }
