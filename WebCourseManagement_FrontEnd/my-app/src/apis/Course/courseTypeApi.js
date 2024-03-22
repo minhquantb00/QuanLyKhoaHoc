@@ -6,17 +6,16 @@ axios.defaults.baseURL = "https://localhost:7046/api";
 const authorization = localStorage.getItem("accessToken")
   ? localStorage.getItem("accessToken")
   : "";
-export const courseApi = defineStore("course", {
+export const courseTypeApi = defineStore("courseType", {
   actions: {
-    createCourse(params) {
+    createCourseTypes(params) {
       return new Promise((resolve, reject) => {
         axios
           .post(
-            "/user/ThemKhoaHoc",
+            "/admin/ThemLoaiKhoaHoc",
             { ...params },
             {
               headers: {
-                "Content-Type": "multipart/form-data",
                 Authorization: `Bearer ${authorization}`,
               },
             }
@@ -43,10 +42,10 @@ export const courseApi = defineStore("course", {
           .catch((error) => reject(error));
       });
     },
-    getAllCourses() {
+    getAllCoursesType() {
       return new Promise((resolve, reject) => {
         axios
-          .get("/user/getkhoahoc",)
+          .get("/user/GetAllLKH",)
           .then((res) => {
             if (res.status === 200) {
               resolve(res.data);

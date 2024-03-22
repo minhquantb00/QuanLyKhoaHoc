@@ -11,27 +11,40 @@
           </div>
           <div class="content-profile">
             <div class="image-user mb-4">
-              <div class="clearfix">
-                <a-upload
-                  v-model:file-list="fileList"
-                  action="https://www.mocky.io/v2/5cc8019d300000980a055e76"
-                  list-type="picture-card"
-                  @preview="handlePreview"
-                >
-                  <div v-if="fileList.length < 1">
-                    <v-icon icon="mdi-plus"></v-icon>
-                    <div style="margin-top: 8px">Upload</div>
+              <v-row>
+                <v-col>
+                  <div class="clearfix">
+                    <a-upload
+                      v-model:file-list="fileList"
+                      action="https://www.mocky.io/v2/5cc8019d300000980a055e76"
+                      list-type="picture-card"
+                      @preview="handlePreview"
+                    >
+                      <div v-if="fileList.length < 1">
+                        <v-icon icon="mdi-plus"></v-icon>
+                        <div style="margin-top: 8px">Upload</div>
+                      </div>
+                    </a-upload>
+                    <a-modal
+                      :open="previewVisible"
+                      :title="previewTitle"
+                      :footer="null"
+                      @cancel="handleCancel"
+                    >
+                      <img
+                        alt="example"
+                        style="width: 100%"
+                        :src="previewImage"
+                      />
+                    </a-modal>
                   </div>
-                </a-upload>
-                <a-modal
-                  :open="previewVisible"
-                  :title="previewTitle"
-                  :footer="null"
-                  @cancel="handleCancel"
-                >
-                  <img alt="example" style="width: 100%" :src="previewImage" />
-                </a-modal>
-              </div>
+                </v-col>
+                <v-col>
+                  <div class="change-password text-right">
+                    <v-btn color="purple-accent-3"> Đổi mật khẩu </v-btn>
+                  </div>
+                </v-col>
+              </v-row>
             </div>
             <v-row>
               <v-col>
@@ -200,7 +213,7 @@ export default {
   font-weight: bold;
   font-size: 40px;
 }
-.container{
-    margin-bottom: 70px;
+.container {
+  margin-bottom: 70px;
 }
 </style>

@@ -8,19 +8,19 @@
         <v-container>
           <v-row class="bg-white">
             <v-col cols="9">
-              <v-sheet class="mt-4">
-                <div class="profile-all">
-                  <h6>GIẢNG VIÊN</h6>
-                  <h2 class="my-3">
-                    {{ this.teacherProfile.hoVaTen }}
-                  </h2>
-                  <h5 class="nick-name-profile">
-                    <!-- {{ p.nickName }} -->
-                  </h5>
-                  <v-row class="my-4">
-                    <v-col cols="5">
-                      <v-row>
-                        <v-col col="7">
+              <v-row>
+                <v-col cols="5">
+                  <v-sheet class="mt-5">
+                    <div class="profile-all">
+                      <h6>GIẢNG VIÊN</h6>
+                      <h2 class="my-3">
+                        {{ userInfo.Name }}
+                      </h2>
+                      <h5 class="nick-name-profile">
+                        <!-- {{ p.nickName }} -->
+                      </h5>
+                      <v-row class="my-4">
+                        <v-col col="8">
                           <v-titlte class="text-student">
                             Tổng học viên
                           </v-titlte>
@@ -28,34 +28,154 @@
                             <!-- {{ p.student }} -->
                           </h4>
                         </v-col>
-                        <v-col cols="5">
+                        <v-col cols="4">
                           <v-title class="text-student"> Đánh giá </v-title>
                           <h4>
                             {{ listEvalute.length }}
                           </h4>
                         </v-col>
                       </v-row>
-                    </v-col>
-                  </v-row>
-                  <div class="introduce-profile">
-                    <h5>Giới thiệu về tôi</h5>
-                    <p>
-                      <!-- {{ p.description }} -->
-                    </p>
+                      <div class="introduce-profile">
+                        <h5>Giới thiệu về tôi</h5>
+                        <p>
+                          <!-- {{ p.description }} -->
+                        </p>
+                      </div>
+                      <div class="certification-profile">
+                        <h6>| Chứng nhận |</h6>
+                        <!-- {{p.certifications}} -->
+                        <p class="my-3 mb-7">
+                          <font-awesome-icon
+                            icon="fa-solid fa-pen-nib"
+                            class="mx-3"
+                          ></font-awesome-icon>
+                          <!-- {{ p.certifications }} -->
+                        </p>
+                      </div>
+                    </div>
+                  </v-sheet>
+                </v-col>
+                <v-col>
+                  <div>
+                    <v-card
+                      class="mt-6 pl-2 pr-2 rounded-xl"
+                      width="500"
+                      color="grey-lighten-5"
+                    >
+                      <v-card-item>
+                        <v-row>
+                          <v-col cols="2">
+                            <v-avatar
+                              size="55"
+                              class="mx-1 my-4 mr-3"
+                              :image="this.userInfo.Image"
+                            />
+                          </v-col>
+                          <v-col>
+                            <v-dialog max-width="1000">
+                              <template
+                                v-slot:activator="{ props: activatorProps }"
+                              >
+                                <div
+                                  v-bind="activatorProps"
+                                  class="text-h6 pt-3 pb-3 pl-5 mb-4 mt-3 bg-grey-lighten-3 rounded-pill"
+                                >
+                                  <span style="color: #bdbdbd">
+                                    Bạn đang nghĩ gì</span
+                                  >
+                                </div>
+                              </template>
+
+                              <template v-slot:default="{ isActive }">
+                                <v-card class="pa-5">
+                                  <label>
+                                    <span class="obligatory mr-2">*</span>
+                                    Ảnh bài viết
+                                  </label>
+                                  <v-file-input
+                                    :rules="rules"
+                                    class="mt-3"
+                                    @change="hanldeImageChange"
+                                    v-model="inputAddPost.AnhBaiViet"
+                                    color="purple-accent-4"
+                                    accept="image/png, image/jpeg, image/bmp"
+                                    label="Ảnh bài viết"
+                                    placeholder="Pick an avatar"
+                                    prepend-icon="mdi-camera"
+                                  ></v-file-input>
+                                  <label>
+                                    <span class="obligatory mr-2">*</span>
+                                    Tiêu đề bài viết
+                                  </label>
+                                  <v-text-field
+                                    class="mt-3"
+                                    :rules="rules"
+                                    color="purple-accent-4"
+                                    v-model="inputAddPost.TieuDe"
+                                    variant="outlined"
+                                    placeholder="Tiêu đề bài học"
+                                  ></v-text-field>
+                                  <label>
+                                    <span class="obligatory mr-2">*</span>
+                                    Loại bài viết
+                                  </label>
+                                  <v-text-field
+                                    class="mt-3"
+                                    :rules="rules"
+                                    color="purple-accent-4"
+                                    v-model="inputAddPost.LoaiBaiVietId"
+                                    variant="outlined"
+                                    placeholder="Loại bài viết id"
+                                  ></v-text-field>
+                                  <label class="mb-3 ml-1">
+                                    Nội dung bài viết
+                                  </label>
+                                  <ckeditor
+                                    :editor="editor"
+                                    :config="editorConfig"
+                                    v-html="inputAddPost.MoTa"
+                                    v-model="inputAddPost.MoTa"
+                                    aria-placeholder="Mô tả"
+                                  ></ckeditor>
+
+                                  <v-card-actions>
+                                    <v-spacer></v-spacer>
+
+                                    <v-btn
+                                      :disabled="loading"
+                                      :loading="loading"
+                                      class="text-none mt-4"
+                                      color="#9933FF"
+                                      size="x-large"
+                                      variant="flat"
+                                      @click="createPost"
+                                    >
+                                      Gửi
+                                      <font-awesome-icon
+                                        icon="fa-regular fa-paper-plane"
+                                        class="ml-2 mr-2"
+                                      ></font-awesome-icon>
+                                    </v-btn>
+                                    <v-btn
+                                      class="text-none mt-4"
+                                      color="#000"
+                                      size="x-large"
+                                      variant="outlined"
+                                      @click="isActive.value = false"
+                                      >Hủy</v-btn
+                                    >
+                                  </v-card-actions>
+                                </v-card>
+                              </template>
+                            </v-dialog>
+                          </v-col>
+                        </v-row>
+                      </v-card-item>
+                    </v-card>
                   </div>
-                  <div class="certification-profile">
-                    <h6>| Chứng nhận |</h6>
-                    <!-- {{p.certifications}} -->
-                    <p class="my-3 mb-7">
-                      <font-awesome-icon
-                        icon="fa-solid fa-pen-nib"
-                        class="mx-3"
-                      ></font-awesome-icon>
-                      <!-- {{ p.certifications }} -->
-                    </p>
-                  </div>
-                </div>
-              </v-sheet>
+                </v-col>
+              </v-row>
+
               <div class="description-user">
                 <h5>Mô tả</h5>
                 <p>
@@ -75,11 +195,15 @@
             </v-col>
 
             <v-col cols="3">
-              <v-sheet class="ma-2 text-center">
+              <v-sheet
+                class="ma-2 text-center"
+                v-for="e in teacherProfile"
+                :key="e.id"
+              >
                 <v-avatar
                   size="200"
                   class="mx-1 my-4"
-                  :image="this.teacherProfile.anhDaiDien"
+                  image="https://scontent.xx.fbcdn.net/v/t1.15752-9/423737674_1480040725879365_4588731426501580823_n.png?stp=dst-png_s206x206&_nc_cat=101&ccb=1-7&_nc_sid=5f2048&_nc_eui2=AeFtB96HRehVZW40v9vLuFrrKZjnfOEJczUpmOd84QlzNQsxUHuJTXwED7HbfLgXRmCE6dC6DZ0JcARCqce6WxDD&_nc_ohc=WbjwVgTX7eEAX_jdvUS&_nc_ad=z-m&_nc_cid=0&_nc_ht=scontent.xx&oh=03_AdTknmTmzgFqFVToBlZuS3x-fwUriw_X3DBIhgjbpyhbqA&oe=661A81F0"
                 ></v-avatar>
               </v-sheet>
               <v-sheet>
@@ -119,11 +243,14 @@
                 </a>
                 <a :href="this.teacherProfile.hoVaTen" class="link-teacher">
                   <v-card
+                    with="70"
+                    :disabled="loading"
+                    :loading="loading"
                     class="text-h6 text-center rounded-pill"
                     color="white"
                     variant="tonal"
-                    hover
                     @click="loading = !loading"
+                    hover
                   >
                     <v-avatar
                       size="40"
@@ -141,39 +268,7 @@
             <h5 class="ml-4">
               Các khóa học của tôi ({{ listCourePropose.length }})
             </h5>
-            <div v-if="loadingCard">
-              <v-row>
-                <v-col md="3">
-                  <v-skeleton-loader
-                    class="mx-auto border"
-                    max-width="300"
-                    type="image, article"
-                  ></v-skeleton-loader>
-                </v-col>
-                <v-col md="3">
-                  <v-skeleton-loader
-                    class="mx-auto border"
-                    max-width="300"
-                    type="image, article"
-                  ></v-skeleton-loader>
-                </v-col>
-                <v-col md="3">
-                  <v-skeleton-loader
-                    class="mx-auto border"
-                    max-width="300"
-                    type="image, article"
-                  ></v-skeleton-loader>
-                </v-col>
-                <v-col md="3">
-                  <v-skeleton-loader
-                    class="mx-auto border"
-                    max-width="300"
-                    type="image, article"
-                  ></v-skeleton-loader>
-                </v-col>
-              </v-row>
-            </div>
-            <div v-else class="list-course">
+            <div class="list-course">
               <v-sheet class="" elevation="4">
                 <v-slide-group v-model="model" center-active show-arrows>
                   <v-slide-group-item v-for="e in listCourePropose" :key="e.id">
@@ -241,17 +336,7 @@
             <h5 class="ml-4">
               Các bài viết của tôi ({{ listCourePropose.length }})
             </h5>
-            <div v-if="loadingCard">
-              <v-row>
-                <v-col>
-                  <v-skeleton-loader type="article"></v-skeleton-loader>
-                </v-col>
-                <v-col>
-                  <v-skeleton-loader type="article"></v-skeleton-loader>
-                </v-col>
-              </v-row>
-            </div>
-            <div v-else class="list-course">
+            <div class="list-course">
               <v-sheet class="" elevation="4">
                 <v-slide-group v-model="model" center-active show-arrows>
                   <v-slide-group-item v-for="e in listCourePropose" :key="e.id">
@@ -300,6 +385,14 @@
         </v-container>
       </div>
     </div>
+    <v-snackbar v-model="snackbar">
+      {{ text }}
+      <template v-slot:actions>
+        <v-btn color="green" variant="text" @click="snackbar = false">
+          Đóng
+        </v-btn>
+      </template>
+    </v-snackbar>
     <div style="margin-top: 40px">
       <FooterItem></FooterItem>
     </div>
@@ -311,7 +404,8 @@ import HeaderItem from "../Header/HeaderItem.vue";
 import FooterItem from "../Header/FooterItem.vue";
 import ClassicEditor from "@ckeditor/ckeditor5-build-classic";
 import { useRouter } from "vue-router";
-import { userApi } from "../../apis/User/userApi";
+import { authApi } from "../../apis/Auth/authApi";
+import { postApi } from "../../apis/Post/postApi";
 export default {
   components: {
     HeaderItem,
@@ -319,12 +413,41 @@ export default {
   },
   data() {
     return {
-      loadingCard: true,
       editor: ClassicEditor,
+      text: "",
+      snackbar: false,
       router: useRouter(),
-      userApi: userApi(),
+      postApi: postApi(),
+      userInfo: localStorage.getItem("userInfo")
+        ? JSON.parse(localStorage.getItem("userInfo"))
+        : null,
       page: 1,
-      teacherProfile: [],
+      inputAddPost: {
+        TieuDe: "",
+        MoTa: "",
+        AnhBaiViet: null,
+        LoaiBaiVietId: null,
+      },
+      teacherProfile: [
+        {
+          id: 1,
+          nameTeacher: "Nguyễn Khánh Huyền",
+          description:
+            "- Hơn 10 năm kinh nghiệm làm việc tại các vị trí quản lý bộ phận kinh doanh, tiếp thị, chăm sóc khách hàng trong những tập đoàn quốc tế hàng đầu thuộc các lĩnh vực khách sạn, giải trí và bất động sản cao cấp như SwanCity, Diageo, AB Inbev, Six Senses Côn Đảo Resort...",
+          evaluate: 19,
+          student: 332,
+          certifications: "Font-end Developer Engineer từ 2020",
+          course: 1,
+          webTeacher: "https://www.facebook.com/profile.php?id=100029403376571",
+          youtubeTeacher:
+            "https://www.youtube.com/channel/UC3CVoJo3JI7LWjD1-ezBWBA",
+          facebookTeacher:
+            "https://www.facebook.com/profile.php?id=100029403376571",
+          nickName: "Huyền Baby",
+          imageTeacher:
+            "https://1.bp.blogspot.com/-mRj1x9CyrcA/Xm3No2S5lTI/AAAAAAAAYaI/FgJeZaiaPWYDAaXq8rhd6WnvTW1ukOmpACLcBGAsYHQ/s1600/Anh-gai-xinh-toc-ngan-deo-kinh%2B%25284%2529.jpg",
+        },
+      ],
       listCourePropose: [
         {
           id: 1,
@@ -512,32 +635,51 @@ export default {
       ],
     };
   },
-  // created() {
-  //   console.log(localStorage.getItem("userInfo"));
-  //   const userInfo = localStorage.getItem("userInfo");
-  //   // const user = await getUserById(userInfo.id);
-  //   //   retu
-  //   // }
-  // },
-  async mounted() {
-    const id = this.$route.params.id;
-    try {
-      const res = await this.userApi.getUserId(id);
-      this.teacherProfile = res.data;
-      console.log("đây là profile");
-      console.log(this.teacherProfile);
-    } catch (error) {
-      console.error("Error fetching data:", error);
-    }
-    setTimeout(() => {
-      this.loadingCard = false; // Tắt loading khi dữ liệu đã được load
-    }, 1500);
-  },
+  async mounted() {},
   methods: {
+    hanldeImageChange(event) {
+      const file = event.target.files[0];
+      const maxSizeInBytes = 2 * 1024 * 1024; // 2MB
+      const allowedExtensions = [".jpg", ".jpeg", ".png"];
+      if (!file) {
+        return;
+      }
+      const fileName = file.name;
+      if (file.size > maxSizeInBytes) {
+        this.text = "Kích thước ảnh không được vượt quá 2MB";
+        this.snackbar = true;
+        return;
+      }
+      const fileExtension = fileName.split(".").pop();
+      if (!allowedExtensions.includes("." + fileExtension.toLowerCase())) {
+        this.text = "Hệ thống chỉ hỗ trợ file ảnh dạng: jpg, png, jpeg";
+        this.snackbar = true;
+        return;
+      }
+      this.imageFile = fileName;
+      this.inputAddPost.AnhBaiViet = file;
+      this.inputAddPost.AnhBaiViet = file;
+    },
     logout() {
       localStorage.removeItem("accessToken");
       localStorage.removeItem("refreshToken");
       localStorage.removeItem("userInfo");
+    },
+    async createPost() {
+      const result = await this.postApi.createPost(this.inputAddPost);
+      if (result) {
+        this.text = "Gửi bài viết thành công";
+        this.snackbar = true;
+        setTimeout(() => {
+          this.reloadPage();
+        }, 2000);
+      } else {
+        this.text = "Gửi bài viết thất bại";
+        this.snackbar = true;
+      }
+    },
+    reloadPage() {
+      location.reload();
     },
   },
 };

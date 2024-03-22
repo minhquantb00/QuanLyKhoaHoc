@@ -36,7 +36,7 @@
                   <p class="ml-4">Thông báo</p>
                 </router-link>
                 <hr />
-                <router-link to="#tai-khoan" class="info-content">
+                <router-link to="/profile-user" class="info-content">
                   <p class="ml-4">Cài đặt tài khoản</p>
                 </router-link>
 
@@ -44,11 +44,8 @@
                   <p class="ml-4">Cài đặt thanh toán và thuế</p>
                 </router-link>
                 <hr />
-                <router-link to="#" class="info-content">
+                <router-link to="/public-records" class="info-content">
                   <p class="ml-4">Hồ sơ công khai</p>
-                </router-link>
-                <router-link to="#" class="info-content">
-                  <p class="ml-4">Chỉnh sửa hồ sơ</p>
                 </router-link>
                 <hr />
                 <router-link to="#" class="info-content">

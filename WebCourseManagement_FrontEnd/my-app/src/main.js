@@ -21,6 +21,7 @@ import { Upload } from "ant-design-vue";
 import { Form } from "ant-design-vue";
 import { Checkbox } from "ant-design-vue";
 // import {echart} from "echarts";
+// import {monacoEditor} from "monaco-editor"
 import * as echarts from 'echarts';
 import { Button } from "ant-design-vue";
 import { Breadcrumb } from "ant-design-vue";
@@ -138,6 +139,7 @@ createApp(App)
   .use(CKEditor)
   .use(Spin)
   .use(Select)
+  // .use(monacoEditor)
   .use(Table)
   .use(Input)
   .use(Button)

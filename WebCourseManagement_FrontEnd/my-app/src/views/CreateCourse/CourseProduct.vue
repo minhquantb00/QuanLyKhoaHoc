@@ -10,10 +10,7 @@
         <HeaderDashboardVue class="header"></HeaderDashboardVue>
       </v-col>
       <v-col cols="11">
-        <a-layout-content
-          class="ant-content"
-          style="margin: 150px 10px 0px 0px"
-        >
+        <a-layout-content class="ant-content" style="margin: 50px 10px 0px 0px">
           <div class="container">
             <div class="content-course mb-7">
               <h2>Khóa học của bạn</h2>
@@ -35,13 +32,12 @@
                     <v-dialog persistent activator="parent" max-width="1000">
                       <template v-slot:default="{ isActive }">
                         <v-card class="pa-5">
-                          <div>
-                            <AppSingleImage
-                              v-model="inputCreateCourse.anhKhoaHoc[0]"
-                              :imageUrl="imageUrl"
-                              @update:imageUrl="handleImageUrlUpdate"
-                            ></AppSingleImage>
-                          </div>
+                          <v-file-input
+                            label="Ảnh khóa học"
+                            class="mt-3"
+                            v-model="inputCreateCourse.anhKhoaHoc"
+                            @change="hanldeImageChange"
+                          ></v-file-input>
                           <label>
                             <span class="obligatory mr-2">*</span>
                             Tiêu đề
@@ -82,24 +78,6 @@
                             :items="listCourseType"
                             variant="outlined"
                           ></v-select>
-
-                          <!-- <v-file-input
-                            class="mt-3"
-                            label="Ảnh khóa học"
-                            counter
-                            color="purple-accent-4"
-                            multiple
-                            show-size
-                          > -->
-                          <!-- <div>
-                            <AppSingleImage
-                              :class="$attrs.class"
-                              :defaultImgUrl="defaultImgUrl"
-                              v-model:value="inputCreateCourse.anhKhoaHoc"
-                              :label="label"
-                            />
-                          </div> -->
-                          <!-- </v-file-input> -->
                           <v-lable class="mb-3">Mô tả</v-lable>
                           <ckeditor
                             :editor="editor"
@@ -134,271 +112,287 @@
                     </v-dialog>
                   </v-btn>
                 </v-card-title>
+                <!-- đây này tí cop vào đây -->
 
-                <v-divider></v-divider>
-                <a-table :data-source="this.listCourse" :columns="columns">
-                  <template #headerCell="{ column }">
-                    <template v-if="column.key === 'AnhKhoaHoc'">
-                      <span style="color: #1890ff">Ảnh khóa học</span>
-                    </template>
-                  </template>
-                  <template
-                    #customFilterDropdown="{
-                      setSelectedKeys,
-                      selectedKeys,
-                      confirm,
-                      clearFilters,
-                      column,
-                    }"
-                  >
-                    <div style="padding: 8px">
-                      <a-input
-                        ref="searchInput"
-                        :placeholder="`Search ${column.dataIndex}`"
-                        :value="selectedKeys[0]"
-                        style="width: 188px; margin-bottom: 8px; display: block"
-                        @change="
-                          (e) =>
-                            setSelectedKeys(
-                              e.target.value ? [e.target.value] : []
-                            )
-                        "
-                        @pressEnter="
-                          handleSearch(selectedKeys, confirm, column.dataIndex)
-                        "
-                      />
-                      <a-button
-                        type="primary"
-                        size="small"
-                        style="width: 90px; margin-right: 8px"
-                        @click="
-                          handleSearch(selectedKeys, confirm, column.dataIndex)
-                        "
+                <div v-if="loadingCard" class="text-left mt-6">
+                  <v-row>
+                    <v-col md="3">
+                      <v-skeleton-loader
+                        class="mx-auto border"
+                        max-width="300"
+                        type="image, article"
+                      ></v-skeleton-loader>
+                    </v-col>
+                    <v-col md="3">
+                      <v-skeleton-loader
+                        class="mx-auto border"
+                        max-width="300"
+                        type="image, article"
+                      ></v-skeleton-loader>
+                    </v-col>
+                    <v-col md="3">
+                      <v-skeleton-loader
+                        class="mx-auto border"
+                        max-width="300"
+                        type="image, article"
+                      ></v-skeleton-loader>
+                    </v-col>
+                    <v-col md="3">
+                      <v-skeleton-loader
+                        class="mx-auto border"
+                        max-width="300"
+                        type="image, article"
+                      ></v-skeleton-loader>
+                    </v-col>
+                  </v-row>
+                </div>
+                <div v-else class="list-course mt-5">
+                  <div class="pa-4" elevation="4">
+                    <v-slide-group v-model="model" center-active show-arrows>
+                      <v-slide-group-item
+                        v-for="n in listCourse"
+                        :key="n.id"
+                        class=""
                       >
-                        <template #icon><SearchOutlined /></template>
-                        Search
-                      </a-button>
-                      <a-button
-                        size="small"
-                        style="width: 90px"
-                        @click="handleReset(clearFilters)"
-                      >
-                        Reset
-                      </a-button>
-                    </div>
-                  </template>
-                  <template #customFilterIcon="{ filtered }">
-                    <font-awesome-icon
-                      icon="fa-solid fa-magnifying-glass"
-                      :style="{ color: filtered ? '#108ee9' : undefined }"
-                    />
-                  </template>
-                  <template #bodyCell="{ column, listCourse }">
-                    <span
-                      v-if="
-                        state.searchText &&
-                        state.searchedColumn === column.dataIndex
-                      "
-                    >
-                      <template
-                        v-for="(i, fragment) in listCourse
-                          .toString()
-                          .split(
-                            new RegExp(
-                              `(?<=${state.searchText})|(?=${state.searchText})`,
-                              'i'
-                            )
-                          )"
-                      >
-                        <mark
-                          v-if="
-                            fragment.toLowerCase() ===
-                            state.searchText.toLowerCase()
-                          "
-                          :key="i"
-                          class="highlight"
-                        >
-                          {{ fragment }}
-                        </mark>
+                        <v-card class="mb-5 ma-2" width="275">
+                          <v-img height="200" :src="n.anhKhoaHoc" cover></v-img>
 
-                        <template>{{ fragment }}</template>
-                      </template>
-                    </span>
+                          <v-card-title class="text-h5">{{
+                            n.tieuDeKhoaHoc
+                          }}</v-card-title>
 
-                    <template v-if="column.key === 'operation'">
-                      <div class="text-end">
-                        <v-btn icon class="mr-3">
-                          <font-awesome-icon
-                            icon="fa-solid fa-plus"
-                          ></font-awesome-icon>
-                          <v-dialog
-                            persistent
-                            activator="parent"
-                            max-width="1000"
-                          >
-                            <template v-slot:default="{ isActive }">
-                              <v-card class="pa-5">
-                                <label>
-                                  <span class="obligatory mr-2">*</span>
-                                  Tên chương học
-                                </label>
-                                <v-text-field
-                                  class="mt-3"
-                                  :rules="rules"
-                                  color="purple-accent-4"
-                                  variant="outlined"
-                                  placeholder="Tên chương học"
-                                ></v-text-field>
+                          <v-card-subtitle>
+                            Ngày tạo:
+                            {{ formatDate(n.ngayTao) }}
+                          </v-card-subtitle>
+                          <v-card-title class="text-p"
+                            >Giá: {{ formatCurrency(n.giaKhoaHoc) }}
+                          </v-card-title>
+                          <v-card-actions>
+                            <v-spacer></v-spacer>
+                            <v-btn
+                              :icon="
+                                show ? 'mdi-chevron-up' : 'mdi-chevron-down'
+                              "
+                              @click="show = !show"
+                            ></v-btn>
+                          </v-card-actions>
 
-                                <label>
-                                  <span class="obligatory mr-2">*</span>
-                                  Ảnh chương học
-                                </label>
-                                <v-file-input
-                                  class="mt-3"
-                                  label="Ảnh chương học"
-                                  counter
-                                  color="purple-accent-4"
-                                  multiple
-                                  show-size
-                                ></v-file-input>
-                                <v-btn
-                                  class="text-none mt-4"
-                                  color="#9933FF"
-                                  variant="flat"
-                                  size="x-large"
-                                  style="color: #ffffff"
-                                  @click="isActive.value = false"
-                                  >Thêm chương học</v-btn
-                                >
-                                <v-btn
-                                  class="text-none mt-4"
-                                  color="black"
-                                  variant="outlined"
-                                  size="x-large"
-                                  style="color: #000"
-                                  @click="isActive.value = false"
-                                >
-                                  Hủy
+                          <v-expand-transition>
+                            <div v-show="show">
+                              <v-divider></v-divider>
+
+                              <div class="text-center mb-6">
+                                <v-btn icon class="mr-3 btn-create">
+                                  <font-awesome-icon
+                                    icon="fa-solid fa-plus"
+                                  ></font-awesome-icon>
+                                  <v-dialog
+                                    persistent
+                                    activator="parent"
+                                    max-width="1000"
+                                  >
+                                    <template v-slot:default="{ isActive }">
+                                      <v-card class="pa-5">
+                                        <v-text-field
+                                          v-model="
+                                            inputCreateStudyChapter.khoaHocId
+                                          "
+                                        />
+                                        <label>
+                                          <span class="obligatory mr-2">*</span>
+                                          Tên chương học
+                                        </label>
+                                        <v-text-field
+                                          class="mt-3"
+                                          v-model="
+                                            inputCreateStudyChapter.tenChuong
+                                          "
+                                          :rules="rules"
+                                          color="purple-accent-4"
+                                          variant="outlined"
+                                          placeholder="Tên chương học"
+                                        ></v-text-field>
+
+                                        <label>
+                                          <span class="obligatory mr-2">*</span>
+                                          Ảnh chương học
+                                        </label>
+                                        <v-file-input
+                                          v-model="
+                                            inputCreateStudyChapter.AnhChuongHoc
+                                          "
+                                          @change="hanldeImageChange"
+                                          class="mt-3"
+                                          label="Ảnh chương học"
+                                          counter
+                                          color="purple-accent-4"
+                                          multiple
+                                          show-size
+                                        ></v-file-input>
+                                        <v-btn
+                                          class="text-none mt-4"
+                                          color="#9933FF"
+                                          variant="flat"
+                                          size="x-large"
+                                          style="color: #ffffff"
+                                          @click="createStudyChapter"
+                                          >Thêm chương học</v-btn
+                                        >
+                                        <v-btn
+                                          class="text-none mt-4"
+                                          color="black"
+                                          variant="outlined"
+                                          size="x-large"
+                                          style="color: #000"
+                                          @click="isActive.value = false"
+                                        >
+                                          Hủy
+                                        </v-btn>
+                                      </v-card>
+                                    </template>
+                                  </v-dialog>
                                 </v-btn>
-                              </v-card>
-                            </template>
-                          </v-dialog>
-                        </v-btn>
-                        <v-btn icon class="mr-3">
-                          <font-awesome-icon
-                            icon="fa-solid fa-pen"
-                          ></font-awesome-icon>
-                          <v-dialog
-                            persistent
-                            activator="parent"
-                            max-width="1000"
-                          >
-                            <template v-slot:default="{ isActive }">
-                              <v-card class="pa-5">
-                                <label>
-                                  <span class="obligatory mr-2">*</span>
-                                  Tiêu đề
-                                </label>
-                                <v-text-field
-                                  class="mt-3"
-                                  :rules="rules"
-                                  color="purple-accent-4"
-                                  variant="outlined"
-                                  placeholder="Tiêu đề khóa học"
-                                ></v-text-field>
-                                <label>
-                                  <span class="obligatory mr-2">*</span>
-                                  Giá khóa học
-                                </label>
-                                <v-text-field
-                                  class="mt-3"
-                                  :rules="rules"
-                                  color="purple-accent-4"
-                                  variant="outlined"
-                                  placeholder="Giá khóa học"
-                                ></v-text-field>
-                                <label>
-                                  <span class="obligatory mr-2">*</span>
-                                  Loại khóa học
-                                </label>
-                                <v-select
-                                  class="mt-3"
-                                  clearable
-                                  color="purple-accent-4"
-                                  label="Loại khóa học"
-                                  :items="[
-                                    'California',
-                                    'Colorado',
-                                    'Florida',
-                                    'Georgia',
-                                    'Texas',
-                                    'Wyoming',
-                                  ]"
-                                  variant="outlined"
-                                ></v-select>
-                                <label>
-                                  <span class="obligatory mr-2">*</span>
-                                  Ảnh khóa học
-                                </label>
-                                <v-file-input
-                                  class="mt-3"
-                                  label="Ảnh khóa học"
-                                  counter
-                                  color="purple-accent-4"
-                                  multiple
-                                  show-size
-                                ></v-file-input>
-                                <v-lable class="mb-3">Mô tả</v-lable>
-                                <ckeditor
-                                  :editor="editor"
-                                  v-model="updateDescription"
-                                  :config="editorConfig"
-                                  aria-placeholder="Mô tả"
-                                ></ckeditor>
+                                <v-btn
+                                  icon
+                                  class="mr-3 btn-update"
+                                  @click="handleClickCourseId(n.id)"
+                                >
+                                  <font-awesome-icon
+                                    icon="fa-solid fa-pen"
+                                  ></font-awesome-icon>
+                                  <v-dialog
+                                    persistent
+                                    activator="parent"
+                                    max-width="1000"
+                                  >
+                                    <template v-slot:default="{ isActive }">
+                                      <v-card class="pa-5">
+                                        <input
+                                          v-model="khoaHocId"
+                                          type="hidden"
+                                        />
+                                        <label>
+                                          <span class="obligatory mr-2">*</span>
+                                          Ảnh khóa học
+                                        </label>
+                                        <v-file-input
+                                          class="mt-3"
+                                          label="Ảnh khóa học"
+                                          counter
+                                          @change="hanldeImageChange"
+                                          color="purple-accent-4"
+                                          multiple
+                                          show-size
+                                        ></v-file-input>
+                                        <label>
+                                          <span class="obligatory mr-2">*</span>
+                                          Tiêu đề
+                                        </label>
+                                        <v-text-field
+                                          class="mt-3"
+                                          :rules="rules"
+                                          v-model="tieuDeKhoaHoc"
+                                          color="purple-accent-4"
+                                          variant="outlined"
+                                          placeholder="Tiêu đề khóa học"
+                                        ></v-text-field>
+                                        <label>
+                                          <span class="obligatory mr-2">*</span>
+                                          Giá khóa học
+                                        </label>
+                                        <v-text-field
+                                          class="mt-3"
+                                          :rules="rules"
+                                          v-model="giaKhoaHoc"
+                                          color="purple-accent-4"
+                                          variant="outlined"
+                                          placeholder="Giá khóa học"
+                                        ></v-text-field>
+                                        <label>
+                                          <span class="obligatory mr-2">*</span>
+                                          Phần trăm giảm giá
+                                        </label>
+                                        <v-text-field
+                                          class="mt-3"
+                                          :rules="rules"
+                                          v-model="phanTramGiamGia"
+                                          color="purple-accent-4"
+                                          variant="outlined"
+                                          placeholder="Giá khuyến mại khóa học"
+                                        ></v-text-field>
+                                        <label>
+                                          <span class="obligatory mr-2">*</span>
+                                          Loại khóa học
+                                        </label>
+                                        <v-select
+                                          class="mt-3"
+                                          clearable
+                                          v-model="loaiKhoaHocId"
+                                          color="purple-accent-4"
+                                          label="Loại khóa học"
+                                          item-value="id"
+                                          item-title="tenLoaiKhoaHoc"
+                                          :items="listCourseType"
+                                          variant="outlined"
+                                        ></v-select>
 
-                                <v-btn
-                                  class="text-none mt-4"
-                                  color="#9933FF"
-                                  variant="flat"
-                                  size="x-large"
-                                  style="color: #ffffff"
-                                  @click="isActive.value = false"
-                                  >Sửa khóa học</v-btn
-                                >
-                                <v-btn
-                                  class="text-none mt-4"
-                                  color="black"
-                                  variant="outlined"
-                                  size="x-large"
-                                  style="color: #000"
-                                  @click="isActive.value = false"
-                                >
-                                  Hủy
+                                        <v-lable class="mb-3">Mô tả</v-lable>
+                                        <ckeditor
+                                          :editor="editor"
+                                          v-model="moTaKhoaHoc"
+                                          :config="editorConfig"
+                                          aria-placeholder="Mô tả"
+                                        ></ckeditor>
+
+                                        <v-btn
+                                          class="text-none mt-4"
+                                          color="#9933FF"
+                                          variant="flat"
+                                          size="x-large"
+                                          style="color: #ffffff"
+                                          :loading="loading"
+                                          @click="updateCourse"
+                                          >Sửa khóa học</v-btn
+                                        >
+                                        <v-btn
+                                          class="text-none mt-4"
+                                          color="black"
+                                          variant="outlined"
+                                          size="x-large"
+                                          style="color: #000"
+                                          @click="isActive.value = false"
+                                        >
+                                          Hủy
+                                        </v-btn>
+                                      </v-card>
+                                    </template>
+                                  </v-dialog>
                                 </v-btn>
-                              </v-card>
-                            </template>
-                          </v-dialog>
-                        </v-btn>
-                        <router-link
-                          to="/study-chapter"
-                          class="study-chapter-link"
-                        >
-                          <v-btn icon class="mr-3">
-                            <font-awesome-icon
-                              icon="fa-solid fa-eye"
-                            ></font-awesome-icon>
-                          </v-btn>
-                        </router-link>
-                        <v-btn icon>
-                          <font-awesome-icon
-                            icon="fa-regular fa-trash-can"
-                          ></font-awesome-icon>
-                        </v-btn>
-                      </div>
-                    </template>
-                  </template>
-                </a-table>
+                                <router-link :to="`/study-chapter/${n.id}`">
+                                  <v-btn icon class="mr-3 study-chapter-link">
+                                    <font-awesome-icon
+                                      icon="fa-solid fa-eye"
+                                    ></font-awesome-icon>
+                                  </v-btn>
+                                </router-link>
+                                <v-btn
+                                  icon
+                                  class="btn-delete"
+                                  @click="deleteCoure(n.id)"
+                                >
+                                  <font-awesome-icon
+                                    icon="fa-regular fa-trash-can"
+                                  ></font-awesome-icon>
+                                </v-btn>
+                              </div>
+                            </div>
+                          </v-expand-transition>
+                        </v-card>
+                      </v-slide-group-item>
+                    </v-slide-group>
+                  </div>
+                </div>
               </v-card>
             </div>
             <p class="ma-14 text-center" style="font-size: 18px">
@@ -657,82 +651,18 @@
         </a-layout-content>
       </v-col>
     </v-row>
-
+    <v-snackbar v-model="snackbar">
+      {{ text }}
+      <template v-slot:actions>
+        <v-btn color="green" variant="text" @click="snackbar = false">
+          Đóng
+        </v-btn>
+      </template>
+    </v-snackbar>
     <FooterItem style="border-radius: 0%"></FooterItem>
   </div>
 </template>
 <script setup>
-import { reactive, ref } from "vue";
-import { message } from "ant-design-vue";
-const state = reactive({
-  searchText: "",
-  searchedColumn: "",
-});
-// const listCourse= this.listCourse;
-const searchInput = ref();
-const columns = [
-  {
-    title: "Ảnh khóa học",
-    dataIndex: "AnhKhoaHoc",
-    key: "AnhKhoaHoc",
-  },
-  {
-    title: "Khóa học",
-    dataIndex: "TieuDeKhoaHoc",
-    key: "TieuDeKhoaHoc",
-    customFilterDropdown: true,
-    onFilter: (value, record) =>
-      record.username.toString().toLowerCase().includes(value.toLowerCase()),
-    onFilterDropdownOpenChange: (visible) => {
-      if (visible) {
-        setTimeout(() => {
-          searchInput.value.focus();
-        }, 100);
-      }
-    },
-  },
-  {
-    title: "Ngày tạo",
-    dataIndex: "NgayTao",
-    key: "NgayTao",
-  },
-  {
-    title: "Giá khóa học ",
-    dataIndex: "GiaKhoaHoc",
-    key: "GiaKhoaHoc",
-    sorter: {
-      compare: (a, b) => a.GiaKhoaHoc - b.GiaKhoaHoc,
-      multiple: 1,
-    },
-  },
-  {
-    title: "Thao tác",
-    key: "operation",
-    width: 280,
-  },
-];
-const handleSearch = (selectedKeys, confirm, dataIndex) => {
-  confirm();
-  state.searchText = selectedKeys[0];
-  state.searchedColumn = dataIndex;
-};
-const handleReset = (clearFilters) => {
-  clearFilters({
-    confirm: true,
-  });
-  state.searchText = "";
-};
-// function getBase64(img, callback) {
-//   const reader = new FileReader();
-//   reader.addEventListener("load", () => callback(reader.result));
-//   reader.readAsDataURL(img);
-// }
-const imageUrl = ref("");
-
-// Hàm xử lý khi giá trị của hình ảnh thay đổi từ component con
-const handleImageUrlUpdate = (newImageUrl) => {
-  imageUrl.value = newImageUrl;
-};
 const requireFieldRule = [
   (value) => {
     if (value) return true;
@@ -745,33 +675,44 @@ const requireFieldRule = [
 import FooterItem from "../Header/FooterItem.vue";
 import HeaderDashboardVue from "./HeaderDashboard.vue";
 import ClassicEditor from "@ckeditor/ckeditor5-build-classic";
-import { format, parseISO } from "date-fns";
-import flatPickr from "vue-flatpickr-component";
-import "flatpickr/dist/flatpickr.css";
-import { courseApi } from "../../apis/Course/courseApi";
+import { useRouter } from "vue-router";
 import AppSingleImage from "../../components/AppSingleImage.vue";
+import { courseApi } from "../../apis/Course/courseApi";
+import { studyChapter } from "../../apis/StudyChapter/studyChapter";
+
 export default {
   components: {
     FooterItem,
     HeaderDashboardVue,
-    flatPickr,
     AppSingleImage,
   },
   props: {
     defaultImgUrl: String,
     label: String,
   },
+
   data() {
     return {
+      courseApi: courseApi(),
+      studyChapter: studyChapter(),
+      text: "",
+      snackbar: false,
       loading: false,
+      loadingCard: true,
+      show: false,
+      router: useRouter(),
+      imageFile: null,
       selectedValue: null,
-
-      // router: useRouter(),
       userInfo: localStorage.getItem("userInfo")
         ? JSON.parse(localStorage.getItem("userInfo"))
         : null,
-
-      courseApi: courseApi(),
+      btn: null,
+      editor: ClassicEditor,
+      dialog: false,
+      search: "",
+      listCourse: [],
+      listCourseType: [],
+      listCourseId: [],
       inputCreateCourse: {
         tieuDeKhoaHoc: "",
         moTaKhoaHoc: "",
@@ -780,31 +721,40 @@ export default {
         anhKhoaHoc: "",
         loaiKhoaHocId: null,
       },
-      btn: null,
-      editor: ClassicEditor,
-      date: format(parseISO(new Date().toISOString()), "dd-MM-yyyy"),
-      menu1: false,
-      menu2: false,
-      today: new Date(),
-      dialog: false,
-      search: "",
-      listCourse: [],
-      listCourseType: [
-      ],
-      dataType:[
-        "ten khoa 1", "tenkhoa 2"
-      ]
+
+      khoaHocId: this.listCourseId,
+      tieuDeKhoaHoc: this.listCourseId,
+      // moTaKhoaHoc: this.listCourseId.moTaKhoaHoc,
+      // giaKhoaHoc: this.listCourseId.giaKhoaHoc,
+      // phanTramGiamGia: this.listCourseId.phanTramGiam,
+      // anhKhoaHoc: this.listCourseId.anhKhoaHoc,
+      // loaiKhoaHocId: this.listCourseId.loaiKhoaHocId,
+
+      inputCreateStudyChapter: {
+        tenChuong: "",
+        khoaHocId: null,
+        anhChuongHoc: null,
+      },
     };
   },
   async mounted() {
+    const id = this.$route.params.id;
+    setTimeout(() => {
+      this.loadingCard = false
+    },1500);
     try {
       const response = await this.courseApi.getAllCourses();
       console.log(response);
       console.log("ở dây nhé");
       this.listCourse = response;
-      // Gắn dữ liệu từ API vào danh sách listCourse
-      // for item in this.listCourse:
-      // AnhKhoaHoc = item.get("AnhKhoaHoc")
+    } catch (error) {
+      console.error("Error fetching data:", error);
+    }
+    try {
+      const response = await this.courseApi.getAllCourses();
+      console.log(response);
+      console.log("ở dây nhé");
+      this.listCourse = response;
     } catch (error) {
       console.error("Error fetching data:", error);
     }
@@ -817,43 +767,202 @@ export default {
       console.error("Error fetching data:", error);
     }
   },
+  watch: {
+    "inputUpdateCourse.phanTramGiamGia": function (newValue, oldValue) {
+      this.n.phanTramGiamGia = newValue;
+    },
+  },
   created() {
-    // console.log(localStorage.getItem("userInfo"));
     const userInfo = localStorage.getItem("userInfo");
-    // console.log(userInfo);
-    // const user = await getUserById(userInfo.id);
-    //   retu
-    // }
   },
   methods: {
-    async createCourse() {
-      const userInfo = JSON.parse(localStorage.getItem("userInfo"));
-      console.log(userInfo.Id);
-      const params = {
-        TieuDeKhoaHoc: this.inputCreateCourse.tieuDeKhoaHoc,
-        MoTaKhoaHoc: this.inputCreateCourse.moTaKhoaHoc,
-        GiaKhoaHoc: this.inputCreateCourse.giaKhoaHoc,
-        PhanTramGiamGia: this.inputCreateCourse.phanTramGiamGia,
-        AnhKhoaHoc: this.inputCreateCourse.anhKhoaHoc[0],
-        LoaiKhoaHocId: this.inputCreateCourse.loaiKhoaHocId,
-      };
-      console.log("Vào đây rồi");
-      console.log(params.AnhKhoaHoc);
-      const result = await this.courseApi.createCourse(this.inputCreateCourse);
-      console.log(result);
-      this.loading = true;
-    },
-    handleFileChange(event) {
+    hanldeImageChange(event) {
       const file = event.target.files[0];
+      const maxSizeInBytes = 2 * 1024 * 1024; // 2MB
+      const allowedExtensions = [".jpg", ".jpeg", ".png"];
+      if (!file) {
+        return;
+      }
+      const fileName = file.name;
+      if (file.size > maxSizeInBytes) {
+        this.text = "Kích thước ảnh không được vượt quá 2MB";
+        this.snackbar = true;
+        return;
+      }
+      const fileExtension = fileName.split(".").pop();
+      if (!allowedExtensions.includes("." + fileExtension.toLowerCase())) {
+        this.text = "Hệ thống chỉ hỗ trợ file ảnh dạng: jpg, png, jpeg";
+        this.snackbar = true;
+        return;
+      }
+      this.imageFile = fileName;
       this.inputCreateCourse.anhKhoaHoc = file;
+      this.inputCreateStudyChapter.anhChuongHoc = file;
+    },
+    async deleteCoure(khoaHocId) {
+      const userInfo = JSON.parse(localStorage.getItem("userInfo"));
+      const result = await this.courseApi.deleteCourses(khoaHocId);
+      if (result) {
+        this.text = "Xóa khóa học thành công";
+        this.snackbar = true;
+        setTimeout(() => {
+          this.reloadPage();
+        }, 2000);
+      } else {
+        this.text = "Xóa khóa học thất bại";
+        this.snackbar = true;
+      }
+    },
+    async createCourse() {
+      try {
+        const userInfo = JSON.parse(localStorage.getItem("userInfo"));
+
+        console.log(userInfo.Id);
+        const params = {
+          TieuDeKhoaHoc: this.inputCreateCourse.tieuDeKhoaHoc,
+          MoTaKhoaHoc: this.inputCreateCourse.moTaKhoaHoc,
+          GiaKhoaHoc: this.inputCreateCourse.giaKhoaHoc,
+          PhanTramGiamGia: this.inputCreateCourse.phanTramGiamGia,
+          AnhKhoaHoc: this.inputCreateCourse.anhKhoaHoc,
+          LoaiKhoaHocId: this.inputCreateCourse.loaiKhoaHocId,
+        };
+
+        const result = await this.courseApi.createCourse(
+          this.inputCreateCourse
+        );
+
+        if (result) {
+          this.$router.go();
+          this.text = "Thêm khóa học thành công";
+          this.snackbar = true;
+        } else {
+          this.text = "Thêm khóa học thất bại";
+          this.snackbar = true;
+        }
+      } catch (error) {
+        console.error("Đã xảy ra lỗi:", error);
+      }
+    },
+    async updateCourse() {
+      try {
+        const userInfo = JSON.parse(localStorage.getItem("userInfo"));
+        console.log(userInfo.Id);
+        if (!selectedCourse) {
+          this.text = "Không tìm thấy khóa học để cập nhật";
+          this.snackbar = true;
+          return;
+        }
+
+        const params = {
+          khoaHocId: this.inputUpdateCourse.khoaHocId,
+          TieuDeKhoaHoc: this.inputUpdateCourse.tieuDeKhoaHoc,
+          MoTaKhoaHoc: this.inputUpdateCourse.moTaKhoaHoc,
+          GiaKhoaHoc: this.inputUpdateCourse.giaKhoaHoc,
+          PhanTramGiamGia: this.inputUpdateCourse.phanTramGiamGia,
+          AnhKhoaHoc: this.inputUpdateCourse.anhKhoaHoc,
+          LoaiKhoaHocId: this.inputUpdateCourse.loaiKhoaHocId,
+        };
+        const result = await this.courseApi.updateCourse(params);
+
+        if (result) {
+          this.$router.go();
+          this.text = "Sửa khóa học thành công";
+          this.snackbar = true;
+        } else {
+          this.text = "Sửa khóa học thất bại";
+          this.snackbar = true;
+        }
+      } catch (error) {
+        console.error("Đã xảy ra lỗi:", error);
+        this.text = "Đã xảy ra lỗi khi cập nhật khóa học";
+        this.snackbar = true;
+      }
+    },
+    async handleClickCourseId(id) {
+      try {
+        const response = await this.courseApi.getCourseId(id);
+        this.listCourseId = response.data;
+        console.log(this.listCourseId);
+        console.log("data đây rồi");
+      } catch (error) {
+        console.error("Đã xảy ra lỗi khi gọi API:", error);
+        // Xử lý lỗi nếu cần thiết
+        this.$router.push("/error"); // Điều hướng đến trang lỗi nếu cần
+      }
+    },
+    async createStudyChapter() {
+      const userInfo = JSON.parse(localStorage.getItem("userInfo"));
+      try {
+        const result = await this.studyChapter.createStudyChapter(
+          this.inputCreateStudyChapter,
+          console.log(this.inputCreateStudyChapter)
+        );
+        console.log(result);
+        if (result) {
+          this.text = "Thêm chương học thành công";
+          this.snackbar = true;
+          setTimeout(() => {
+            this.reloadPage();
+          }, 2000);
+        } else {
+          this.text = "Thêm chương học thất bại";
+          this.snackbar = true;
+        }
+      } catch (error) {
+        console.error("Đã xảy ra lỗi:", error);
+      }
+    },
+    formatDate(dateString) {
+      const date = new Date(dateString);
+      const day = date.getDate();
+      const month = date.getMonth() + 1;
+      const year = date.getFullYear();
+      const formattedDay = day < 10 ? "0" + day : day;
+      const formattedMonth = month < 10 ? "0" + month : month;
+
+      return `${formattedDay}/${formattedMonth}/${year}`;
+    },
+    formatCurrency(value) {
+      const intValue = parseInt(value);
+      return intValue.toLocaleString("vi-VN", {
+        style: "currency",
+        currency: "VND",
+      });
+    },
+    reloadPage() {
+      location.reload();
     },
   },
 };
 </script>
 
-<style scope>
+<style scoped>
+.ck-editor__editable {
+  height: 400px;
+}
+.btn-delete {
+  color: black;
+}
+.btn-delete:hover {
+  color: red;
+}
+.btn-update {
+  color: black;
+}
+.btn-update:hover {
+  color: rgb(255, 234, 0);
+}
+.btn-create {
+  color: black;
+}
+.btn-create:hover {
+  color: rgb(1, 188, 1);
+}
 .study-chapter-link {
   color: #141414;
+}
+.study-chapter-link:hover {
+  color: rgb(0, 191, 255);
 }
 .content-course h2 {
   font-family: initial;

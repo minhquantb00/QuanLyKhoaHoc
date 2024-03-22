@@ -45,6 +45,7 @@
                 class="login-form-button"
                 @click="login"
                 :loading="loading"
+                :disabled="disabled"
               >
                 Đăng nhập
               </a-button>
@@ -72,6 +73,14 @@
         </div>
       </div>
     </div>
+    <v-snackbar v-model="snackbar">
+      {{ text }}
+      <template v-slot:actions>
+        <v-btn color="green" variant="text" @click="snackbar = false">
+          Đóng
+        </v-btn>
+      </template>
+    </v-snackbar>
   </div>
 </template>
 <script setup>
@@ -82,9 +91,7 @@ const onFinish = (values) => {
 const onFinishFailed = (errorInfo) => {
   console.log("Failed:", errorInfo);
 };
-const disabled = computed(() => {
-  return !(formState.username && formState.password);
-});
+
 </script>
 <script>
 import { useRouter } from "vue-router";
@@ -93,6 +100,8 @@ import useEmitter from "../../helpers/useEmitter";
 export default {
   data() {
     return {
+      text: "",
+      snackbar: false,
       inputLogin: {
         taiKhoan: "",
         matKhau: "",
@@ -128,36 +137,75 @@ export default {
       ],
     };
   },
+  computed: {
+    disabled() {
+      return !(this.inputLogin.taiKhoan && this.inputLogin.matKhau);
+    }
+  },
   methods: {
     async login() {
-      // Xử lý đăng nhập sử dụng authApi
-      this.loading = true;
-      console.log(this.inputLogin);
-      const dataLogin = this.inputLogin;
-      console.log(dataLogin);
-      const result = (await this.authenticateApi.login(dataLogin)).data;
-      console.log(result);
-      if (result.status === 200) {
-        if (!localStorage.getItem("accessToken")) {
-          localStorage.setItem("accessToken", result.data.accessToken);
-          localStorage.setItem("refreshToken", result.data.refreshToken);
+      try {
+        this.loading = true;
+        console.log(this.inputLogin);
+        const dataLogin = this.inputLogin;
+        console.log(dataLogin);
 
-          const accessToken = localStorage.getItem("accessToken");
-          var decoded = this.parseJwt(accessToken); // Fix lỗi parseJwt không được định nghĩa
-          localStorage.setItem("userInfo", JSON.stringify(decoded));
+        const result = (await this.authenticateApi.login(dataLogin)).data;
+        console.log(result);
+        if (result.status === 200) {
+          if (!localStorage.getItem("accessToken")) {
+            localStorage.setItem("accessToken", result.data.accessToken);
+            localStorage.setItem("refreshToken", result.data.refreshToken);
+            const accessToken = localStorage.getItem("accessToken");
+            var decoded = this.parseJwt(accessToken); // Fix lỗi parseJwt không được định nghĩa
+            localStorage.setItem("userInfo", JSON.stringify(decoded));
+          }
+
+          const userInfo = JSON.parse(localStorage.getItem("userInfo")); // Lấy userInfo từ localStorage và parse thành đối tượng JSON
+
+          console.log(userInfo);
+          console.log("user");
+          if (userInfo.role === "Admin") {
+            this.router.push({ path: "/admin" });
+            this.text = "Đăng nhập thành công";
+            this.snackbar = true;
+            setTimeout(() => {
+              this.reloadPage();
+            }, 2000);
+          } else {
+            this.text = "Đăng nhập thành công";
+            this.snackbar = true;
+            setTimeout(() => {
+              this.reloadPage();
+            }, 2000);
+            this.router.push({ path: "/" });
+          }
+        } else {
+          const alert = {
+            type: "error",
+            content: result.message,
+          };
+          this.emitter.emit("showAlert", alert);
+          this.snackbar = true;
         }
-        this.router.push({ path: "/" });
-      } else {
+      } catch (error) {
+        // Xử lý lỗi khi gọi API đăng nhập
+        console.error("Error logging in:", error);
+        this.text = "Bạn đã nhập sai tài khoản hoặc mật khẩu!";
+
+        this.snackbar = true;
         const alert = {
           type: "error",
           content: result.message,
         };
         this.emitter.emit("showAlert", alert);
+        // this.text = "Lỗi hệ thống không đăng nhập được";
+        // this.snackbar = true;
+      } finally {
+        this.loading = false;
       }
-      this.loading = false;
     },
     parseJwt(token) {
-      // Hàm parseJwt đã được di chuyển vào phạm vi của component
       var base64Url = token.split(".")[1];
       var base64 = base64Url.replace(/-/g, "+").replace(/_/g, "/");
       var jsonPayload = decodeURIComponent(
@@ -172,21 +220,9 @@ export default {
 
       return JSON.parse(jsonPayload);
     },
-    // parseJwt(token) {
-    //   var base64Url = token.split(".")[1];
-    //   var base64 = base64Url.replace(/-/g, "+").replace(/_/g, "/");
-    //   var jsonPayload = decodeURIComponent(
-    //     window
-    //       .atob(base64)
-    //       .split("")
-    //       .map(function (c) {
-    //         return "%" + ("00" + c.charCodeAt(0).toString(16)).slice(-2);
-    //       })
-    //       .join("")
-    //   );
-
-    //   return JSON.parse(jsonPayload);
-    // },
+    reloadPage() {
+      location.reload();
+    },
   },
 };
 </script>

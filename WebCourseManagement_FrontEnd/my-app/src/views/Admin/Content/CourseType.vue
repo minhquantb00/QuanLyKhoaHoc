@@ -24,6 +24,7 @@
               <v-text-field
                 class="mt-3"
                 :rules="rules"
+                v-model="inputCreateCourseTypes.tenLoaiKhoaHoc"
                 color="purple-accent-4"
                 variant="outlined"
                 placeholder="Tên thể loại khóa học"
@@ -38,7 +39,7 @@
                   color="purple-accent-4"
                   size="x-large"
                   variant="flat"
-                  @click="isActive.value = false"
+                  @click="createCourseType"
                   >Thêm thể loại khóa học</v-btn
                 >
                 <v-btn
@@ -55,10 +56,10 @@
         </template>
       </v-dialog>
     </div>
-    <a-table :data-source="data" :columns="columns">
+    <a-table :data-source="this.listCourseTypes" :columns="columns">
       <template #headerCell="{ column }">
         <template v-if="column.key === 'name'">
-          <span style="color: #1890ff">Name</span>
+          <span style="color: #1890ff"></span>
         </template>
       </template>
       <template
@@ -84,10 +85,10 @@
           <a-button
             type="primary"
             size="small"
-            style="width: 90px; margin-right: 8px"
+            style="width: 90px; margin-right: 8px; color: #fff"
             @click="handleSearch(selectedKeys, confirm, column.dataIndex)"
           >
-            <template #icon><SearchOutlined /></template>
+            <v-icon icon="mdi-magnify"></v-icon>
             Search
           </a-button>
           <a-button
@@ -105,9 +106,9 @@
           :style="{ color: filtered ? '#108ee9' : undefined }"
         />
       </template>
-      <template #bodyCell="{ text, column }">
+      <template #listCourseTypes="{ text }">
         <span
-          v-if="state.searchText && state.searchedColumn === column.dataIndex"
+          v-if="state.searchText && state.searchedColumn === 'tenLoaiKhoaHoc'"
         >
           <template
             v-for="(fragment, i) in text
@@ -126,155 +127,184 @@
             >
               {{ fragment }}
             </mark>
-            <template v-else>{{ fragment }}</template>
+            <template v-else>
+              {{ fragment }}
+            </template>
           </template>
         </span>
-        <template v-if="column.key === 'operation'">
-          <v-row>
-            <v-col>
-              <v-dialog persistent max-width="600">
-                <template v-slot:activator="{ props: activatorProps }">
-                  <v-btn
-                    icon
-                    color="black"
-                    size="small"
-                    variant="outlined"
-                    v-bind="activatorProps"
-                  >
-                    <font-awesome-icon
-                      icon="fa-solid fa-pen"
-                      style="font-size: 16px"
-                    ></font-awesome-icon>
-                  </v-btn>
-                </template>
-
-                <template v-slot:default="{ isActive }">
-                  <div>
-                    <v-card class="pa-5">
-                      <label>
-                        <span class="obligatory mr-2">*</span>
-                        Tên thể loại khóa học
-                      </label>
-                      <v-text-field
-                        class="mt-3"
-                        :rules="rules"
-                        color="purple-accent-4"
-                        variant="outlined"
-                        placeholder="Tên thể loại khóa học"
-                      ></v-text-field>
-                      <v-card-actions>
-                        <v-spacer></v-spacer>
-
-                        <v-btn
-                          :disabled="loading"
-                          :loading="loading"
-                          class="text-none mt-4"
-                          color="#9933FF"
-                          size="x-large"
-                          variant="flat"
-                          @click="isActive.value = false"
-                          >Sửa thể loại khóa học</v-btn
-                        >
-                        <v-btn
-                          class="text-none mt-4"
-                          color="#000"
-                          size="x-large"
-                          variant="outlined"
-                          @click="isActive.value = false"
-                          >Hủy</v-btn
-                        >
-                      </v-card-actions>
-                    </v-card>
-                  </div>
-                </template>
-              </v-dialog>
-            </v-col>
-            <v-col>
-              <v-btn icon color="red" size="small" variant="outlined">
-                <font-awesome-icon
-                  icon="fa-solid fa-lock"
-                  style="font-size: 16px"
-                ></font-awesome-icon>
-              </v-btn>
-            </v-col>
-          </v-row>
-        </template>
       </template>
+      <div v-if="column.key === 'operation'" style="z-index: 8">
+        <v-row v-for="i in listCourseTypes" :key="i">
+          <v-col>
+            <v-dialog persistent max-width="600">
+              <template v-slot:activator="{ props: activatorProps }">
+                <v-btn
+                  icon
+                  color="black"
+                  size="small"
+                  variant="outlined"
+                  v-bind="activatorProps"
+                >
+                  <font-awesome-icon
+                    icon="fa-solid fa-pen"
+                    style="font-size: 16px"
+                  ></font-awesome-icon>
+                </v-btn>
+              </template>
+
+              <template v-slot:default="{ isActive }">
+                <div>
+                  <v-card class="pa-5">
+                    <label>
+                      <span class="obligatory mr-2">*</span>
+                      Tên thể loại khóa học
+                    </label>
+                    <v-text-field
+                      class="mt-3"
+                      :rules="rules"
+                      color="purple-accent-4"
+                      variant="outlined"
+                      placeholder="Tên thể loại khóa học"
+                    ></v-text-field>
+                    <v-card-actions>
+                      <v-spacer></v-spacer>
+
+                      <v-btn
+                        :disabled="loading"
+                        :loading="loading"
+                        class="text-none mt-4"
+                        color="#9933FF"
+                        size="x-large"
+                        variant="flat"
+                        @click="isActive.value = false"
+                        >Sửa thể loại khóa học</v-btn
+                      >
+                      <v-btn
+                        class="text-none mt-4"
+                        color="#000"
+                        size="x-large"
+                        variant="outlined"
+                        @click="isActive.value = false"
+                        >Hủy</v-btn
+                      >
+                    </v-card-actions>
+                  </v-card>
+                </div>
+              </template>
+            </v-dialog>
+          </v-col>
+          <v-col>
+            <v-btn icon color="red" size="small" variant="outlined">
+              <font-awesome-icon
+                icon="fa-solid fa-lock"
+                style="font-size: 16px"
+              ></font-awesome-icon>
+            </v-btn>
+          </v-col>
+        </v-row>
+      </div>
     </a-table>
+    <v-snackbar v-model="snackbar">
+      {{ text }}
+      <template v-slot:actions>
+        <v-btn color="green" variant="text" @click="snackbar = false">
+          Đóng
+        </v-btn>
+      </template>
+    </v-snackbar>
   </div>
 </template>
-<script setup>
-import { reactive, ref } from "vue";
-const data = [
-  {
-    key: "1",
-    username: "Trần Văn Dương",
-    phoneNumber: "0388049008",
-    email: "Duongtv@gmail.com",
-    status: "Đang hoạt động",
+<script>
+import { courseTypeApi } from "../../../apis/Course/courseTypeApi";
+
+export default {
+  data() {
+    return {
+      courseTypeApiInstance: courseTypeApi(),
+      listCourseTypes: [],
+      inputCreateCourseTypes: {
+        tenLoaiKhoaHoc: "",
+      },
+      text:"",
+      snackbar:false,
+      columns: [],
+      state: [
+        {
+          searchText: "",
+          searchedColumn: "",
+        },
+      ],
+    };
   },
-  {
-    key: "2",
-    username: "Trần Diệu Linh",
-    phoneNumber: "0345200845",
-    email: "Linh208200@gmail.com",
-    status: "Ngưng hoạt động",
+  async mounted() {
+    try {
+      const res = await this.courseTypeApiInstance.getAllCoursesType();
+      console.log(res);
+      this.listCourseTypes = res;
+
+      this.columns = [
+        {
+          title: "Tên thể loại khóa học",
+          dataIndex: "tenLoaiKhoaHoc",
+          key: "tenLoaiKhoaHoc",
+          customFilterDropdown: true,
+          onFilter: (value, record) => {
+            return record.tenLoaiKhoaHoc
+              .toLowerCase()
+              .includes(value.toLowerCase());
+          },
+          onFilterDropdownOpenChange: (visible) => {
+            if (visible) {
+              setTimeout(() => {
+                searchInput.value.focus();
+              }, 100);
+            }
+          },
+        },
+        {
+          title: "Thao tác",
+          key: "operation",
+          width: 300,
+        },
+      ];
+      console.log(this.listCourseTypes);
+    } catch (e) {
+      console.error("Error Fetching failed: " + e.message);
+    }
   },
-  {
-    key: "3",
-    username: "Jim Green",
-    phoneNumber: "03787748939",
-    email: "Duongtv280703@gmail.com",
-    status: "Đang hoạt động",
-  },
-  {
-    key: "4",
-    username: "Jim Red",
-    phoneNumber: "08472828239",
-    email: "Duongtv280703@gmail.com",
-    status: "Đang hoạt động",
-  },
-];
-const state = reactive({
-  searchText: "",
-  searchedColumn: "",
-});
-const searchInput = ref();
-const columns = [
-  {
-    title: "Tên thể loại khóa học",
-    dataIndex: "username",
-    key: "username",
-    customFilterDropdown: true,
-    onFilter: (value, record) =>
-      record.username.toString().toLowerCase().includes(value.toLowerCase()),
-    onFilterDropdownOpenChange: (visible) => {
-      if (visible) {
-        setTimeout(() => {
-          searchInput.value.focus();
-        }, 100);
+  methods: {
+    handleSearch(selectedKeys, confirm, dataIndex) {
+      confirm();
+      state.searchText = selectedKeys[0];
+      state.searchedColumn = dataIndex;
+    },
+    handleReset(clearFilters) {
+      clearFilters({
+        confirm: true,
+      });
+      state.searchText = "";
+    },
+    async createCourseType() {
+      const result = await this.courseTypeApiInstance.createCourseTypes(this.inputCreateCourseTypes)
+      if (result){
+        this.text = "Thêm loại khóa học thành công";
+        this.snackbar = true;
+          setTimeout(() => {
+            this.reloadPage();
+          }, 2000)
+      }else{
+        this.text = "Thêm thể loại khóa học thất bại"
+        this.snackbar = true;
       }
+      
+    },
+        reloadPage() {
+      location.reload();
     },
   },
-
-  {
-    title: "Thao tác",
-    key: "operation",
-    width: 140,
-  },
-];
-const handleSearch = (selectedKeys, confirm, dataIndex) => {
-  confirm();
-  state.searchText = selectedKeys[0];
-  state.searchedColumn = dataIndex;
-};
-const handleReset = (clearFilters) => {
-  clearFilters({
-    confirm: true,
-  });
-  state.searchText = "";
 };
 </script>
+
 <style scoped>
 .obligatory {
   color: red;
