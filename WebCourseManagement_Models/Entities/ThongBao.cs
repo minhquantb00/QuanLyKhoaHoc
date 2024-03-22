@@ -16,5 +16,6 @@ namespace WebCourseManagement_Models.Entities
         public DateTime ThoiGianThongBao { get; set; }
         public string LinkThongBao { get; set; }
         public bool HeThongThongBao { get; set; }
+        public string AnhThongBao { get; set; }
     }
 }

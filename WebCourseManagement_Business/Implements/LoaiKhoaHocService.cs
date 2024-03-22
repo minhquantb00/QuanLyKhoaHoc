@@ -29,18 +29,25 @@ namespace WebCourseManagement_Business.Implements
         }
         public async Task<ResponseObject<DataResponseLoaiKhoaHoc>> CapNhatThongTinLoaiKhoaHoc(Request_SuaLoaiKhoaHoc request)
         {
-            var loaiKhoaHoc = await _context.loaiKhoaHocs.SingleOrDefaultAsync(x => x.Id == request.LoaiKhoaHocId);
-            if(loaiKhoaHoc == null)
+            try
             {
-                return _responseObject.ResponseError(StatusCodes.Status404NotFound, "Không tìm thấy loại khóa học", null);
+                var loaiKhoaHoc = await _context.loaiKhoaHocs.SingleOrDefaultAsync(x => x.Id == request.LoaiKhoaHocId);
+                if (loaiKhoaHoc == null)
+                {
+                    return _responseObject.ResponseError(StatusCodes.Status404NotFound, "Không tìm thấy loại khóa học", null);
+                }
+                if (string.IsNullOrWhiteSpace(request.TenLoaiKhoaHoc))
+                {
+                    return _responseObject.ResponseError(StatusCodes.Status400BadRequest, "Vui lòng điền đầy đủ thông tin", null);
+                }
+                loaiKhoaHoc.TenLoaiKhoaHoc = request.TenLoaiKhoaHoc;
+                _context.SaveChanges();
+                return _responseObject.ResponseSuccess("Cập nhật thông tin loại khóa học thành công", _converter.EntityToDTO(loaiKhoaHoc));
             }
-            if (string.IsNullOrWhiteSpace(request.TenLoaiKhoaHoc))
+            catch (Exception ex)
             {
-                return _responseObject.ResponseError(StatusCodes.Status400BadRequest, "Vui lòng điền đầy đủ thông tin", null);
+                return _responseObject.ResponseError(StatusCodes.Status500InternalServerError, ex.Message, null);
             }
-            loaiKhoaHoc.TenLoaiKhoaHoc = request.TenLoaiKhoaHoc;
-            _context.SaveChanges();
-            return _responseObject.ResponseSuccess("Cập nhật thông tin loại khóa học thành công", _converter.EntityToDTO(loaiKhoaHoc));
         }
 
         public async Task<IQueryable<DataResponseLoaiKhoaHoc>> GetAllLoaiKhoahocs()
@@ -57,29 +64,45 @@ namespace WebCourseManagement_Business.Implements
 
         public async Task<ResponseObject<DataResponseLoaiKhoaHoc>> ThemLoaiKhoaHoc(Request_ThemLoaiKhoaHoc request)
         {
-            if (string.IsNullOrWhiteSpace(request.TenLoaiKhoaHoc))
+            try
             {
-                return _responseObject.ResponseError(StatusCodes.Status400BadRequest, "Vui lòng điền đầy đủ thông tin", null);
+                if (string.IsNullOrWhiteSpace(request.TenLoaiKhoaHoc))
+                {
+                    return _responseObject.ResponseError(StatusCodes.Status400BadRequest, "Vui lòng điền đầy đủ thông tin", null);
+                }
+                LoaiKhoaHoc loaiKhoaHoc = new LoaiKhoaHoc
+                {
+                    TenLoaiKhoaHoc = request.TenLoaiKhoaHoc
+                };
+                _context.loaiKhoaHocs.Add(loaiKhoaHoc);
+                _context.SaveChanges();
+                return _responseObject.ResponseSuccess("Thêm loại khóa học thành công", _converter.EntityToDTO(loaiKhoaHoc));
             }
-            LoaiKhoaHoc loaiKhoaHoc = new LoaiKhoaHoc
+            catch (Exception ex)
             {
-                TenLoaiKhoaHoc = request.TenLoaiKhoaHoc
-            };
-            _context.loaiKhoaHocs.Add(loaiKhoaHoc);
-            _context.SaveChanges();
-            return _responseObject.ResponseSuccess("Thêm loại khóa học thành công", _converter.EntityToDTO(loaiKhoaHoc));
+                return _responseObject.ResponseError(StatusCodes.Status500InternalServerError, ex.Message, null);
+            }
         }
 
         public async Task<string> XoaLoaiKhoaHoc(int loaiKhoaHocId)
         {
-            var loaiKhoaHoc = await _context.loaiKhoaHocs.SingleOrDefaultAsync(x => x.Id == loaiKhoaHocId);
-            if(loaiKhoaHoc == null)
+            try
             {
-                return "Loại khóa học không tồn tại";
+                var loaiKhoaHoc = await _context.loaiKhoaHocs.SingleOrDefaultAsync(x => x.Id == loaiKhoaHocId);
+                if (loaiKhoaHoc == null)
+                {
+                    return "Loại khóa học không tồn tại";
+                }
+                _context.loaiKhoaHocs.Remove(loaiKhoaHoc);
+                _context.SaveChanges();
+                return "Xóa loại khóa học thành công";
             }
-            _context.loaiKhoaHocs.Remove(loaiKhoaHoc);
-            _context.SaveChanges();
-            return "Xóa loại khóa học thành công";
+            catch (Exception ex)
+            {
+                return "Error: " + ex.Message;
+
+            }
+
         }
     }
 }

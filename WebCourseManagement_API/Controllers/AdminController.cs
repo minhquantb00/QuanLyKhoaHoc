@@ -3,7 +3,13 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using WebCourseManagement_Business.Interfaces;
+using WebCourseManagement_Models.RequestModels.BaiVietRequests;
+using WebCourseManagement_Models.RequestModels.BannerRequest;
+using WebCourseManagement_Models.RequestModels.BaoCaoRequests;
 using WebCourseManagement_Models.RequestModels.LoaiKhoaHocRequests;
+using WebCourseManagement_Models.ResponseModels.DataBaiViet;
+using WebCourseManagement_Models.ResponseModels.DataBanner;
+using WebCourseManagement_Models.ResponseModels.DataBaoCao;
 using WebCourseManagement_Models.ResponseModels.DataLoaiKhoaHoc;
 using WebCourseManagement_Models.Responses;
 
@@ -15,10 +21,16 @@ namespace WebCourseManagement_API.Controllers
     {
         private readonly IUserService _userService;
         private readonly ILoaiKhoaHocService _loaiKhoaHocService;
-        public AdminController(IUserService userService, ILoaiKhoaHocService loaiKhoaHocService)
+        private readonly IBaiVietService _baivietService;
+        private readonly IBannerService _bannerService;
+        private readonly IBaoCaoService _baoCaoService;
+        public AdminController(IUserService userService, ILoaiKhoaHocService loaiKhoaHocService, IBaiVietService baiVietService, IBannerService bannerService, IBaoCaoService baoCaoService)
         {
             _userService = userService;
             _loaiKhoaHocService = loaiKhoaHocService;
+            _baivietService = baiVietService;
+            _bannerService = bannerService;
+            _baoCaoService = baoCaoService;
         }
         [HttpPut("KhoaTaiKhoanNguoiDung/{id}")]
         [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
@@ -50,6 +62,42 @@ namespace WebCourseManagement_API.Controllers
         {
             return Ok(await _loaiKhoaHocService.XoaLoaiKhoaHoc(loaiKhoaHocId));
         }
-        
+        [HttpPut("DuyetBaiViet/{baiVietId}")]
+        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
+        public async Task<IActionResult> DuyetBaiViet([FromRoute] int baiVietId)
+        {
+            return Ok(await _baivietService.DuyetBaiViet(baiVietId));
+        }
+        [HttpPost("TaoBanner")]
+        [Authorize(Roles = "Admin")]
+        public async Task<IActionResult> TaoBanner([FromForm] Request_TaoBanner request)
+        {
+            return Ok(await _bannerService.TaoBanner(request));
+        }
+        [HttpPost("ThemLoaiBaiViet")]
+        [Authorize(Roles = "Admin")]
+        public async Task<IActionResult> ThemLoaiBaiViet([FromBody] Request_ThemLoaiBaiViet request)
+        {
+            return Ok(await _baivietService.ThemLoaiBaiViet(request));
+        }
+        [HttpPut("SuaLoaiBaiViet")]
+        [Authorize(Roles = "Admin")]
+        public async Task<IActionResult> SuaLoaiBaiViet([FromBody] Request_SuaLoaiBaiViet request)
+        {
+            return Ok(await _baivietService.SuaLoaiBaiViet(request));
+        }
+        [HttpDelete("XoaLoaiBaiViet/{loaiBaiVietId}")]
+        [Authorize(Roles = "Admin")]
+        public async Task<IActionResult> XoaLoaiBaiViet([FromRoute] int loaiBaiVietId)
+        {
+            return Ok(await _baivietService.XoaLoaiBaiViet(loaiBaiVietId));
+        }
+        [HttpPut("DuyetBaoCao")]
+        [Authorize(Roles = "Admin")]
+        [Consumes(contentType: "multipart/form-data")]
+        public async Task<IActionResult> DuyetBaoCao([FromForm] Request_DuyetBaoCao request)
+        {
+            return Ok(await _baoCaoService.DuyetBaoCao(request));
+        }
     }
 }

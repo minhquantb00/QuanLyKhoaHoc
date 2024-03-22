@@ -22,5 +22,12 @@ namespace WebCourseManagement_Models.RequestModels.NguoiDungRequests
         public int? XaPhuongId { get; set; }
         public int? QuanHuyenId { get; set; }
         public int? TinhThanhId { get; set; }
+        public string? GioiThieuBanThan { get; set; }
+        public string? MoTaBanThan { get; set; }
+        public string? ChungNhan { get; set; }
+        public string? BietDanh { get; set; }
+        public string? LinkYoutube { get; set; }
+        public string? LinkFacebook { get; set; }
+        public string? LinkInstagram { get; set; }
     }
 }

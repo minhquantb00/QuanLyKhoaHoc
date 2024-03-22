@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.EntityFrameworkCore;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -35,6 +36,9 @@ namespace WebCourseManagement_Models.Converters
                 NguoiTao = _nguoiDungConverter.EntityToDTO(_context.nguoiDungs.SingleOrDefault(x => x.Id == khoaHoc.NguoiTaoId)),
                 SoHocVienDaHoanThanh = khoaHoc.SoHocVienDaHoanThanh,
                 TieuDeKhoaHoc = khoaHoc.TieuDeKhoaHoc,
+                TrailerKhoaHoc = khoaHoc.TrailerKhoaHoc,
+                SoHocVienHocKhoaHoc = khoaHoc.SoHocVienHocKhoaHoc,
+                SoSaoTrungBinh = khoaHoc.SoSaoTrungBinh,
                 TongThoiGianKhoaHoc = khoaHoc.TongThoiGianKhoaHoc,
                 ChuongHocs = _context.chuongHocs.Where(x => x.KhoaHocId == khoaHoc.Id).Select(x => _chuongHocConverter.EntityToDTO(x)),
                 GiaKhoaHocThucTe = khoaHoc.GiaKhoaHocThucTe

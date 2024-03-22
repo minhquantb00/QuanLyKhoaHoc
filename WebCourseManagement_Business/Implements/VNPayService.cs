@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using MailKit.Search;
+using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using System;
@@ -42,22 +43,22 @@ namespace WebCourseManagement_Business.Implements
                 }
                 if (hoaDon.TrangThaiHoaDonId == 1 && hoaDon.TongTien != 0 && hoaDon.TongTien != null)
                 {
-                    VnPayLibrary vnpay = new VnPayLibrary();
+                    VnPayLibrary pay = new VnPayLibrary();
 
-                    vnpay.AddRequestData("vnp_Version", "2.1.0");
-                    vnpay.AddRequestData("vnp_Command", "pay");
-                    vnpay.AddRequestData("vnp_TmnCode", "1FL9AZ4R");
-                    vnpay.AddRequestData("vnp_Amount", (hoaDon.TongTien * 1000).ToString());
-                    vnpay.AddRequestData("vnp_CreateDate", hoaDon.ThoiGianTao.ToString("yyyyMMddHHmmss"));
-                    vnpay.AddRequestData("vnp_CurrCode", "VND");
-                    vnpay.AddRequestData("vnp_IpAddr", Utils.GetIpAddress(httpContext));
-                    vnpay.AddRequestData("vnp_Locale", "vn");
-                    vnpay.AddRequestData("vnp_OrderInfo", "Thanh toán hóa đơn: " + hoaDon.Id);
-                    vnpay.AddRequestData("vnp_OrderType", "other");
-                    vnpay.AddRequestData("vnp_ReturnUrl", "https://localhost:7046/api/user/Return");
-                    vnpay.AddRequestData("vnp_TxnRef", hoaDon.Id.ToString());
+                    pay.AddRequestData("vnp_Version", "2.1.0");
+                    pay.AddRequestData("vnp_Command", "pay");
+                    pay.AddRequestData("vnp_TmnCode", "77E3BAVI");
+                    pay.AddRequestData("vnp_Amount", (double.Parse((hoaDon.TongTien * 100).ToString()).ToString()));
+                    pay.AddRequestData("vnp_CreateDate", DateTime.Now.ToString("yyyyMMddHHmmss"));
+                    pay.AddRequestData("vnp_CurrCode", "VND");
+                    pay.AddRequestData("vnp_IpAddr", Utils.GetIpAddress(httpContext));
+                    pay.AddRequestData("vnp_Locale", "vn");
+                    pay.AddRequestData("vnp_OrderInfo", $"Thanh toan don hang {hoaDon.Id}");
+                    pay.AddRequestData("vnp_OrderType", "other");
+                    pay.AddRequestData("vnp_ReturnUrl", _configuration.GetSection("VnPay:ReturnUrl").Value);
+                    pay.AddRequestData("vnp_TxnRef", hoaDon.Id.ToString());
 
-                    string duongDanThanhToan = vnpay.CreateRequestUrl(_configuration.GetSection("VnPay:BaseUrl").Value, _configuration.GetSection("VnPay:HashSecret").Value);
+                    string duongDanThanhToan = pay.CreateRequestUrl(_configuration.GetSection("VnPay:vnp_Url").Value, _configuration.GetSection("VnPay:vnp_HashSecret").Value);
                     return duongDanThanhToan;
                 }
 
@@ -91,7 +92,7 @@ namespace WebCourseManagement_Business.Implements
             {
                 if (vnp_ResponseCode == "00" && vnp_TransactionStatus == "00")
                 {
-                    var hoaDon = await _context.hoaDonDangKies.FirstOrDefaultAsync(x => x.Id == Convert.ToInt32(hoaDonId));
+                    var hoaDon = await _context.hoaDonDangKies.Include(x => x.KhoaHoc).AsNoTracking().FirstOrDefaultAsync(x => x.Id == Convert.ToInt32(hoaDonId));
 
                     if (hoaDon == null)
                     {
@@ -121,6 +122,8 @@ namespace WebCourseManagement_Business.Implements
                         NguoiDungId = hoaDon.NguoiDungId,
                     };
                     _context.khoaHocCuaNguoiDungs.Add(khoaHocCuaNguoiDung);
+                    _context.SaveChanges();
+                    hoaDon.KhoaHoc.SoHocVienHocKhoaHoc = _context.khoaHocCuaNguoiDungs.Count(x => x.KhoaHocId == hoaDon.KhoaHocId);
                     _context.SaveChanges();
                     return "Giao dịch thành công đơn hàng " + hoaDon.Id;
                 }

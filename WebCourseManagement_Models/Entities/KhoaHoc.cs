@@ -19,6 +19,9 @@ namespace WebCourseManagement_Models.Entities
         public DateTime? NgayXoa { get; set; }
         public int TongThoiGianKhoaHoc { get; set; }
         public int SoHocVienDaHoanThanh { get; set; }
+        public string? TrailerKhoaHoc { get; set; }
+        public double SoSaoTrungBinh { get; set; }
+        public int SoHocVienHocKhoaHoc { get; set; }
         public int NguoiTaoId { get; set; }
         public int LoaiKhoaHocId { get; set; }
         public virtual LoaiKhoaHoc? LoaiKhoaHoc { get; set; }

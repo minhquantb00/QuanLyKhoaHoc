@@ -22,7 +22,14 @@ namespace WebCourseManagement_Models.Converters
                 Id = nguoiDung.Id,
                 NgaySinh = nguoiDung.NgaySinh,
                 SoDienThoai = nguoiDung.SoDienThoai,
-                TaiKhoan = nguoiDung.TaiKhoan
+                TaiKhoan = nguoiDung.TaiKhoan,
+                BietDanh = nguoiDung.BietDanh,
+                ChungNhan = nguoiDung.ChungNhan,
+                GioiThieuBanThan = nguoiDung.GioiThieuBanThan,
+                LinkFacebook = nguoiDung.LinkFacebook,
+                LinkInstagram = nguoiDung.LinkInstagram,
+                LinkYoutube = nguoiDung.LinkYoutube,
+                MoTaBanThan = nguoiDung.MoTaBanThan
             };
         }
     }

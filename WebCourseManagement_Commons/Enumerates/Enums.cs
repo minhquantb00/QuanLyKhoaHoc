@@ -21,5 +21,17 @@ namespace WebCourseManagement_Commons.Enumerates
             BaiViet,
             BaiHoc
         }
+        public enum TestCaseEnum
+        {
+            SUCCESSFULLY = 1,
+            WRONG = 2,
+            EXCEPTION = 3,
+            WAIT = 4
+        }
+        public enum XacMinhViPham
+        {
+            DaViPham = 1,
+            KhongViPham = 2
+        }
     }
 }

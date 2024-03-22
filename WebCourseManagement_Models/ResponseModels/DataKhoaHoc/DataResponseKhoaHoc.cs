@@ -17,12 +17,15 @@ namespace WebCourseManagement_Models.ResponseModels.DataKhoaHoc
         public string AnhKhoaHoc { get; set; }
         public decimal? PhanTramGiamGia { get; set; }
         public decimal? GiaKhoaHocThucTe { get; set; }
+        public string? TrailerKhoaHoc { get; set; }
+        public int SoHocVienHocKhoaHoc { get; set; }
+        public double SoSaoTrungBinh { get; set; }
         public DateTime NgayTao { get; set; }
         public DateTime? NgayCapNhat { get; set; }
         public DateTime? NgayXoa { get; set; }
         public int TongThoiGianKhoaHoc { get; set; }
         public int SoHocVienDaHoanThanh { get; set; }
         public DataResponseNguoiDung NguoiTao { get; set; }
-        public  IQueryable<DataResponseChuongHoc> ChuongHocs { get; set; }
+        public IQueryable<DataResponseChuongHoc> ChuongHocs { get; set; }
     }
 }

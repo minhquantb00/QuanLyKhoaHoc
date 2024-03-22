@@ -146,7 +146,10 @@ namespace WebCourseManagement_Models.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
-                    b.Property<int>("BinhLuanId")
+                    b.Property<int?>("BaiVietId")
+                        .HasColumnType("int");
+
+                    b.Property<int?>("BinhLuanId")
                         .HasColumnType("int");
 
                     b.Property<bool?>("DaViPham")
@@ -162,7 +165,7 @@ namespace WebCourseManagement_Models.Migrations
                     b.Property<int>("LoaiBaoCaoId")
                         .HasColumnType("int");
 
-                    b.Property<int>("LoaiBinhLuan")
+                    b.Property<int?>("LoaiBinhLuan")
                         .HasColumnType("int");
 
                     b.Property<int>("NguoiGuiBaoCaoId")
@@ -552,12 +555,21 @@ namespace WebCourseManagement_Models.Migrations
                     b.Property<int>("SoHocVienDaHoanThanh")
                         .HasColumnType("int");
 
+                    b.Property<int>("SoHocVienHocKhoaHoc")
+                        .HasColumnType("int");
+
+                    b.Property<double>("SoSaoTrungBinh")
+                        .HasColumnType("float");
+
                     b.Property<string>("TieuDeKhoaHoc")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<int>("TongThoiGianKhoaHoc")
                         .HasColumnType("int");
+
+                    b.Property<string>("TrailerKhoaHoc")
+                        .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
 
@@ -719,6 +731,12 @@ namespace WebCourseManagement_Models.Migrations
                     b.Property<string>("AnhDaiDien")
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<string>("BietDanh")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("ChungNhan")
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<bool?>("DaKhoa")
                         .HasColumnType("bit");
 
@@ -727,6 +745,9 @@ namespace WebCourseManagement_Models.Migrations
 
                     b.Property<string>("Email")
                         .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("GioiThieuBanThan")
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<int>("GioiTinh")
@@ -739,8 +760,20 @@ namespace WebCourseManagement_Models.Migrations
                     b.Property<bool>("IsActive")
                         .HasColumnType("bit");
 
+                    b.Property<string>("LinkFacebook")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("LinkInstagram")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("LinkYoutube")
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<string>("MatKhau")
                         .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("MoTaBanThan")
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<DateTime?>("NgaySinh")
@@ -1004,6 +1037,10 @@ namespace WebCourseManagement_Models.Migrations
                         .HasColumnType("int");
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("AnhThongBao")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<bool>("DaXemThongBao")
                         .HasColumnType("bit");

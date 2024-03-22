@@ -5,22 +5,28 @@ using Microsoft.AspNetCore.Mvc;
 using WebCourseManagement_Business.Interfaces;
 using WebCourseManagement_Models.RequestModels.BaiHocRequests;
 using WebCourseManagement_Models.RequestModels.BaiVietRequests;
+using WebCourseManagement_Models.RequestModels.BaoCaoRequests;
 using WebCourseManagement_Models.RequestModels.BinhLuanBaiHocRequest;
 using WebCourseManagement_Models.RequestModels.ChuongHocRequests;
 using WebCourseManagement_Models.RequestModels.InputRequests;
+using WebCourseManagement_Models.RequestModels.KhoaHocNguoiDungRequests;
 using WebCourseManagement_Models.RequestModels.KhoaHocRequests;
 using WebCourseManagement_Models.RequestModels.NguoiDungRequests;
 using WebCourseManagement_Models.RequestModels.NguoiDungThichBinhLuanBaiHocRequests;
 using WebCourseManagement_Models.RequestModels.NguoiDungThichBinhLuanBaiVietRequests;
+using WebCourseManagement_Models.RequestModels.TestCaseRequests;
 using WebCourseManagement_Models.RequestModels.ThichBaiVietRequests;
 using WebCourseManagement_Models.ResponseModels.DataBaiHoc;
 using WebCourseManagement_Models.ResponseModels.DataBaiViet;
+using WebCourseManagement_Models.ResponseModels.DataBaoCao;
 using WebCourseManagement_Models.ResponseModels.DataBinhLuanBaiHoc;
 using WebCourseManagement_Models.ResponseModels.DataChuongHoc;
 using WebCourseManagement_Models.ResponseModels.DataHoaDon;
 using WebCourseManagement_Models.ResponseModels.DataKhoaHoc;
+using WebCourseManagement_Models.ResponseModels.DataKhoaHocCuaNguoiDung;
 using WebCourseManagement_Models.ResponseModels.DataLoaiKhoaHoc;
 using WebCourseManagement_Models.ResponseModels.DataNguoiDung;
+using WebCourseManagement_Models.ResponseModels.DataTestCase;
 using WebCourseManagement_Models.Responses;
 using WebCourseManagement_Repositories.HandlePagination;
 using Request_TraLoiBinhLuanBaiViet = WebCourseManagement_Models.RequestModels.BaiVietRequests.Request_TraLoiBinhLuanBaiViet;
@@ -42,8 +48,11 @@ namespace WebCourseManagement_API.Controllers
         private readonly IBaiVietService _baiVietService;
         private readonly IThichBinhLuanBaiVietService _thichBinhLuanBaiVietService;
         private readonly INguoiDungThichBaiVietService _thichBaiVietService;
+        private readonly IKhoaHocNguoiDungService _khoaHocNguoiDungService;
+        private readonly ITestCaseService _testCaseService;
+        private readonly IBaoCaoService _baoCaoService;
 
-        public UserController(IUserService userService, ILoaiKhoaHocService loaiKhoaHocService, IKhoaHocService khoaHocService, IChuongHocService chuongHocService, IBaiHocService baiHocService, IVNPayService vnpayService, IBinhLuanBaiHocService binhLuanBaiHocService, IThichBinhLuanBaiHocService thichBinhLuanBaiHocService, IBaiVietService baiVietService, IThichBinhLuanBaiVietService thichBinhLuanBaiVietService, INguoiDungThichBaiVietService thichBaiVietService)
+        public UserController(IUserService userService, ILoaiKhoaHocService loaiKhoaHocService, IKhoaHocService khoaHocService, IChuongHocService chuongHocService, IBaiHocService baiHocService, IVNPayService vnpayService, IBinhLuanBaiHocService binhLuanBaiHocService, IThichBinhLuanBaiHocService thichBinhLuanBaiHocService, IBaiVietService baiVietService, IThichBinhLuanBaiVietService thichBinhLuanBaiVietService, INguoiDungThichBaiVietService thichBaiVietService, IKhoaHocNguoiDungService khoaHocNguoiDungService, ITestCaseService testCaseService,IBaoCaoService baoCaoService)
         {
             _userService = userService;
             _loaiKhoaHocService = loaiKhoaHocService;
@@ -56,6 +65,9 @@ namespace WebCourseManagement_API.Controllers
             _baiVietService = baiVietService;
             _thichBinhLuanBaiVietService = thichBinhLuanBaiVietService;
             _thichBaiVietService = thichBaiVietService;
+            _khoaHocNguoiDungService = khoaHocNguoiDungService;
+            _testCaseService = testCaseService;
+            _baoCaoService = baoCaoService;
         }
         [HttpGet("GetAllsNguoiDung")]
         public async Task<IActionResult> GetAllsNguoiDung()
@@ -129,7 +141,7 @@ namespace WebCourseManagement_API.Controllers
         [HttpPost("ThemChuongHoc")]
         [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
         [Consumes(contentType: "multipart/form-data")]
-        public async Task<IActionResult> ThemChuongHoc([FromBody]Request_ThemChuongHoc request)
+        public async Task<IActionResult> ThemChuongHoc([FromForm]Request_ThemChuongHoc request)
         {
             return Ok(await _chuongHocService.ThemChuongHoc(request));
         }
@@ -264,9 +276,9 @@ namespace WebCourseManagement_API.Controllers
             return Ok(await _baiVietService.XoaBaiViet(baiVietId));
         }
         [HttpGet("getkhoahoc")]
-        public async Task<IActionResult> GetAllsKhoahoc()
+        public async Task<IActionResult> GetAllsKhoahoc([FromBody] InputKhoaHoc input)
         {
-            return Ok(await _khoaHocService.GetAllsKhoahoc());
+            return Ok(await _khoaHocService.GetAllsKhoahoc(input));
         }
         [HttpPut("SuaBinhLuanBaiViet")]
         [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
@@ -314,6 +326,40 @@ namespace WebCourseManagement_API.Controllers
         public async Task<IActionResult> GetAllLoaiKhoahocs()
         {
             return Ok(await _loaiKhoaHocService.GetAllLoaiKhoahocs());
+        }
+        [HttpGet("GetKhoaHocByNguoiDung/{nguoiDungId}")]
+        public async Task<IActionResult> GetKhoaHocByNguoiDung([FromRoute] int nguoiDungId)
+        {
+            return Ok(await _khoaHocService.GetKhoaHocByNguoiDung(nguoiDungId));
+        }
+        [HttpPut("DanhGiaKhoaHoc")]
+        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
+        public async Task<IActionResult> DanhGiaKhoaHoc([FromBody] Request_DanhGiaKhoaHoc request)
+        {
+            return Ok(await _khoaHocNguoiDungService.DanhGiaKhoaHoc(request));
+        }
+        [HttpPost("TaoTestCase")]
+        public async Task<IActionResult> TaoTestCase([FromBody] Request_TaoTestCase request)
+        {
+            return Ok(await _testCaseService.TaoTestCase(request));
+        }
+        [HttpGet("GetAllsLoaiBaiViet")]
+        public async Task<IActionResult> GetAllsLoaiBaiViet(string? tenLoaiBaiViet)
+        {
+            return Ok(await _baiVietService.GetAllsLoaiBaiViet(tenLoaiBaiViet));
+        }
+        [HttpGet("GetLoaiBaiVietById/{loaiBaiVietId}")]
+        public async Task<IActionResult> GetLoaiBaiVietById([FromRoute] int loaiBaiVietId)
+        {
+            return Ok(await _baiVietService.GetLoaiBaiVietById(loaiBaiVietId));
+        }
+        [HttpPost("GuiBaoCao")]
+        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
+        [Consumes(contentType: "multipart/form-data")]
+        public async Task<IActionResult> GuiBaoCao([FromForm] Request_GuiBaoCao request)
+        {
+            int id = int.Parse(HttpContext.User.FindFirst("Id").Value);
+            return Ok(await _baoCaoService.GuiBaoCao(id, request));
         }
     }
 }
