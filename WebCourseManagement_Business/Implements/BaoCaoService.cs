@@ -91,7 +91,7 @@ namespace WebCourseManagement_Business.Implements
                         {
                             if(listBaoCao.Count >= 1 && listBaoCao.Count <= 3 && request.BinhLuanId == item.BinhLuanId && item.ThoiGianGuiBaoCao >= DateTime.Now && item.ThoiGianGuiBaoCao <= DateTime.Now.AddHours(24) && item.NguoiGuiBaoCaoId == nguoiDungId)
                             {
-                                throw new ArgumentException("Ban khong the gui qua 3 bao cao trong 1 ngay cho 1 binh luan");
+                                throw new ArgumentException("Bạn không thể gửi quá 3 báo cáo cho 1 bình luận trong 1 ngày");
                             }
                         }
                     }
@@ -104,7 +104,7 @@ namespace WebCourseManagement_Business.Implements
                         {
                             if (listBaoCao.Count >= 1 && listBaoCao.Count <= 3 && request.BinhLuanId == item.BinhLuanId && item.ThoiGianGuiBaoCao >= DateTime.Now && item.ThoiGianGuiBaoCao <= DateTime.Now.AddHours(24) && item.NguoiGuiBaoCaoId == nguoiDungId)
                             {
-                                throw new ArgumentException("Ban khong the gui qua 3 bao cao trong 1 ngay cho 1 binh luan");
+                                throw new ArgumentException("Bạn không thể gửi quá 3 báo cáo cho 1 bình luận trong 1 ngày");
                             }
                         }
                     }
@@ -121,7 +121,7 @@ namespace WebCourseManagement_Business.Implements
                     {
                         if (listBaoCao.Count >= 1 && listBaoCao.Count <= 3 && request.BaiVietId == item.BaiVietId && item.ThoiGianGuiBaoCao >= DateTime.Now && item.ThoiGianGuiBaoCao <= DateTime.Now.AddHours(24) && item.NguoiGuiBaoCaoId == nguoiDungId)
                         {
-                            throw new ArgumentException("Ban khong the gui qua 3 bao cao trong 1 ngay cho 1 bai viet");
+                            throw new ArgumentException("Bạn không thể gửi quá 3 báo cáo cho 1 bài viết trong 1 ngày");
                         }
                     }
                 }

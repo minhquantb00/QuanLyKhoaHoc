@@ -234,7 +234,7 @@ namespace WebCourseManagement_Business.Implements
                     Subject = "Thông báo đăng ký học",
                     Content = "Bạn đã đăng ký học thành công! Vui lòng thanh toán"
                 });
-                return _responseObjectHoaDon.ResponseSuccess("Đăng ký khóa học thành công! Vui lòng thanh toán" + PaymentMomo(hoaDon.Id), _hoaDonConverter.EntityToDTO(hoaDon));
+                return _responseObjectHoaDon.ResponseSuccess("Đăng ký khóa học thành công! Vui lòng thanh toán", _hoaDonConverter.EntityToDTO(hoaDon));
             }catch(Exception ex)
             {
                 return _responseObjectHoaDon.ResponseError(StatusCodes.Status500InternalServerError, ex.Message, null);
