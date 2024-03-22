@@ -3,23 +3,37 @@
     <div style="height: 72px">
       <HeaderItem></HeaderItem>
     </div>
-    <div class="banner" v-for="lc in listCourse" :key="lc.id">
+    <div class="banner">
       <div class="container">
         <v-container>
           <v-row>
             <v-col cols="8">
               <v-title class="pa-2 ma-2">
-                <h1>{{ lc.courseTitle }}</h1>
-                <h5 class="my-4">{{ lc.description }}</h5>
+                <h1>
+                  <!-- gắn tiêu đề vào đaya -->
+                  {{ this.listCourseApi.tieuDeKhoaHoc }}
+                </h1>
+                <v-subtitle
+                  class="my-4"
+                  v-html="this.listCourseApi.moTaKhoaHoc"
+                >
+                </v-subtitle>
                 <h5 class="my-4">
-                  Số lượng học viên: {{ lc.numberOfPeopleEnrolled }}
+                  <!-- Số lượng học viên: {{ lc.numberOfPeopleEnrolled }} -->
                   <font-awesome-icon
                     class="mx-1"
                     icon="fa-solid fa-user-group"
                   ></font-awesome-icon>
                 </h5>
-                <h6>Được tạo bởi: {{ lc.teacherCourse }}</h6>
-                <p>Ngày cập nhật gần nhất: {{ lc.dateTimeUpdate }}</p>
+                <h6>
+                  Được tạo bởi:
+                  <!-- gắn ngày tạo vào đây -->
+                  {{ this.user }}
+                </h6>
+                <p>
+                  Ngày cập nhật gần nhất:
+                  {{ formatDate(this.listCourseApi.ngayTao) }}
+                </p>
 
                 <div class="text-left">
                   <v-rating
@@ -43,21 +57,27 @@
                     src="https://cdn.vuetifyjs.com/images/cards/docks.jpg"
                     cover
                   > -->
-                <iframe
+                <!-- <iframe
                   :src="lc.linkVideo"
                   frameborder="0"
                   style="height: 230px; width: 390px"
-                ></iframe>
-                <v-card-title>
-                  <span>đ</span
-                  ><span style="font-size: 30px">{{
-                    lc.pricepriceHasDecreased
-                  }}</span>
+                ></iframe> -->
+                <v-img
+                  :src="this.listCourseApi.anhKhoaHoc"
+                  style="height: 230px; width: 390px"
+                  alt=""
+                  cover
+                />
+                <v-card-title class="mt-4"
+                  ><span style="font-size: 30px">
+                    {{ formatCurrency(this.listCourseApi.giaKhoaHoc) }}
+                  </span>
                   <span
                     style="text-decoration-line: line-through; font-size: 16px"
                     class="ma-6"
-                    >{{ lc.price }}</span
                   >
+                    {{ formatCurrency(this.listCourseApi.giaKhoaHoc) }}
+                  </span>
                 </v-card-title>
                 <!-- </v-img> -->
 
@@ -107,9 +127,9 @@
                 </v-card-title>
                 <!-- <v-card-text> -->
                 <v-card-title>
-                  <h6>Khóa học này bao gồm:</h6>
-                  <ul v-for="c in courseContent" :key="c.id">
-                    <li style="font-size: 14px">{{ c.course }}</li>
+                  <h6 class="mb-3">Khóa học này bao gồm:</h6>
+                  <ul v-for="c in courseContent" :key="c">
+                    <li style="font-size: 14px">{{ c.tenChuong }}</li>
                   </ul>
                 </v-card-title>
                 <!-- </v-card-text> -->
@@ -133,25 +153,27 @@
             <v-col cols="8">
               <!--  -->
               <div>
-                <v-expansion-panels
-                  v-model="panel"
-                  :disabled="disabled"
-                  multiple
-                  v-for="c in courseContent"
-                  :key="c.id"
-                >
-                  <v-expansion-panel>
-                    <v-expansion-panel-title>{{
-                      c.course
-                    }}</v-expansion-panel-title>
+                <v-expansion-panels v-model="panel" :disabled="disabled">
+                  <v-expansion-panel
+                    v-for="(chapter, index) in courseContent"
+                    :key="index"
+                  >
+                    <v-expansion-panel-title>
+                      {{ chapter.tenChuong }}
+                    </v-expansion-panel-title>
                     <v-expansion-panel-text>
                       <div class="list-lesson">
-                        <ul v-for="ls in listLesson" :key="ls.id">
-                          <li>
+                        <ul>
+                          <li
+                            v-for="(lesson, lessonIndex) in chapter.baiHocs"
+                            :key="lessonIndex"
+                          >
                             <font-awesome-icon
                               icon="fa-solid fa-tv"
                             ></font-awesome-icon>
-                            <a :href="ls.linkVideo">{{ ls.nameLesson }}</a>
+                            <a :href="lesson.videoBaiHoc">{{
+                              lesson.tenBaiHoc
+                            }}</a>
                           </li>
                         </ul>
                       </div>
@@ -159,38 +181,6 @@
                   </v-expansion-panel>
                 </v-expansion-panels>
               </div>
-              <!--  -->
-              <!-- <v-sheet class="pa-2 ma-2">
-                <v-card
-                  @click="c.show = !c.show"
-                  v-for="c in courseContent"
-                  :key="c.id"
-                >
-                  <v-text-field
-                    style="border: none"
-                    :append-inner-icon="
-                      c.show ? 'mdi-chevron-up' : 'mdi-chevron-down'
-                    "
-                  >
-                    <v-title>{{ c.course }}</v-title>
-                  </v-text-field>
-
-                  <v-expand-transition>
-                    <div v-show="c.show">
-                      <div class="list-lesson">
-                        <ul v-for="ls in listLesson" :key="ls.id">
-                          <li>
-                            <font-awesome-icon
-                              icon="fa-solid fa-tv"
-                            ></font-awesome-icon>
-                            <a :href="ls.linkVideo">{{ ls.nameLesson }}</a>
-                          </li>
-                        </ul>
-                      </div>
-                    </div>
-                  </v-expand-transition>
-                </v-card>
-              </v-sheet> -->
             </v-col>
           </v-row>
         </v-container>
@@ -215,9 +205,7 @@
             <v-row>
               <v-col cols="8">
                 <h3 class="my-4">Mô tả</h3>
-                <v-title v-for="lc in listCourse" :key="lc.id">
-                  {{ lc.description }}
-                </v-title>
+                <v-title v-html="this.listCourseApi.moTaKhoaHoc"> </v-title>
               </v-col>
             </v-row>
           </div>
@@ -229,58 +217,67 @@
                 <h3 class="my-6">Học viên cũng mua</h3>
                 <div
                   class="data-table"
-                  v-for="lc in listCourePropose"
-                  :key="lc.id"
+                  v-for="(lc, index) in listSix"
+                  :key="index"
                 >
                   <v-row>
                     <v-col cols="1">
-                      <a href="#">
+                      <router-link
+                        :to="`/detail-product/${lc.id}`"
+                        @click="handleRouterLinkClick(lc.id)"
+                      >
                         <img
-                          :src="lc.imageCourse"
+                          :src="lc.anhKhoaHoc"
                           alt=""
                           width="70"
                           height="60"
                         />
-                      </a>
+                      </router-link>
                     </v-col>
                     <v-col cols="7">
                       <h6 class="mx-2">
-                        <a href="#" class="name-table">{{ lc.courseTitle }}</a>
+                        <router-link
+                          :to="`/detail-product/${lc.id}`"
+                          @click="handleRouterLinkClick(lc.id)"
+                          class="name-table"
+                          >{{ lc.tieuDeKhoaHoc }}</router-link
+                        >
                       </h6>
                       <h6 class="mx-2" style="color: #003000">
-                        Tổng số {{ lc.numberOfStudentsWhoHaveCompleted }} giờ
+                        Tổng số {{ lc.tongThoiGianKhoaHoc }} giờ
                       </h6>
                     </v-col>
                     <v-col cols="2">
                       <font-awesome-icon
                         icon="fa-solid fa-users"
                       ></font-awesome-icon>
-                      {{ lc.numberOfPeopleEnrolled }}
+                      <!-- sô học viên  -->
                     </v-col>
                     <v-col cols="2">
-                      <p>{{ lc.pricepriceHasDecreased }} đ</p>
-                      <p class="price-table">{{ lc.price }} đ</p>
+                      <p>{{ lc.giaKhoaHoc }} đ</p>
+                      <p class="price-table">{{ lc.giaKhoaHoc }} đ</p>
                     </v-col>
                   </v-row>
                   <hr />
                 </div>
-                <div
-                  class="teacher-profile"
-                  v-for="t in teacherProfile"
-                  :key="t.id"
-                >
+                <div class="teacher-profile">
                   <h3 class="my-4">Giảng viên</h3>
                   <h4 class="name-teacher">
-                    <router-link to="/user-profile" > {{ t.nameTeacher }}</router-link>
+                    <router-link
+                      :to="`/user-teacher-profile/${this.userId}`"
+                      @click="handleRouterUserClick(this.userId)"
+                    >
+                      {{ this.user }}</router-link
+                    >
                   </h4>
                   <h5 class="nick-name-teacher">
-                    {{ t.nickName }}
+                    <!-- {{ t.nickName }} -->
                   </h5>
                   <div class="teacher">
                     <v-row>
                       <v-col cols="2">
                         <v-avatar
-                          :image="t.imageTeacher"
+                          :image="this.anhDaiDien"
                           size="130"
                           class="my-6"
                         ></v-avatar>
@@ -291,8 +288,10 @@
                             <v-title>
                               <font-awesome-icon
                                 icon="fa-solid fa-medal"
-                              ></font-awesome-icon>
-                              {{ t.evaluate }} <span>đánh giá</span>
+                              ></font-awesome-icon
+                              >\
+                              <!-- gán đánh giá vào đây -->
+                              <span>đánh giá</span>
                             </v-title>
                           </div>
                           <div>
@@ -300,7 +299,8 @@
                               <font-awesome-icon
                                 icon="fa-solid fa-user-group"
                               ></font-awesome-icon>
-                              {{ t.student }} <span>học viên</span>
+                              <!-- gắn học viên vào đây -->
+                              <span>học viên</span>
                             </v-title>
                           </div>
                           <div class="my-2">
@@ -308,7 +308,8 @@
                               <font-awesome-icon
                                 icon="fa-solid fa-circle-play"
                               ></font-awesome-icon>
-                              {{ t.course }} <span>khóa học</span>
+                              <!-- gắn khoa học  -->
+                              <span>khóa học</span>
                             </v-title>
                           </div>
                         </div>
@@ -316,7 +317,7 @@
                     </v-row>
                     <div>
                       <p>
-                        {{ t.description }}
+                        <!-- Gắn mô tả vào đây -->
                       </p>
                     </div>
                   </div>
@@ -891,6 +892,8 @@
 import HeaderItem from "../Header/HeaderItem.vue";
 import FooterItem from "../Header/FooterItem.vue";
 import { useRouter } from "vue-router";
+import { courseApi } from "../../apis/Course/courseApi";
+import { userApi } from "../../apis/User/userApi";
 export default {
   components: {
     HeaderItem,
@@ -898,7 +901,12 @@ export default {
   },
   data() {
     return {
+      courseApi: courseApi(),
+      userApi: userApi(),
       panel: [0, 1],
+      user: "",
+      anhDaiDien: "",
+      userId: null,
       disabled: false,
       loading: false,
       load: false,
@@ -938,184 +946,17 @@ export default {
             "https://www.youtube.com/embed/9kohr6pMwag?list=PL33lvabfss1wUj15ea6W0A-TtDOrWWSRK",
         },
       ],
-      courseContent: [
-        {
-          id: 1,
-          course: "C# Basic",
-          show: false,
-        },
-
-        {
-          id: 2,
-          course: "Winform",
-          show: false,
-        },
-
-        {
-          id: 3,
-          course: ".Net",
-          show: false,
-        },
-        {
-          id: 3,
-          course: "Database",
-          show: false,
-        },
-        {
-          id: 3,
-          course: "Truy vấn database cơ bản",
-          show: false,
-        },
-      ],
+      listCourseApi: [],
+      courseContent: [],
+      lessonsInDesiredChapter: [],
       timer: [
         {
           id: 1,
           time: 10,
         },
       ],
-      listLesson: [
-        {
-          idLesson: 1,
-          nameLesson: "C# Basic",
-          linkVideo:
-            "https://www.youtube.com/embed/9kohr6pMwag?list=PL33lvabfss1wUj15ea6W0A-TtDOrWWSRK",
-        },
-        {
-          idLesson: 2,
-          nameLesson: "Java Basic",
-          linkVideo:
-            "https://www.youtube.com/embed/9kohr6pMwag?list=PL33lvabfss1wUj15ea6W0A-TtDOrWWSRK",
-        },
-        {
-          idLesson: 3,
-          nameLesson: "SQL Server Basic",
-          linkVideo:
-            "https://www.youtube.com/embed/9kohr6pMwag?list=PL33lvabfss1wUj15ea6W0A-TtDOrWWSRK",
-        },
-        {
-          idLesson: 4,
-          nameLesson: "Truy vấn SQL Server Basic",
-          linkVideo:
-            "https://www.youtube.com/embed/9kohr6pMwag?list=PL33lvabfss1wUj15ea6W0A-TtDOrWWSRK",
-        },
-      ],
-      listCourePropose: [
-        {
-          id: 1,
-          description:
-            "Java là một ngôn ngữ lập trình thuần hướng đối tượng,...",
-          courseTitle: "Khóa học BA",
-          imageCourse:
-            "https://appmaster.io/api/_files/hRaLG2N4DVjRZJQzCpN2zJ/download/",
-          numberOfLessons: 15,
-          chapterNumber: 3,
-          totalStudyTime: 90,
-          numberOfPeopleEnrolled: 123,
-          pricepriceHasDecreased: "299.000",
-          price: "1.690.000",
-          numberOfStudentsWhoHaveCompleted: 100,
-          courseStatus: 1,
-          typeCourse: 1,
-          linkVideo:
-            "https://www.youtube.com/embed/3gtOAlcovoQ?list=PL33lvabfss1yGrOutFR03OZoqm91TSsvs",
-        },
-        {
-          id: 2,
-          description:
-            "Java là một ngôn ngữ lập trình thuần hướng đối tượng,...",
-          courseTitle: "Khóa học truy vấn SQL Server",
-          imageCourse:
-            "https://appmaster.io/api/_files/hRaLG2N4DVjRZJQzCpN2zJ/download/",
-          numberOfLessons: 15,
-          chapterNumber: 3,
-          totalStudyTime: 90,
-          numberOfPeopleEnrolled: 123,
-          pricepriceHasDecreased: "299.000",
-          price: "1.690.000",
-          numberOfStudentsWhoHaveCompleted: 100,
-          courseStatus: 1,
-          typeCourse: 1,
-          linkVideo:
-            "https://www.youtube.com/embed/3gtOAlcovoQ?list=PL33lvabfss1yGrOutFR03OZoqm91TSsvs",
-        },
-        {
-          id: 3,
-          description:
-            "Java là một ngôn ngữ lập trình thuần hướng đối tượng,...",
-          courseTitle: "Khóa học Angular",
-          imageCourse:
-            "https://appmaster.io/api/_files/hRaLG2N4DVjRZJQzCpN2zJ/download/",
-          numberOfLessons: 15,
-          chapterNumber: 3,
-          totalStudyTime: 90,
-          numberOfPeopleEnrolled: 123,
-          pricepriceHasDecreased: "299.000",
-          price: "1.690.000",
-          numberOfStudentsWhoHaveCompleted: 100,
-          courseStatus: 1,
-          typeCourse: 1,
-          linkVideo:
-            "https://www.youtube.com/embed/3gtOAlcovoQ?list=PL33lvabfss1yGrOutFR03OZoqm91TSsvs",
-        },
-        {
-          id: 4,
-          description:
-            "Java là một ngôn ngữ lập trình thuần hướng đối tượng,...",
-          courseTitle:
-            "Business Analyst (BA) for Practitioners (BA thực chiến)",
-          imageCourse:
-            "https://appmaster.io/api/_files/hRaLG2N4DVjRZJQzCpN2zJ/download/",
-          numberOfLessons: 15,
-          chapterNumber: 3,
-          totalStudyTime: 90,
-          numberOfPeopleEnrolled: 123,
-          pricepriceHasDecreased: "299.000",
-          price: "1.690.000",
-          numberOfStudentsWhoHaveCompleted: 100,
-          courseStatus: 1,
-          typeCourse: 1,
-          linkVideo:
-            "https://www.youtube.com/embed/3gtOAlcovoQ?list=PL33lvabfss1yGrOutFR03OZoqm91TSsvs",
-        },
-        {
-          id: 5,
-          description:
-            "Java là một ngôn ngữ lập trình thuần hướng đối tượng,...",
-          courseTitle: "Khóa học Java",
-          imageCourse:
-            "https://appmaster.io/api/_files/hRaLG2N4DVjRZJQzCpN2zJ/download/",
-          numberOfLessons: 15,
-          chapterNumber: 3,
-          totalStudyTime: 90,
-          numberOfPeopleEnrolled: 123,
-          pricepriceHasDecreased: "299.000",
-          price: "1.690.000",
-          numberOfStudentsWhoHaveCompleted: 100,
-          courseStatus: 1,
-          typeCourse: 1,
-          linkVideo:
-            "https://www.youtube.com/embed/3gtOAlcovoQ?list=PL33lvabfss1yGrOutFR03OZoqm91TSsvs",
-        },
-        {
-          id: 6,
-          description:
-            "Java là một ngôn ngữ lập trình thuần hướng đối tượng,...",
-          courseTitle: "Khóa học Java",
-          imageCourse:
-            "https://appmaster.io/api/_files/hRaLG2N4DVjRZJQzCpN2zJ/download/",
-          numberOfLessons: 15,
-          chapterNumber: 3,
-          totalStudyTime: 90,
-          numberOfPeopleEnrolled: 123,
-          pricepriceHasDecreased: "299.000",
-          price: "1.690.000",
-          numberOfStudentsWhoHaveCompleted: 100,
-          courseStatus: 1,
-          typeCourse: 1,
-          linkVideo:
-            "https://www.youtube.com/embed/3gtOAlcovoQ?list=PL33lvabfss1yGrOutFR03OZoqm91TSsvs",
-        },
-      ],
+      listLesson: [],
+      listCourePropose: [],
       teacherProfile: [
         {
           id: 1,
@@ -1199,6 +1040,7 @@ export default {
         },
       ],
       limit: 4,
+      listSix: 6,
       offsetTop: 0,
     };
   },
@@ -1207,21 +1049,117 @@ export default {
       // Trả về một mảng con của listEvalute chứa không quá 'limit' phần tử
       return this.listEvalute.slice(0, this.limit);
     },
+    listSix() {
+      // Trả về một mảng con của listEvalute chứa không quá 'limit' phần tử
+      return this.listCourePropose.slice(0, this.listSix);
+    },
+  },
+  async mounted() {
+    const id = this.$route.params.id;
+    try {
+      const res = await this.courseApi.getCourseId(id);
+      this.courseContent = res.data.chuongHocs;
+      console.log(this.courseContent);
+    } catch (e) {
+      console.error("Error fetching course:", e);
+    }
+    try {
+      const response = await this.courseApi.getAllCourses();
+      this.listCourePropose = response;
+      console.log(this.listCourePropose);
+    } catch (e) {
+      console.error("Error fetching course:", e);
+    }
+    try {
+      const res = await this.courseApi.getCourseId(id);
+      this.listCourseApi = res.data;
+      const user = this.listCourseApi.nguoiTao;
+      this.user = user.hoVaTen;
+      const anhDaiDien = this.listCourseApi.nguoiTao;
+      this.anhDaiDien = anhDaiDien.anhDaiDien;
+      const userId = this.listCourseApi.nguoiTao;
+      this.userId = userId.id;
+      const list = this.listCourseApi;
+      console.log(list);
+    } catch (e) {
+      console.error("Error fetching course:", e);
+    }
+    try {
+      const res = await this.courseApi.getCourseId(id);
+      this.listLesson = res.data.chuongHocs;
+      for (let i = 0; i < this.listLesson.length; i++) {
+        const chapter = this.listLesson[i];
+        console.log("Chương ", i, ":", chapter);
+        const lessonArray = chapter.baiHocs;
+        console.log("Bài học trong chương ", i, ":", lessonArray);
+        for (var j = 0; j < lessonArray.length; j++) {
+          if (lessonArray[j] != null) {
+            console.log("nó đã vòa đây rồi");
+            console.log(lessonArray[j]);
+            this.lessonsInDesiredChapter.push(lessonArray[j]);
+          }
+        }
+      }
+      console.log("Lessons in desired chapter:", this.lessonsInDesiredChapter);
+    } catch (e) {
+      console.error("Error fetching course:", e);
+    }
   },
   methods: {
+    async handleRouterLinkClick(id) {
+      try {
+        const response = await this.courseApi.getCourseId(id);
+        console.log("link đât");
+        console.log(response);
+        location.reload();
+      } catch (error) {
+        console.error("Đã xảy ra lỗi khi gọi API:", error);
+        // Xử lý lỗi nếu cần thiết
+        this.$router.push("/error"); // Điều hướng đến trang lỗi nếu cần
+      }
+    },
     toggleText() {
       this.showLess = !this.showLess;
     },
     onScroll(e) {
       this.offsetTop = e.target.scrollTop;
     },
+    formatDate(dateString) {
+      const date = new Date(dateString);
+      const day = date.getDate();
+      const month = date.getMonth() + 1;
+      const year = date.getFullYear();
+      const formattedDay = day < 10 ? "0" + day : day;
+      const formattedMonth = month < 10 ? "0" + month : month;
+
+      return `${formattedDay}/${formattedMonth}/${year}`;
+    },
+    formatCurrency(value) {
+      const intValue = parseInt(value);
+      return intValue.toLocaleString("vi-VN", {
+        style: "currency",
+        currency: "VND",
+      });
+    },
+    async handleRouterUserClick(id) {
+      try {
+        const response = await this.userApi.getUserId(id);
+      } catch (error) {
+        console.error("Đã xảy ra lỗi khi gọi API:", error);
+        // Xử lý lỗi nếu cần thiết
+        this.$router.push("/error"); // Điều hướng đến trang lỗi nếu cần
+      }
+    },
+    reloadPage() {
+      location.reload();
+    },
   },
 };
 </script>
 
 <style scoped>
-.fixed-card{
-position: sticky;
+.fixed-card {
+  position: sticky;
   top: 70px;
   left: 1080px; /* Vị trí left bạn mong muốn */
   /* bottom: 400px; */
@@ -1272,7 +1210,7 @@ position: sticky;
   color: blueviolet;
 }
 .fixed-element {
-  height: 2970px;
+  height: 2850px;
 }
 .footer {
   height: 200px; /* Chiều cao của footer */

@@ -6,13 +6,13 @@ axios.defaults.baseURL = "https://localhost:7046/api";
 const authorization = localStorage.getItem("accessToken")
   ? localStorage.getItem("accessToken")
   : "";
-export const courseApi = defineStore("course", {
+export const postApi = defineStore("postType", {
   actions: {
-    createCourse(params) {
+    createPost(params) {
       return new Promise((resolve, reject) => {
         axios
           .post(
-            "/user/ThemKhoaHoc",
+            "/user/TaoBaiViet",
             { ...params },
             {
               headers: {
@@ -43,10 +43,10 @@ export const courseApi = defineStore("course", {
           .catch((error) => reject(error));
       });
     },
-    getAllCourses() {
+    getAllPostType() {
       return new Promise((resolve, reject) => {
         axios
-          .get("/user/getkhoahoc",)
+          .get("/user/",)
           .then((res) => {
             if (res.status === 200) {
               resolve(res.data);

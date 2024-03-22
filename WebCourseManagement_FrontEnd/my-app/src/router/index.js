@@ -1,21 +1,9 @@
 import { createRouter, createWebHistory } from "vue-router";
 // import HeaderItemVue from "@/views/Header/HeaderItem.vue";
 import HomeContentVue from "@/views/Home/HomeContent.vue";
+import { courseApi } from "@/apis/Course/courseApi";
+
 const routes = [
-  // {
-  //   path: "/",
-  //   name: "home",
-  //   component: HomeView,
-  // },
-  // {
-  //   path: "/about",
-  //   name: "about",
-  //   // route level code-splitting
-  //   // this generates a separate chunk (about.[hash].js) for this route
-  //   // which is lazy-loaded when the route is visited.
-  //   component: () =>
-  //     import(/* webpackChunkName: "about" */ "../views/AboutView.vue"),
-  // },
   {
     path: "/",
     name: "home",
@@ -47,13 +35,13 @@ const routes = [
     component: () => import("../views/Authenticate/DetailForgotPassword.vue"),
   },
   {
-    path: "/detail-product",
-    name: "detail-product",
-    component: () => import("../views/ProductDetail/DetailProduct.vue"),
+    path: '/detail-product/:id',
+    name: 'detail-product',
+    component: () => import('../views/ProductDetail/DetailProduct.vue'),
   },
   {
-    path: "/user-profile",
-    name: "user-profile",
+    path: "/user-teacher-profile/:id",
+    name: "user-teacher-profile",
     component: () => import("../views/ProductDetail/DetailTeacher.vue"),
   },
   {
@@ -122,7 +110,7 @@ const routes = [
     component: () => import("../views/CreateCourse/CommentsCourse.vue"),
   },
   {
-    path: "/study-chapter",
+    path: "/study-chapter/:id",
     name: "study-chapter",
     component: () => import("../views/CreateCourse/StudyChapter.vue"),
   },
@@ -144,6 +132,15 @@ const routes = [
     path: "/profile-user",
     name: "profile-user",
     component: () => import("../views/User/ProfileUser.vue"),
+  }, {
+    path: "/public-records",
+    name: "public-records",
+    component: () => import("../views/User/UserProfilePage.vue"),
+  },
+  {
+    path: "/post-client",
+    name: "post-client",
+    component: () => import("../views/Post/PostClient.vue"),
   },
   {
     path: "/admin/:id",

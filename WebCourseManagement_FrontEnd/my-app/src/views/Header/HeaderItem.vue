@@ -86,7 +86,7 @@
                               color="black"
                               size="x-large"
                               variant="flat"
-                              @click="startTeaching()"
+                              @click="startTeaching"
                             >
                               Bắt đầu giảng dạy
                             </v-btn>
@@ -216,8 +216,9 @@
                               >
                               </router-link>
                               <router-link
-                                to="#"
+                                to="/start-teaching"
                                 class="header-content-user-link"
+                                @click="startTeaching"
                               >
                                 <v-list-item
                                   >Bảng điều khiển của giảng viên</v-list-item
@@ -258,19 +259,13 @@
 
                             <v-divider></v-divider>
                             <router-link
-                              to="#"
+                              to="/public-records"
                               class="header-content-user-link"
                             >
                               <v-list-item>Hồ sơ công khai</v-list-item>
                             </router-link>
                             <router-link
-                              to="#"
-                              class="header-content-user-link"
-                            >
-                              <v-list-item>Chỉnh sửa hồ sơ</v-list-item>
-                            </router-link>
-                            <router-link
-                              to="#"
+                              to="/profile-user"
                               class="header-content-user-link"
                             >
                               <v-list-item>Cài đặt tài khoản</v-list-item>
@@ -317,7 +312,6 @@
 import { useRouter } from "vue-router";
 import { authApi } from "../../apis/Auth/authApi";
 import useEmitter from "../../helpers/useEmitter";
-// import icon form './'
 console.log(localStorage.getItem("userInfo"));
 export default {
   data() {
@@ -329,60 +323,13 @@ export default {
       router: useRouter(),
       userInfo: localStorage.getItem("userInfo")
         ? JSON.parse(localStorage.getItem("userInfo"))
-        : null, // Thông tin người dùng
-      // authenticateApi: authApi(),
-      // useEmitter : useEmitter(),
-      listTypeCourses: [
-        {
-          id: 1,
-          nameCourses: "Lập trình Game",
-        },
-        {
-          id: 2,
-          nameCourses: "Font-end developer",
-        },
-        {
-          id: 3,
-          nameCourses: "Lập trình Java",
-        },
-        {
-          id: 4,
-          nameCourses: "Lập trình App",
-        },
-        {
-          id: 5,
-          nameCourses: "Lập trình C#",
-        },
-      ],
+        : null,
     };
   },
   created() {
     console.log(localStorage.getItem("userInfo"));
-    // const userInfo = localStorage.getItem("userInfo");
-    // const user = await getUserById(userInfo.id);
-    //   retu
-    // }
-  },
-  async mounted() {
-    await this.checkAndDecodeToken();
   },
   methods: {
-    // async checkAndDecodeToken() {
-    //   const accessToken = JSON.parse(localStorage.getItem("accessToken"));
-    //   console.log(accessToken);
-    //   if (accessToken) {
-    //     try {
-    //       const response = await authApi(accessToken);
-    //       if (response && response.data) {
-    //         console.log(response);
-    //         // this.userInfo = response.data;
-    //         console.log("Thông tin người dùng:", response.data);
-    //       }
-    //     } catch (error) {
-    //       console.error("Failed to get user info:", error);
-    //     }
-    //   }
-    // },
     logout() {
       localStorage.removeItem("accessToken");
       localStorage.removeItem("refreshToken");
@@ -390,24 +337,17 @@ export default {
     },
     async startTeaching() {
       console.log("Vào đấy");
-      // Check if user is logged in
       if (this.userInfo) {
         this.router.push({ path: "/course-product" });
-
-        // If user is not logged in, redirect to login page
       } else {
         console.log("vào đây");
         this.router.push({ path: "/login" });
-
-        // If user is logged in, redirect to teaching page
       }
     },
     async LessonCourses() {
       if (!this.userInfo) {
-        // If user is not logged in, redirect to login page
         this.router.push("/login");
       } else {
-        // If user is logged in, redirect to teaching page
         this.router.push("/my-course");
       }
     },

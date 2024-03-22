@@ -74,9 +74,9 @@
                 <v-col>
                   <v-list-item
                     class="text-left"
-                    :prepend-avatar="this.User.image"
-                    :subtitle="this.User.chucVu"
-                    :title="this.User.name"
+                    :prepend-avatar="this.userInfo.Image"
+                    :subtitle="this.userInfo.role"
+                    :title="this.userInfo.Name"
                   >
                   </v-list-item>
                 </v-col>
@@ -90,9 +90,9 @@
           <v-card min-width="300">
             <v-list>
               <v-list-item
-                prepend-avatar="https://cdn.vuetifyjs.com/images/john.jpg"
-                subtitle="Founder of Vuetify"
-                title="John Leider"
+                :prepend-avatar="this.userInfo.Image"
+                :subtitle="this.userInfo.role"
+                :title="this.userInfo.Name"
               >
               </v-list-item>
             </v-list>
@@ -107,9 +107,21 @@
               </v-list-item>
             </v-list>
 
-            <v-card-actions>
-              <v-spacer></v-spacer>
-            </v-card-actions>
+            <a href="/">
+              <v-btn
+                :disabled="loading"
+                :loading="loading"
+                class="text-none"
+                color="black"
+                size="x-large"
+                variant="tonal"
+                block
+                @click="logout()"
+                ><font-awesome-icon
+                  icon="fa-solid fa-right-from-bracket"
+                ></font-awesome-icon
+              ></v-btn>
+            </a>
           </v-card>
         </v-menu>
       </a-layout-header>
@@ -160,7 +172,7 @@ const handleMenuClick = ({ key }) => {
   } else if (key === "6") {
     breadcrumbText.value = "Thống kê";
     router.push({ name: "thong-ke" });
-  }else if (key === "") {
+  } else if (key === "") {
     breadcrumbText.value = "Trang chủ";
     router.push({ name: "admin" });
   }
@@ -176,8 +188,18 @@ export default {
     UserManager,
     Statistic,
   },
+  methods: {
+    logout() {
+      localStorage.removeItem("accessToken");
+      localStorage.removeItem("refreshToken");
+      localStorage.removeItem("userInfo");
+    },
+  },
   data() {
     return {
+      userInfo: localStorage.getItem("userInfo")
+        ? JSON.parse(localStorage.getItem("userInfo"))
+        : null,
       fav: true,
       menu: false,
       message: false,

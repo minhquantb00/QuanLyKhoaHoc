@@ -1,28 +1,15 @@
 <template>
   <div class="clearfix text-center">
-    <a-upload
-      v-model:file-list="fileList"
-      list-type="picture-card"
-
-      @preview="handlePreview"
-    >
-      <div v-if="fileList.length < 1">
-        <v-icon icon="mdi-plus"></v-icon>
-        <div style="margin-top: 8px">Ảnh khóa học</div>
-      </div>
-    </a-upload>
-    <a-modal
-      :open="previewVisible"
-      :title="previewTitle"
-      :footer="null"
-      @cancel="handleCancel"
-    >
-      <img
-        alt="example"
-        style="width: 100%"
-        :src="previewImage"
-      />
-    </a-modal>
+    <v-file-input
+      ref="fileInput"
+      type="file"
+      accept="image/*"
+      @change="onFileSelect"
+      outlined
+      dense
+      hide-details
+      class="my-file-input"
+    ></v-file-input>
   </div>
 </template>
 
@@ -34,7 +21,7 @@ const previewVisible = ref(false);
 const previewTitle = ref("");
 const previewImage = ref("");
 
-const handlePreview = async file => {
+const handlePreview = async (file) => {
   previewImage.value = file.url || file.thumbUrl;
   previewVisible.value = true;
 };
@@ -44,13 +31,13 @@ const handleCancel = () => {
 };
 
 const inputCreateCourse = ref({
-  anhKhoaHoc: ""
+  anhKhoaHoc: "",
 });
 
 const onFileChange = (e) => {
   const file = e.currentTarget.files[0];
   console.log(file);
-  console.log('nó chạy vô đấy rồi');
+  console.log("nó chạy vô đấy rồi");
   if (!file) {
     return;
   }
@@ -68,6 +55,11 @@ const createImage = (file) => {
   reader.readAsDataURL(file);
 };
 </script>
-
-<style lang="scss" scoped>
-</style>
+<script>
+export default {
+  methods: {
+   
+  },
+};
+</script>
+<style lang="scss" scoped></style>
