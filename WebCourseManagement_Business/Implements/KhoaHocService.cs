@@ -191,10 +191,6 @@ namespace WebCourseManagement_Business.Implements
             {
                 result = result.Where(x => x.TieuDeKhoaHoc.ToLower().Contains(input.TieuDeKhoaHoc.ToLower()));
             }
-            if (input.NguoiTaoId.HasValue)
-            {
-                result = result.Where(x => x.NguoiTaoId == input.NguoiTaoId);
-            }
             if(input.TuNgay.HasValue && input.DenNgay.HasValue)
             {
                 result = result.Where(x => x.NgayTao >= input.TuNgay && x.NgayTao <= input.DenNgay);
@@ -298,6 +294,23 @@ namespace WebCourseManagement_Business.Implements
         {
             var result = _context.khoaHocs.Where(x => x.NguoiTaoId == nguoiDungId).Select(x => _converter.EntityToDTO(x));
             return result;
+        }
+
+        public async Task<IQueryable<DataResponseKhoaHoc>> GetAllKhoaHocTheoNguoiTao(int nguoiTaoId)
+        {
+            var query = _context.khoaHocs.Where(x => x.NguoiTaoId == nguoiTaoId).Select(x => _converter.EntityToDTO(x)).AsQueryable();
+            return query;
+        }
+
+        public async Task<IQueryable<DataResponseKhoaHoc>> GetAllKhoaHocTheoNguoiDung(int nguoiDungId)
+        {
+            var query = await _context.khoaHocCuaNguoiDungs.Include(x => x.KhoaHoc).AsNoTracking().Where(x => x.NguoiDungId == nguoiDungId).ToListAsync();
+            List<DataResponseKhoaHoc> listKhoaHoc = new List<DataResponseKhoaHoc>();
+            query.ForEach(x =>
+            {
+                listKhoaHoc.Add(_converter.EntityToDTO(x.KhoaHoc));
+            });
+            return listKhoaHoc.AsQueryable();
         }
     }
 }

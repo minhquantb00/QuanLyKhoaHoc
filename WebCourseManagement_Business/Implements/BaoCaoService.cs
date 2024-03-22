@@ -75,6 +75,7 @@ namespace WebCourseManagement_Business.Implements
                 baoCao.ThoiGianGuiBaoCao = DateTime.Now;
                 baoCao.DaViPham = false;
                 baoCao.DaXacMinh = false;
+                baoCao.LoaiVanDeId = request.LoaiVanDeId;
                 baoCao.NguoiGuiBaoCaoId = nguoiDungId;
                 baoCao.GhiChuBaoCao = request.GhiChuBaoCao;
                 if (request.BinhLuanId.HasValue && !request.BaiVietId.HasValue)

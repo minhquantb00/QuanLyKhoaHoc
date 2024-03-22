@@ -54,5 +54,6 @@ namespace WebCourseManagement_Models.DataContexts
         public DbSet<LoaiBaiViet> loaiBaiViets { get; set; }
         public DbSet<HoaDonDangKy> hoaDonDangKies { get; set; }
         public DbSet<TrangThaiHoaDon> trangThaiHoaDons { get; set; }
+        public DbSet<LoaiVanDe> loaiVanDes { get; set; }
     }
 }

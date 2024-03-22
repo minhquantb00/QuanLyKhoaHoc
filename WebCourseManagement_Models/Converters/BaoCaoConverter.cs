@@ -34,6 +34,7 @@ namespace WebCourseManagement_Models.Converters
                 DaXacMinh = baoCao.DaXacMinh == true ? "Đã xác minh" : "Chưa xác minh",
                 GhiChuBaoCao = baoCao.GhiChuBaoCao,
                 Id = baoCao.Id,
+                TenLoaiVanDe = _context.loaiVanDes.SingleOrDefault(x => x.Id == baoCao.LoaiVanDeId).TenLoaiVanDe,
                 LoaiBinhLuan = baoCao.LoaiBinhLuan.ToString(),
                 NguoiGuiBaoCao = _nguoiDungConverter.EntityToDTO(_context.nguoiDungs.SingleOrDefault(x => x.Id == baoCao.NguoiGuiBaoCaoId)),
                 NguoiViPham = _nguoiDungConverter.EntityToDTO(_context.nguoiDungs.SingleOrDefault(x => x.Id == baoCao.NguoiViPhamId)),

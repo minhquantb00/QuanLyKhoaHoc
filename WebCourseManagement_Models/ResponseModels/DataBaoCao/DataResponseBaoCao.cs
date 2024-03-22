@@ -20,6 +20,7 @@ namespace WebCourseManagement_Models.ResponseModels.DataBaoCao
         public DateTime? ThoiGianXacMinh { get; set; }
         public string DaViPham { get; set; }
         public string GhiChuBaoCao { get; set; }
+        public string TenLoaiVanDe { get; set; }
         public string TenLoaiBaoCao { get; set; }
         public DataResponseBaiViet BaiViet { get; set; }
         public DataResponseBinhLuanBaiViet? BinhLuanBaiViet { get; set; }

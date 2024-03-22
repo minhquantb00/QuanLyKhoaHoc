@@ -276,7 +276,7 @@ namespace WebCourseManagement_API.Controllers
             return Ok(await _baiVietService.XoaBaiViet(baiVietId));
         }
         [HttpGet("getkhoahoc")]
-        public async Task<IActionResult> GetAllsKhoahoc([FromBody] InputKhoaHoc input)
+        public async Task<IActionResult> GetAllsKhoahoc([FromQuery] InputKhoaHoc? input)
         {
             return Ok(await _khoaHocService.GetAllsKhoahoc(input));
         }
@@ -360,6 +360,16 @@ namespace WebCourseManagement_API.Controllers
         {
             int id = int.Parse(HttpContext.User.FindFirst("Id").Value);
             return Ok(await _baoCaoService.GuiBaoCao(id, request));
+        }
+        [HttpGet("GetAllKhoaHocTheoNguoiTao/{nguoiTaoId}")]
+        public async Task<IActionResult> GetAllKhoaHocTheoNguoiTao([FromRoute] int nguoiTaoId)
+        {
+            return Ok(await _khoaHocService.GetAllKhoaHocTheoNguoiTao(nguoiTaoId));
+        }
+        [HttpGet("GetAllKhoaHocTheoNguoiDung/{nguoiDungId}")]
+        public async Task<IActionResult> GetAllKhoaHocTheoNguoiDung([FromRoute] int nguoiDungId)
+        {
+            return Ok(await _khoaHocService.GetAllKhoaHocTheoNguoiDung(nguoiDungId));
         }
     }
 }
