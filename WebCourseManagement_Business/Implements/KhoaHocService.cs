@@ -298,7 +298,7 @@ namespace WebCourseManagement_Business.Implements
 
         public async Task<IQueryable<DataResponseKhoaHoc>> GetAllKhoaHocTheoNguoiTao(int nguoiTaoId)
         {
-            var query = _context.khoaHocs.Where(x => x.NguoiTaoId == nguoiTaoId).Select(x => _converter.EntityToDTO(x)).AsQueryable();
+            var query = _context.khoaHocs.Where(x => x.NguoiTaoId == nguoiTaoId && x.IsActive == true).Select(x => _converter.EntityToDTO(x)).AsQueryable();
             return query;
         }
 
@@ -308,7 +308,7 @@ namespace WebCourseManagement_Business.Implements
             List<DataResponseKhoaHoc> listKhoaHoc = new List<DataResponseKhoaHoc>();
             query.ForEach(x =>
             {
-                listKhoaHoc.Add(_converter.EntityToDTO(x.KhoaHoc));
+                listKhoaHoc.Add(_converter.EntityToDTO(_context.khoaHocs.SingleOrDefault(y => y.Id == x.KhoaHocId && y.IsActive == true)));
             });
             return listKhoaHoc.AsQueryable();
         }
