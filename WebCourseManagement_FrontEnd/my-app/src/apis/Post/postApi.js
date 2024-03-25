@@ -80,5 +80,15 @@ export const postApi = defineStore("post", {
           .catch((error) => reject(error));
       });
     },
+    async pheDuyetBaiViet(id){
+      const authToken = `Bearer ${authorization}`;
+      console.log(authToken);
+      const res = await axios.put(`/admin/DuyetBaiViet/${id}`, null, {
+        headers: {
+          Authorization: authToken,
+        },
+      })
+      console.log(res);
+    }
   },
 });
