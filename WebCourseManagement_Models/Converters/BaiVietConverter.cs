@@ -31,7 +31,7 @@ namespace WebCourseManagement_Models.Converters
                 Id = baiViet.Id,
                 MoTa = baiViet.MoTa,
                 NguoiDungThichBaiViets = _context.nguoiDungThichBaiViets.Where(x => x.BaiVietId == baiViet.Id).Select(x => _converter.EntityToDTO(x)),
-                NguoiTaoBaiViet = _nguoiDungConverter.EntityToDTO(baiViet.NguoiTaoBaiViet),
+                NguoiTaoBaiViet = _nguoiDungConverter.EntityToDTO(_context.nguoiDungs.SingleOrDefault(x => x.Id == baiViet.NguoiTaoBaiVietId)),
                 SoLuotBinhLuan = baiViet.SoLuotBinhLuan,
                 SoLuotThich = baiViet.SoLuotThich,
                 ThoiGianCapNhat = baiViet.ThoiGianCapNhat,
