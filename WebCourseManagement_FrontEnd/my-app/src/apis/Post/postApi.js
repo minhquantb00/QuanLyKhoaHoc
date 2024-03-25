@@ -43,10 +43,14 @@ export const postApi = defineStore("post", {
           .catch((error) => reject(error));
       });
     },
-    getAllCoursesType() {
+    getAllPostNotYetApproved() {
       return new Promise((resolve, reject) => {
         axios
-          .get("/user/GetAllLKH",)
+          .get("/admin/GetAllBaiVietChuaDuocDuyet", {
+            headers: {
+              Authorization: `Bearer ${authorization}`,
+            },
+          })
           .then((res) => {
             if (res.status === 200) {
               resolve(res.data);
@@ -71,36 +75,6 @@ export const postApi = defineStore("post", {
               resolve(res.data);
             } else {
               reject(res); // Sử dụng res thay vì error
-            }
-          })
-          .catch((error) => reject(error));
-      });
-    },
-    getCourseId(id) {
-      return new Promise((resolve, reject) => {
-        axios
-          .get(`/user/GetKhoaHocById/${id}`)
-          .then((res) => {
-            if (res.status === 200) {
-              resolve(res.data);
-            } else {
-              reject(error);
-            }
-          })
-          .catch((error) => reject(error));
-      });
-    },
-    getAllCoursesType() {
-      return new Promise((resolve, reject) => {
-        axios
-          .get("/user/GetAllLKH")
-          .then((res) => {
-            if (res.status === 200) {
-              resolve(res.data);
-              console.log("Loại khóa học");
-              console.log(res);
-            } else {
-              reject(error);
             }
           })
           .catch((error) => reject(error));

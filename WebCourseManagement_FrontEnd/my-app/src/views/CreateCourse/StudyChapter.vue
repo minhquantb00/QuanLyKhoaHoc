@@ -32,7 +32,7 @@
                           class="d-flex transition-fast-in-fast-out bg-grey-lighten-2 v-card--reveal text-h2"
                           style="height: 100%"
                         >
-                          <router-link to="/all-lessons">
+                          <router-link :to="`/all-lessons/${c.id}`">
                             <v-btn color="black"> Tất cả bài học </v-btn>
                           </router-link>
                         </div>

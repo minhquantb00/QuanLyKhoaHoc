@@ -25,7 +25,7 @@
                             Tổng học viên
                           </v-titlte>
                           <h4>
-                            <!-- {{ p.student }} -->
+                            {{ this.listCourePropose.soHocVienHocKhoaHoc }}
                           </h4>
                         </v-col>
                         <v-col cols="4">
@@ -59,7 +59,7 @@
                   <div>
                     <v-card
                       class="mt-6 pl-2 pr-2 rounded-xl"
-                      width="500"
+                      width="450"
                       color="grey-lighten-5"
                     >
                       <v-card-item>
@@ -119,14 +119,14 @@
                                     <span class="obligatory mr-2">*</span>
                                     Loại bài viết
                                   </label>
-                                  <v-text-field
-                                    class="mt-3"
-                                    :rules="rules"
-                                    color="purple-accent-4"
-                                    v-model="inputAddPost.LoaiBaiVietId"
+                                  <v-select
+                                    label="Loại bài viết"
+                                    :items="listPostTypes"
+                                    item-value="id"
+                                    item-title="tenLoaiBaiViet"
                                     variant="outlined"
-                                    placeholder="Loại bài viết id"
-                                  ></v-text-field>
+                                    v-model="inputAddPost.LoaiBaiVietId"
+                                  ></v-select>
                                   <label class="mb-3 ml-1">
                                     Nội dung bài viết
                                   </label>
@@ -266,17 +266,17 @@
           </v-row>
           <div class="card-course-profile">
             <h5 class="ml-4">
-              Các khóa học của tôi ({{ listCourePropose.length }})
+              Các khóa học của tôi ({{ this.listCourePropose.length }})
             </h5>
             <div class="list-course">
               <v-sheet class="" elevation="4">
                 <v-slide-group v-model="model" center-active show-arrows>
-                  <v-slide-group-item v-for="e in listCourePropose" :key="e.id">
+                  <v-slide-group-item v-for="e in listCourePropose" :key="e">
                     <router-link
-                      to="/detail-product"
+                      :to="`/detail-product/${e.id}`"
                       class="link-detail-product pa-4"
                     >
-                      <v-card :loading="loading" width="260">
+                      <v-card :loading="loading" width="260" hover>
                         <template v-slot:loader="{ isActive }">
                           <v-progress-linear
                             :active="isActive"
@@ -286,17 +286,17 @@
                           ></v-progress-linear>
                         </template>
 
-                        <v-img height="189" :src="e.imageCourse" cover></v-img>
+                        <v-img height="189" :src="e.anhKhoaHoc" cover></v-img>
 
                         <v-card-item>
                           <v-card-title style="font-size: 17px">{{
-                            e.courseTitle
+                            e.tieuDeKhoaHoc
                           }}</v-card-title>
 
                           <v-card-subtitle>
                             <span class="me-3"
-                              >{{ listCourePropose.length }} chương * Tất cả
-                              trình độ</span
+                              >{{ e.chuongHocs.length }} chương * Tất cả trình
+                              độ</span
                             >
 
                             <v-icon
@@ -315,14 +315,10 @@
                               size="small"
                               color="orange-lighten-1"
                             ></v-rating>
-
-                            <div class="text-grey ms-4">
-                              4.5 ({{ listEvalute.length }})
-                            </div>
                           </v-row>
 
                           <div style="margin-top: 30px" class="text-subtitle-2">
-                            <h5>{{ e.price }} vnđ</h5>
+                            <h5>{{ formatCurrency(e.giaKhoaHoc) }}</h5>
                           </div>
                         </v-card-text>
                       </v-card>
@@ -333,9 +329,7 @@
             </div>
           </div>
           <div class="card-course-profile mt-10">
-            <h5 class="ml-4">
-              Các bài viết của tôi ({{ listCourePropose.length }})
-            </h5>
+            <h5 class="ml-4">Các bài viết của tôi ()</h5>
             <div class="list-course">
               <v-sheet class="" elevation="4">
                 <v-slide-group v-model="model" center-active show-arrows>
@@ -406,6 +400,8 @@ import ClassicEditor from "@ckeditor/ckeditor5-build-classic";
 import { useRouter } from "vue-router";
 import { authApi } from "../../apis/Auth/authApi";
 import { postApi } from "../../apis/Post/postApi";
+import { courseApi } from "../../apis/Course/courseApi";
+import { postTypeApi } from "../../apis/Post/postTypeApi";
 export default {
   components: {
     HeaderItem,
@@ -418,6 +414,8 @@ export default {
       snackbar: false,
       router: useRouter(),
       postApi: postApi(),
+      courseApi: courseApi(),
+      postTypeApi: postTypeApi(),
       userInfo: localStorage.getItem("userInfo")
         ? JSON.parse(localStorage.getItem("userInfo"))
         : null,
@@ -428,6 +426,7 @@ export default {
         AnhBaiViet: null,
         LoaiBaiVietId: null,
       },
+      listPostTypes: [],
       teacherProfile: [
         {
           id: 1,
@@ -448,123 +447,7 @@ export default {
             "https://1.bp.blogspot.com/-mRj1x9CyrcA/Xm3No2S5lTI/AAAAAAAAYaI/FgJeZaiaPWYDAaXq8rhd6WnvTW1ukOmpACLcBGAsYHQ/s1600/Anh-gai-xinh-toc-ngan-deo-kinh%2B%25284%2529.jpg",
         },
       ],
-      listCourePropose: [
-        {
-          id: 1,
-          description:
-            "Java là một ngôn ngữ lập trình thuần hướng đối tượng,...",
-          courseTitle: "Khóa học BA",
-          imageCourse:
-            "https://appmaster.io/api/_files/hRaLG2N4DVjRZJQzCpN2zJ/download/",
-          numberOfLessons: 15,
-          chapterNumber: 3,
-          totalStudyTime: 90,
-          numberOfPeopleEnrolled: 123,
-          pricepriceHasDecreased: "299.000",
-          price: "1.690.000",
-          numberOfStudentsWhoHaveCompleted: 100,
-          courseStatus: 1,
-          typeCourse: 1,
-          linkVideo:
-            "https://www.youtube.com/embed/3gtOAlcovoQ?list=PL33lvabfss1yGrOutFR03OZoqm91TSsvs",
-        },
-        {
-          id: 2,
-          description:
-            "Java là một ngôn ngữ lập trình thuần hướng đối tượng,...",
-          courseTitle: "Khóa học truy vấn SQL Server",
-          imageCourse:
-            "https://appmaster.io/api/_files/hRaLG2N4DVjRZJQzCpN2zJ/download/",
-          numberOfLessons: 15,
-          chapterNumber: 3,
-          totalStudyTime: 90,
-          numberOfPeopleEnrolled: 123,
-          pricepriceHasDecreased: "299.000",
-          price: "1.690.000",
-          numberOfStudentsWhoHaveCompleted: 100,
-          courseStatus: 1,
-          typeCourse: 1,
-          linkVideo:
-            "https://www.youtube.com/embed/3gtOAlcovoQ?list=PL33lvabfss1yGrOutFR03OZoqm91TSsvs",
-        },
-        {
-          id: 3,
-          description:
-            "Java là một ngôn ngữ lập trình thuần hướng đối tượng,...",
-          courseTitle: "Khóa học Angular",
-          imageCourse:
-            "https://appmaster.io/api/_files/hRaLG2N4DVjRZJQzCpN2zJ/download/",
-          numberOfLessons: 15,
-          chapterNumber: 3,
-          totalStudyTime: 90,
-          numberOfPeopleEnrolled: 123,
-          pricepriceHasDecreased: "299.000",
-          price: "1.690.000",
-          numberOfStudentsWhoHaveCompleted: 100,
-          courseStatus: 1,
-          typeCourse: 1,
-          linkVideo:
-            "https://www.youtube.com/embed/3gtOAlcovoQ?list=PL33lvabfss1yGrOutFR03OZoqm91TSsvs",
-        },
-        {
-          id: 4,
-          description:
-            "Java là một ngôn ngữ lập trình thuần hướng đối tượng,...",
-          courseTitle:
-            "Business Analyst (BA) for Practitioners (BA thực chiến)",
-          imageCourse:
-            "https://appmaster.io/api/_files/hRaLG2N4DVjRZJQzCpN2zJ/download/",
-          numberOfLessons: 15,
-          chapterNumber: 3,
-          totalStudyTime: 90,
-          numberOfPeopleEnrolled: 123,
-          pricepriceHasDecreased: "299.000",
-          price: "1.690.000",
-          numberOfStudentsWhoHaveCompleted: 100,
-          courseStatus: 1,
-          typeCourse: 1,
-          linkVideo:
-            "https://www.youtube.com/embed/3gtOAlcovoQ?list=PL33lvabfss1yGrOutFR03OZoqm91TSsvs",
-        },
-        {
-          id: 5,
-          description:
-            "Java là một ngôn ngữ lập trình thuần hướng đối tượng,...",
-          courseTitle: "Khóa học Java",
-          imageCourse:
-            "https://appmaster.io/api/_files/hRaLG2N4DVjRZJQzCpN2zJ/download/",
-          numberOfLessons: 15,
-          chapterNumber: 3,
-          totalStudyTime: 90,
-          numberOfPeopleEnrolled: 123,
-          pricepriceHasDecreased: "299.000",
-          price: "1.690.000",
-          numberOfStudentsWhoHaveCompleted: 100,
-          courseStatus: 1,
-          typeCourse: 1,
-          linkVideo:
-            "https://www.youtube.com/embed/3gtOAlcovoQ?list=PL33lvabfss1yGrOutFR03OZoqm91TSsvs",
-        },
-        {
-          id: 6,
-          description:
-            "Java là một ngôn ngữ lập trình thuần hướng đối tượng,...",
-          courseTitle: "Khóa học Java",
-          imageCourse:
-            "https://appmaster.io/api/_files/hRaLG2N4DVjRZJQzCpN2zJ/download/",
-          numberOfLessons: 15,
-          chapterNumber: 3,
-          totalStudyTime: 90,
-          numberOfPeopleEnrolled: 123,
-          pricepriceHasDecreased: "299.000",
-          price: "1.690.000",
-          numberOfStudentsWhoHaveCompleted: 100,
-          courseStatus: 1,
-          typeCourse: 1,
-          linkVideo:
-            "https://www.youtube.com/embed/3gtOAlcovoQ?list=PL33lvabfss1yGrOutFR03OZoqm91TSsvs",
-        },
-      ],
+      listCourePropose: [],
       listEvalute: [
         {
           id: 1,
@@ -635,7 +518,23 @@ export default {
       ],
     };
   },
-  async mounted() {},
+  async mounted() {
+    const id = this.$route.params.id;
+    try {
+      const res = await this.courseApi.getAllCoursesByUserId(id);
+      console.log(res);
+      this.listCourePropose = res;
+      console.log(this.listCourePropose);
+    } catch (e) {
+      console.error("Error fetching failed" + e.message);
+    }
+    try {
+      const res = await this.postTypeApi.getAllPostType();
+      this.listPostTypes = res;
+    } catch (e) {
+      console.error("Error fetching failed" + e.message);
+    }
+  },
   methods: {
     hanldeImageChange(event) {
       const file = event.target.files[0];
@@ -657,7 +556,7 @@ export default {
         return;
       }
       this.imageFile = fileName;
-      this.inputAddPost.AnhBaiViet = file;
+      // this.inputAddPost.AnhBaiViet = file;
       this.inputAddPost.AnhBaiViet = file;
     },
     logout() {
@@ -677,6 +576,23 @@ export default {
         this.text = "Gửi bài viết thất bại";
         this.snackbar = true;
       }
+    },
+    formatDate(dateString) {
+      const date = new Date(dateString);
+      const day = date.getDate();
+      const month = date.getMonth() + 1;
+      const year = date.getFullYear();
+      const formattedDay = day < 10 ? "0" + day : day;
+      const formattedMonth = month < 10 ? "0" + month : month;
+
+      return `${formattedDay}/${formattedMonth}/${year}`;
+    },
+    formatCurrency(value) {
+      const intValue = parseInt(value);
+      return intValue.toLocaleString("vi-VN", {
+        style: "currency",
+        currency: "VND",
+      });
     },
     reloadPage() {
       location.reload();

@@ -120,7 +120,7 @@ const routes = [
     component: () => import("../views/CreateCourse/VideoLesson.vue"),
   },
   {
-    path: "/all-lessons",
+    path: "/all-lessons/:id",
     name: "all-lessons",
     component: () => import("../views/CreateCourse/AllLesson.vue"),
   },
@@ -133,7 +133,7 @@ const routes = [
     name: "profile-user",
     component: () => import("../views/User/ProfileUser.vue"),
   }, {
-    path: "/public-records",
+    path: "/public-records/:id",
     name: "public-records",
     component: () => import("../views/User/UserProfilePage.vue"),
   },
@@ -147,50 +147,41 @@ const routes = [
     component: () => import("../views/Admin/Header/HeaderAdmin.vue"),
     children: [
       {
-        // UserProfile will be rendered inside User's <router-view>
-        // when /user/:id/profile is matched
         path: "/admin",
         name: "admin",
         component: () => import("../views/Admin/Content/UserManager.vue"),
       },
       {
-        // UserProfile will be rendered inside User's <router-view>
-        // when /user/:id/profile is matched
         path: "/admin/nguoi-dung",
         name: "nguoi-dung",
         component: () => import("../views/Admin/Content/UserManager.vue"),
       },
       {
-        // UserProfile will be rendered inside User's <router-view>
-        // when /user/:id/profile is matched
         path: "/admin/thong-ke",
         name: "thong-ke",
         component: () => import("../views/Admin/Content/Statistic.vue"),
       },
       {
-        // UserProfile will be rendered inside User's <router-view>
-        // when /user/:id/profile is matched
         path: "/admin/banner",
         name: "banner",
         component: () => import("../views/Admin/Content/BannerManager.vue"),
       },
       {
-        // UserProfile will be rendered inside User's <router-view>
-        // when /user/:id/profile is matched
         path: "/admin/bao-cao",
         name: "bao-cao",
         component: () => import("../views/Admin/Content/RepostManager.vue"),
       },
       {
-        // UserProfile will be rendered inside User's <router-view>
-        // when /user/:id/profile is matched
         path: "/admin/bai-viet",
         name: "bai-viet",
         component: () => import("../views/Admin/Content/PostManager.vue"),
       },
       {
-        // UserProfile will be rendered inside User's <router-view>
-        // when /user/:id/profile is matched
+        path: "/admin/the-loai-bai-viet",
+        name: "the-loai-bai-viet",
+        component: () => import("../views/Admin/Content/PostTypeManager.vue"),
+      },
+      {
         path: "/admin/the-loai-khoa-hoc",
         name: "the-loai-khoa-hoc",
         component: () => import("../views/Admin/Content/CourseType.vue"),

@@ -6,17 +6,16 @@ axios.defaults.baseURL = "https://localhost:7046/api";
 const authorization = localStorage.getItem("accessToken")
   ? localStorage.getItem("accessToken")
   : "";
-export const postApi = defineStore("postType", {
+export const postTypeApi = defineStore("postType", {
   actions: {
-    createPost(params) {
+    createPostTypes(params) {
       return new Promise((resolve, reject) => {
         axios
           .post(
-            "/user/TaoBaiViet",
+            "/admin/ThemLoaiBaiViet",
             { ...params },
             {
               headers: {
-                "Content-Type": "multipart/form-data",
                 Authorization: `Bearer ${authorization}`,
               },
             }
@@ -46,7 +45,7 @@ export const postApi = defineStore("postType", {
     getAllPostType() {
       return new Promise((resolve, reject) => {
         axios
-          .get("/user/",)
+          .get("/user/GetAllsLoaiBaiViet")
           .then((res) => {
             if (res.status === 200) {
               resolve(res.data);

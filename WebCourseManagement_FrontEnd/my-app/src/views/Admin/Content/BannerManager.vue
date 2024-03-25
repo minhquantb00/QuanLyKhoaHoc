@@ -8,6 +8,7 @@
             color="purple-accent-4"
             text="Thêm mới"
             variant="flat"
+            class="ma-4"
           ></v-btn>
         </template>
 
@@ -16,8 +17,9 @@
             <v-card-text>
               <v-file-input
                 label="File input"
-                prepend-icon="mdi-camera"
-                variant="filled"
+                @change="hanldeImageChange"
+                v-model="inputAddBanner.anhBanner"
+                show-size
               ></v-file-input>
             </v-card-text>
 
@@ -27,8 +29,9 @@
               <v-btn
                 color="purple-accent-4"
                 variant="flat"
+                :loading="loading"
                 text="Thêm mới"
-                @click="isActive.value = false"
+                @click="addBanner"
               ></v-btn>
               <v-btn
                 text="Hủy"
@@ -43,19 +46,15 @@
     </div>
     <v-container fluid>
       <v-row dense>
-        <v-col v-for="card in cards" :key="card.title" :cols="card.flex">
+        <v-col v-for="card in listBanner" :key="card" :cols="card.flex">
           <v-card>
             <v-img
-              :src="card.src"
+              :src="card.anhBanner"
               class="align-end"
               gradient="to bottom, rgba(0,0,0,.1), rgba(0,0,0,.5)"
               height="200px"
               cover
             >
-              <v-card-title
-                class="text-white"
-                v-text="card.title"
-              ></v-card-title>
             </v-img>
 
             <v-card-actions>
@@ -92,12 +91,27 @@
       </v-container>
     </div>
   </v-card>
+  <v-snackbar v-model="snackbar">
+    {{ text }}
+    <template v-slot:actions>
+      <v-btn color="green" variant="text" @click="snackbar = false">
+        Đóng
+      </v-btn>
+    </template>
+  </v-snackbar>
 </template>
 <script>
+import { bannerApi } from "../../../apis/Banner/bannerApi";
 export default {
   data() {
     return {
+      bannerApi: bannerApi(),
       page: 1,
+      loading:false,
+      inputAddBanner: {
+        anhBanner: null,
+      },
+      listBanner:[],
       cards: [
         {
           title: "Pre-fab homes",
@@ -121,6 +135,58 @@ export default {
         },
       ],
     };
+  },
+  async mounted() {
+   try{
+     const res = await this.bannerApi.getAllBanner();
+    this.listBanner = res
+   }catch(e) {e}
+  },
+  methods: {
+    hanldeImageChange(event) {
+      const file = event.target.files[0];
+      const maxSizeInBytes = 2 * 1024 * 1024; // 2MB
+      const allowedExtensions = [".jpg", ".jpeg", ".png"];
+      if (!file) {
+        return;
+      }
+      const fileName = file.name;
+      if (file.size > maxSizeInBytes) {
+        this.text = "Kích thước ảnh không được vượt quá 2MB";
+        this.snackbar = true;
+        return;
+      }
+      const fileExtension = fileName.split(".").pop();
+      if (!allowedExtensions.includes("." + fileExtension.toLowerCase())) {
+        this.text = "Hệ thống chỉ hỗ trợ file ảnh dạng: jpg, png, jpeg";
+        this.snackbar = true;
+        return;
+      }
+      this.imageFile = fileName;
+      this.inputAddBanner.anhBanner = file;
+    },
+    async addBanner() {
+      const result = await this.bannerApi.createBanner(
+        this.inputAddBanner,
+        (this.loading = true)
+      );
+      if (result) {
+        this.text = "Thêm banner thành công";
+        this.snackbar = true;
+        setTimeout(() => {
+          this.loadingPage();
+        }, 2000);
+      } else {
+        this.text = "Thêm banner thất bại";
+        this.snackbar = true;
+        setTimeout(() => {
+          this.loadingPage();
+        }, 2000);
+      }
+    },
+    loadingPage() {
+      location.reload();
+    },
   },
 };
 </script>

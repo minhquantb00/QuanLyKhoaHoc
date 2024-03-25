@@ -24,6 +24,19 @@ export const userApi = defineStore("user", {
           })
           .catch((error) => reject(error));
       });     
+    },getAllUser() {
+      return new Promise((resolve, reject) => {
+        axios
+          .get("/user/GetAllsNguoiDung")
+          .then((res) => {
+            if (res.status === 200) {
+              resolve(res.data);
+            }else{
+              reject(error)
+            }
+          })
+          .catch((error) => reject(error));
+      });     
     },
   },
 });

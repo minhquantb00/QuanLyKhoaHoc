@@ -24,22 +24,20 @@ export const lessonsApi = defineStore("lessons", {
           .catch((error) => reject(error));
       });
     },
-    getAllCourses() {
+    getAllLessons() {
       return new Promise((resolve, reject) => {
         axios
-          .get("/user/getkhoahoc")
+          .get("/user/GetAllsBaiHoc")
           .then((res) => {
             if (res.status === 200) {
               resolve(res.data);
-              console.log('vào đây rooif nhế');
               console.log(res);
-            }else{
-              reject(error)
+            } else {
+              reject(error);
             }
           })
           .catch((error) => reject(error));
       });
-      
     },
     getAllCoursesType() {
       return new Promise((resolve, reject) => {
@@ -48,15 +46,14 @@ export const lessonsApi = defineStore("lessons", {
           .then((res) => {
             if (res.status === 200) {
               resolve(res.data);
-              console.log('Loại khóa học');
+              console.log("Loại khóa học");
               console.log(res);
-            }else{
-              reject(error)
+            } else {
+              reject(error);
             }
           })
           .catch((error) => reject(error));
       });
-      
     },
   },
 });

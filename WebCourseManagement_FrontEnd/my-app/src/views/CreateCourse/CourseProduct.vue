@@ -165,7 +165,7 @@
                         :key="n.id"
                         class=""
                       >
-                        <v-card class="mb-5 ma-2" width="275">
+                        <v-card class="mb-5 ma-2" width="275" hover>
                           <v-img height="200" :src="n.anhKhoaHoc" cover></v-img>
 
                           <v-card-title class="text-h5">{{

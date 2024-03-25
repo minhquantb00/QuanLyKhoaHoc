@@ -91,7 +91,6 @@ const onFinish = (values) => {
 const onFinishFailed = (errorInfo) => {
   console.log("Failed:", errorInfo);
 };
-
 </script>
 <script>
 import { useRouter } from "vue-router";
@@ -140,7 +139,7 @@ export default {
   computed: {
     disabled() {
       return !(this.inputLogin.taiKhoan && this.inputLogin.matKhau);
-    }
+    },
   },
   methods: {
     async login() {
@@ -189,18 +188,8 @@ export default {
           this.snackbar = true;
         }
       } catch (error) {
-        // Xử lý lỗi khi gọi API đăng nhập
         console.error("Error logging in:", error);
         this.text = "Bạn đã nhập sai tài khoản hoặc mật khẩu!";
-
-        this.snackbar = true;
-        const alert = {
-          type: "error",
-          content: result.message,
-        };
-        this.emitter.emit("showAlert", alert);
-        // this.text = "Lỗi hệ thống không đăng nhập được";
-        // this.snackbar = true;
       } finally {
         this.loading = false;
       }

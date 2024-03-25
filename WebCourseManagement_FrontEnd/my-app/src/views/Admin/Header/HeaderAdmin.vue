@@ -36,6 +36,10 @@
             <v-icon icon=" mdi-post-outline" class="mr-2"></v-icon> Bài
             viết</a-menu-item
           >
+           <a-menu-item key="7">
+            <v-icon icon=" mdi-post-outline" class="mr-2"></v-icon> Thể loại bài
+            viết</a-menu-item
+          >
           <a-menu-item key="4"
             ><v-icon icon="mdi-image-outline" class="mr-2"></v-icon>
             Banner</a-menu-item
@@ -172,7 +176,10 @@ const handleMenuClick = ({ key }) => {
   } else if (key === "6") {
     breadcrumbText.value = "Thống kê";
     router.push({ name: "thong-ke" });
-  } else if (key === "") {
+  }else if (key === "7") {
+    breadcrumbText.value = "Thể lọai bài viết";
+    router.push({ name: "the-loai-bai-viet" });
+  }  else if (key === "") {
     breadcrumbText.value = "Trang chủ";
     router.push({ name: "admin" });
   }

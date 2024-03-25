@@ -46,7 +46,7 @@ export const courseApi = defineStore("course", {
     searchCourses(params) {
       return new Promise((resolve, reject) => {
         axios
-          .post("/user/getkhoahoc", { ...params })
+          .get("/user/getkhoahoc", { ...params })
           .then((res) => resolve(res))
           .catch((error) => reject(error));
       });

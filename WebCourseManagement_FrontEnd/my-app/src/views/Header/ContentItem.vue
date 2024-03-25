@@ -9,12 +9,9 @@
         interval="2000"
       >
         <v-carousel-item
-          src="https://img-c.udemycdn.com/notices/featured_carousel_slide/image/5bf6274c-4a57-42ce-93d6-9775b06730be.jpg"
-          cover
-        ></v-carousel-item>
-
-        <v-carousel-item
-          src="https://img-c.udemycdn.com/notices/featured_carousel_slide/image/450dec77-8a3c-4286-98af-fe252fd26166.jpg"
+          v-for="b in listBanner"
+          :key="b"
+          :src="b.anhBanner"
           cover
         ></v-carousel-item>
       </v-carousel>
@@ -219,14 +216,16 @@
 <script>
 import { useRouter } from "vue-router";
 import { courseApi } from "../../apis/Course/courseApi";
+import { bannerApi } from "../../apis/Banner/bannerApi";
 export default {
   data() {
     return {
       router: useRouter(),
       apiCourse: courseApi(),
+      bannerApi: bannerApi(),
       loading: true,
       listCourse: [],
-
+      listBanner: [],
       listCourseHot: [
         {
           id: 1,
@@ -447,11 +446,17 @@ export default {
 
   async mounted() {
     setTimeout(() => {
-      this.loading = false; // Tắt loading khi dữ liệu đã được load
+      this.loading = false;
     }, 2500);
     try {
       const result = await this.apiCourse.getAllCourses();
       this.listCourse = result;
+    } catch (e) {
+      console.error("Fetching faild", e);
+    }
+    try {
+      const result = await this.bannerApi.getAllBanner();
+      this.listBanner = result;
     } catch (e) {
       console.error("Fetching faild", e);
     }
