@@ -99,5 +99,16 @@ namespace WebCourseManagement_API.Controllers
         {
             return Ok(await _baoCaoService.DuyetBaoCao(request));
         }
+        [HttpDelete("XoaBanner/{bannerId}")]
+        [Authorize(Roles = "Admin")]
+        public async Task<IActionResult> XoaBanner([FromRoute] int bannerId)
+        {
+            return Ok(await _bannerService.XoaBanner(bannerId));
+        }
+        [HttpGet("GetAllBaiVietChuaDuocDuyet")]
+        public async Task<IActionResult> GetAllBaiVietChuaDuocDuyet()
+        {
+            return Ok(await _baivietService.GetAllBaiVietChuaDuocDuyet());
+        }
     }
 }

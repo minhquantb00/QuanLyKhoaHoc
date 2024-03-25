@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Http;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -20,11 +21,18 @@ namespace WebCourseManagement_Business.Implements
         private readonly AppDbContext _context;
         private readonly ResponseObject<DataResponseBanner> _responseObject;
         private readonly BannerConverter _converter;
-        public BannerService(AppDbContext context, ResponseObject<DataResponseBanner> responseObject, BannerConverter converter)
+        private readonly IHttpContextAccessor _contextAccessor;
+        public BannerService(AppDbContext context, ResponseObject<DataResponseBanner> responseObject, BannerConverter converter, IHttpContextAccessor contextAccessor)
         {
             _context = context;
             _responseObject = responseObject;
             _converter = converter;
+            _contextAccessor = contextAccessor;
+        }
+
+        public async Task<IQueryable<DataResponseBanner>> GetAlls()
+        {
+            return _context.banners.Select(x => _converter.EntityToDTO(x));
         }
 
         public async Task<ResponseObject<DataResponseBanner>> TaoBanner(Request_TaoBanner request)
@@ -40,6 +48,13 @@ namespace WebCourseManagement_Business.Implements
             _context.banners.Add(banner);
             _context.SaveChanges();
             return _responseObject.ResponseSuccess("Tạo banner thành công", _converter.EntityToDTO(banner));
+        }
+
+        public async Task<string> XoaBanner(int bannerId)
+        {
+            var banner = await _context.banners.SingleOrDefaultAsync(x => x.Id == bannerId);
+            _context.banners.Remove(banner); _context.SaveChanges();
+            return "Xóa banner thành công";
         }
     }
 }

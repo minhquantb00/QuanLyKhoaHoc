@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using WebCourseManagement_Models.DataContexts;
 using WebCourseManagement_Models.Entities;
 using WebCourseManagement_Models.ResponseModels.DataNguoiDung;
 
@@ -29,7 +30,11 @@ namespace WebCourseManagement_Models.Converters
                 LinkFacebook = nguoiDung.LinkFacebook,
                 LinkInstagram = nguoiDung.LinkInstagram,
                 LinkYoutube = nguoiDung.LinkYoutube,
-                MoTaBanThan = nguoiDung.MoTaBanThan
+                MoTaBanThan = nguoiDung.MoTaBanThan,
+                IsActive = nguoiDung.IsActive == true ? "Đã Active" : "Không Active",
+                DaKhoaChua = nguoiDung.DaKhoa == true ? "Đã khóa" : "Chưa khóa",
+                SoLanViPham = nguoiDung.SoLanViPham,
+                TenTrangThaiTaiKhoan = nguoiDung.TrangThaiNguoiDungId == 1 ? "Chưa kích hoạt" : "Đã kích hoạt"
             };
         }
     }

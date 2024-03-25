@@ -12,5 +12,7 @@ namespace WebCourseManagement_Business.Interfaces
     public interface IBannerService
     {
         Task<ResponseObject<DataResponseBanner>> TaoBanner(Request_TaoBanner request);
+        Task<IQueryable<DataResponseBanner>> GetAlls();
+        Task<string> XoaBanner(int bannerId);
     }
 }

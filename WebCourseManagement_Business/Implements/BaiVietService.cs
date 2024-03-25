@@ -42,7 +42,7 @@ namespace WebCourseManagement_Business.Implements
 
         }
 
-        public async Task<PageResult<DataResponseBaiViet>> GetAlls(InputBaiViet input, int pageSize, int pageNumber)
+        public async Task<IQueryable<DataResponseBaiViet>> GetAlls(InputBaiViet input)
         {
             var baiViet = _context.baiViets.Where(x => x.TrangThaiBaiVietId == 2).OrderByDescending(x => x.ThoiGianTao).AsQueryable();
             if (input.NguoiTaoId.HasValue)
@@ -57,8 +57,8 @@ namespace WebCourseManagement_Business.Implements
             {
                 baiViet = baiViet.Where(x => x.ThoiGianTao >= input.FromDate);
             }
-            var result = Pagination.GetPagedData(baiViet.Select(x => _baiVietConverter.EntityToDTO(x)), pageSize, pageNumber);
-            return result;
+            
+            return baiViet.Select(x => _baiVietConverter.EntityToDTO(x));
         }
 
         
@@ -401,6 +401,11 @@ namespace WebCourseManagement_Business.Implements
         {
             var loaiBaiViet = _context.loaiBaiViets.SingleOrDefault(x => x.Id == loaiBaiVietId);
             return _responseObjectLoaiBaiViet.ResponseSuccess("Lấy dữ liệu thành công", _loaiBaiVietConverter.EntityToDTO(loaiBaiViet));
+        }
+
+        public async Task<IQueryable<DataResponseBaiViet>> GetAllBaiVietChuaDuocDuyet()
+        {
+            return _context.baiViets.Where(x => x.TrangThaiBaiVietId == 1).Select(x => _baiVietConverter.EntityToDTO(x));
         }
     }
 }

@@ -17,7 +17,7 @@ namespace WebCourseManagement_Business.Interfaces
         Task<ResponseObject<DataResponseBaiViet>> SuaBaiViet(int nguoiDungId, Request_SuaBaiViet request);
         Task<string> XoaBaiViet(int baiVietId);
         Task<ResponseObject<DataResponseBaiViet>> GetBaiVietById(int baiVietId);
-        Task<PageResult<DataResponseBaiViet>> GetAlls(InputBaiViet input, int pageSize, int pageNumber);
+        Task<IQueryable<DataResponseBaiViet>> GetAlls(InputBaiViet input);
         Task<ResponseObject<DataResponseBinhLuanBaiViet>> TaoBinhLuanBaiViet(int nguoiDungId, Request_TaoBinhLuanBaiViet request);
         Task<ResponseObject<DataResponseBinhLuanBaiViet>> SuaBinhLuanBaiViet(int nguoiDungId, Request_SuaBinhLuanBaiViet request);
         Task<string> XoaBinhLuan(int binhLuanId);
@@ -28,6 +28,7 @@ namespace WebCourseManagement_Business.Interfaces
         Task<string> XoaLoaiBaiViet(int loaiBaiVietId);
         Task<IQueryable<DataResponseLoaiBaiViet>> GetAllsLoaiBaiViet(string? tenLoaiBaiViet);
         Task<ResponseObject<DataResponseLoaiBaiViet>> GetLoaiBaiVietById(int loaiBaiVietId);
+        Task<IQueryable<DataResponseBaiViet>> GetAllBaiVietChuaDuocDuyet();
 
     }
 }

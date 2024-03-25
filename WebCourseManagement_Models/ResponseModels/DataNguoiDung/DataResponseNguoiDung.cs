@@ -20,5 +20,9 @@ namespace WebCourseManagement_Models.ResponseModels.DataNguoiDung
         public string? LinkYoutube { get; set; }
         public string? LinkFacebook { get; set; }
         public string? LinkInstagram { get; set; }
+        public string TenTrangThaiTaiKhoan { get; set; }
+        public string DaKhoaChua { get; set; }
+        public int? SoLanViPham { get; set; }
+        public string IsActive { get; set; }
     }
 }
