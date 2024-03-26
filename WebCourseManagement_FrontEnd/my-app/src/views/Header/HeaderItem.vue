@@ -12,7 +12,7 @@
           </a>
         </div>
         <v-row>
-          <v-col cols="6">
+          <v-col>
             <div class="search-header d-flex mt-3">
               <div class="search-icon">
                 <font-awesome-icon
@@ -20,11 +20,71 @@
                 ></font-awesome-icon>
               </div>
               <div class="search-input">
-                <input
-                  class="search-input-item"
-                  type="text"
-                  placeholder="Tìm kiếm từ khóa"
-                />
+                <v-dialog max-width="1100" class="pa-8" v-model="dialogVisible">
+                  <template v-slot:activator="{}">
+                    <input
+                      class="search-input-item"
+                      type="text"
+                      placeholder="Tìm kiếm từ khóa"
+                      v-model="inputSearch.tieuDeKhoaHoc"
+                      @keyup.enter="searchCourse"
+                    />
+                  </template>
+
+                  <template v-slot:default="{ isActive }">
+                    <v-card v-if="listSearch && listSearch.length > 0">
+                      <!-- Kiểm tra nếu có dữ liệu -->
+                      <v-row>
+                        <v-col v-for="s in listSearch" :key="s">
+                          <router-link
+                            :to="`/detail-product/${s.id}`"
+                            @click="handleRouterLinkClick(s.id)"
+                            style="text-decoration: none"
+                          >
+                            <v-card class="mt-4 ml-4" width="310" hover>
+                              <v-img
+                                class="align-end text-white"
+                                height="200"
+                                :src="s.anhKhoaHoc"
+                                cover
+                              />
+                              <v-card-title>
+                                {{ s.tieuDeKhoaHoc }}
+                              </v-card-title>
+
+                              <v-card-subtitle class="pt-2">
+                                {{ processDescription(s.moTaKhoaHoc) }}
+                              </v-card-subtitle>
+
+                              <v-card-text class="text-h5">
+                                Giá: {{ formatCurrency(s.giaKhoaHoc) }}
+                              </v-card-text>
+                              <div class="text-left">
+                                <v-rating
+                                  v-model="rating"
+                                  active-color="orange"
+                                  color="orange-lighten-1"
+                                ></v-rating>
+                              </div>
+                              <v-card-actions>
+                                <v-btn color="purple-accent-3" variant="flat">
+                                  Thêm vào giỏ hàng
+                                </v-btn>
+
+                                <v-btn color="black" variant="outlined">
+                                  Mua ngay
+                                </v-btn>
+                              </v-card-actions>
+                            </v-card>
+                          </router-link>
+                        </v-col>
+                      </v-row>
+                    </v-card>
+                    <div class="text-center" v-else>
+                      <h1 style="color: white">Không có khóa học</h1>
+                    </div>
+                  </template>
+                </v-dialog>
               </div>
             </div>
           </v-col>
@@ -283,10 +343,10 @@
 
                             <v-divider></v-divider>
                             <router-link
-                              to="/public-records"
+                              :to="`/public-records/${userInfo.Id}`"
                               class="header-content-user-link"
                             >
-                              <v-list-item>Hồ sơ công khai</v-list-item>
+                              <v-list-item >Hồ sơ công khai</v-list-item>
                             </router-link>
                             <router-link
                               to="/profile-user"
@@ -336,25 +396,27 @@
 import { useRouter } from "vue-router";
 import { authApi } from "../../apis/Auth/authApi";
 import useEmitter from "../../helpers/useEmitter";
-import {courseApi} from "../../apis/Course/courseApi";
+import { courseApi } from "../../apis/Course/courseApi";
 console.log(localStorage.getItem("userInfo"));
 export default {
   data() {
     return {
       fav: true,
       menu: false,
+      rating: 3,
       message: false,
       hints: true,
-      courseApi : courseApi(),
+      dialogVisible: false,
+      courseApi: courseApi(),
       router: useRouter(),
       userInfo: localStorage.getItem("userInfo")
         ? JSON.parse(localStorage.getItem("userInfo"))
         : null,
-        inputSearch:{
-          tieuDeKhoaHoc:"",
-        }
+      inputSearch: {
+        tieuDeKhoaHoc: "",
+      },
+      listSearch: [],
     };
-
   },
   created() {
     console.log(localStorage.getItem("userInfo"));
@@ -374,6 +436,15 @@ export default {
         this.router.push({ path: "/login" });
       }
     },
+      async publicRecods() {
+      console.log("Vào đấy");
+      if (this.userInfo) {
+        this.router.push({ path: "/public-records" });
+      } else {
+        console.log("vào đây");
+        this.router.push({ path: "/login" });
+      }
+    },
     async LessonCourses() {
       if (!this.userInfo) {
         this.router.push("/login");
@@ -381,17 +452,41 @@ export default {
         this.router.push("/my-course");
       }
     },
-    // async searchCourse(){
-    //   const search = await this.courseApi.searchCourses(this.inputSearch);
-    //   this.list.
-    //   if(search){
-    //     this.text = "Tìm kiếm thành công",
-    //     this.snackbar = true,
-    //   }else{
-    //     this.text = "Tìm kiếm thất bại";
-    //     this.snackbar = true,
-    //   }
-    // }
+    async searchCourse() {
+      try {
+        const search = await this.courseApi.searchCourses({
+          params: this.inputSearch, // Truyền tham số dưới dạng đối tượng params
+        });
+        this.listSearch = search.data;
+        this.dialogVisible = true;
+        console.log(this.listSearch);
+      } catch (error) {
+        console.error("Error occurred while searching courses:", error);
+      }
+    },
+    formatCurrency(value) {
+      // Chuyển đổi giá trị sang kiểu số nguyên
+      const intValue = parseInt(value);
+
+      // Sử dụng hàm toLocaleString để định dạng giá tiền theo tiêu chuẩn của quốc gia
+      return intValue.toLocaleString("vi-VN", {
+        style: "currency",
+        currency: "VND",
+      });
+    },
+    processDescription(description) {
+      const doc = new DOMParser().parseFromString(description, "text/html");
+      return doc.body.textContent || "";
+    },
+    async handleRouterLinkClick(id) {
+      try {
+        const response = await this.courseApi.getCourseId(id);
+      } catch (error) {
+        console.error("Đã xảy ra lỗi khi gọi API:", error);
+        // Xử lý lỗi nếu cần thiết
+        this.$router.push("/error"); // Điều hướng đến trang lỗi nếu cần
+      }
+    },
   },
 };
 </script>
@@ -416,7 +511,7 @@ export default {
   padding: 0 40px;
   position: fixed;
   width: 100%;
-  z-index: 2;
+  z-index: 999;
 }
 .logo-header {
   line-height: 72px;
@@ -432,7 +527,7 @@ export default {
   line-height: 45px;
 }
 .search-header input {
-  width: 100%;
+  width: 420px;
   display: block;
 }
 .search-input-item {

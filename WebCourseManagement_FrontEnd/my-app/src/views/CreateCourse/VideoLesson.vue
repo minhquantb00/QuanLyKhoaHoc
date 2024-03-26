@@ -110,7 +110,7 @@
         <div class="video-lessons">
           <div class="video" v-if="selectedLesson">
             <iframe
-              :src="selectedLesson ? selectedLesson.linkVideo : ''"
+              :src="selectedLesson ? selectedLesson.videoBaiHoc : ''"
               width="100%"
               height="100%"
               frameborder="0"
@@ -133,27 +133,19 @@
                     <div>
                       <div class="content-course-introduction ml-4">
                         <h4>Giới thiệu khóa học</h4>
-                        <p
-                          class="mt-6 mb-4 text-data"
-                          v-for="c in listCourse"
-                          :key="c.id"
-                        >
-                          {{ c.nameCourse }}
+                        <p class="mt-6 mb-4 text-data">
+                          {{ this.listCourse.tieuDeKhoaHoc }}
                         </p>
                       </div>
                       <hr />
-                      <div
-                        class="content-data"
-                        v-for="c in listCourse"
-                        :key="c.id"
-                      >
+                      <div class="content-data">
                         <v-row>
                           <v-col cols="2">
                             <v-card-title>Theo số liệu</v-card-title>
                           </v-col>
                           <v-col cols="3">
                             <p class="text-data ml-4 mt-3">
-                              Học viên: {{ c.student }}
+                              <!-- Học viên: {{ c.student }} -->
                               <font-awesome-icon
                                 icon="fa-solid fa-user-group"
                               ></font-awesome-icon>
@@ -161,13 +153,13 @@
                           </v-col>
                           <v-col cols="3">
                             <p class="text-data mt-3">
-                              Bài giảng: {{ c.course }}
+                              <!-- Bài giảng: {{ c.course }} -->
                               <font-awesome-icon
                                 icon="fa-solid fa-tv"
                               ></font-awesome-icon>
                             </p>
                             <p class="text-data">
-                              Video: Tổng số {{ c.time }} giờ
+                              <!-- Video: Tổng số {{ c.time }} giờ -->
                             </p>
                           </v-col>
                         </v-row>
@@ -186,79 +178,7 @@
                                 :class="n === +content + 1 && 'mb-0'"
                                 class="text-data"
                               >
-                                Suspendisse enim turpis, dictum sed, iaculis a,
-                                condimentum nec, nisi. Fusce fermentum odio nec
-                                arcu. Aenean ut eros et nisl sagittis
-                                vestibulum. Nunc interdum lacus sit amet orci.
-                                Phasellus nec sem in justo pellentesque
-                                facilisis. Lorem, ipsum dolor sit amet
-                                consectetur adipisicing elit. Nisi accusantium
-                                numquam, laboriosam officia consequuntur
-                                consectetur dicta possimus illum obcaecati
-                                veniam repudiandae placeat ad recusandae alias
-                                non. Eos laudantium blanditiis porro? Lorem
-                                ipsum, dolor sit amet consectetur adipisicing
-                                elit. Voluptas unde cum, quibusdam perspiciatis
-                                expedita rerum alias minus. Similique
-                                consequuntur nobis sint non! Perspiciatis quod
-                                reprehenderit aliquid voluptate? Sit, architecto
-                                tenetur. Libero ab numquam voluptatum laborum
-                                placeat minima quibusdam, nulla quis. Debitis
-                                officia, perferendis numquam labore consequatur
-                                tempora repudiandae suscipit explicabo autem in,
-                                voluptas commodi adipisci, dolorem culpa
-                                distinctio at illum? Totam enim quisquam
-                                eveniet. Incidunt vitae, expedita temporibus
-                                dolore possimus ab iusto impedit veniam saepe
-                                voluptate necessitatibus? Fugit earum dolor
-                                nesciunt, obcaecati numquam velit facilis odio
-                                qui unde excepturi maxime! Lorem ipsum dolor sit
-                                amet consectetur adipisicing elit. Libero
-                                dolores labore deserunt at eligendi itaque,
-                                nesciunt dolorum commodi consequuntur, nam ab,
-                                reprehenderit assumenda illum voluptates aut ut
-                                blanditiis quis debitis! Lorem ipsum dolor sit
-                                amet consectetur adipisicing elit. Nostrum
-                                facilis pariatur, odio mollitia veritatis amet
-                                consequuntur labore distinctio asperiores non
-                                fugit excepturi magni unde nisi sapiente ipsam
-                                ex reprehenderit ipsum. Necessitatibus, soluta
-                                maxime. Error eaque iste at debitis fuga
-                                architecto soluta fugit quaerat dolorum
-                                accusantium sit odio, illum rerum? Minus ipsum
-                                aliquam cumque animi facere obcaecati dolor
-                                corrupti officia exercitationem. Magni eos
-                                doloremque voluptate ratione placeat rerum
-                                asperiores excepturi est aperiam numquam,
-                                repellat repudiandae, minima tempore aliquid
-                                ipsa suscipit, molestias doloribus quis possimus
-                                ducimus amet rem perspiciatis? Quia, voluptate
-                                id. Nobis ipsa consequatur in id mollitia
-                                veritatis iure quisquam quasi dolorum eaque
-                                laborum ab, beatae, maiores reprehenderit ea
-                                repellat error perspiciatis ad praesentium vel
-                                magni est. Nemo consectetur dignissimos
-                                perferendis! Laudantium distinctio dolores odio
-                                eum numquam rerum dicta repellat corporis
-                                consequuntur praesentium veniam sint, earum
-                                neque harum, quae similique est aliquam ratione.
-                                Alias exercitationem aut facere quas doloremque
-                                totam quis? Amet, dignissimos in similique nam
-                                cum soluta sapiente esse, veniam iure ad ea
-                                dolore, repellat vero consequatur aspernatur
-                                dolores distinctio adipisci placeat facilis
-                                pariatur sequi natus? Deserunt repellat sit rem?
-                                Architecto deserunt vitae pariatur sed nam
-                                laboriosam maxime corporis eos, ipsa labore?
-                                Neque atque facilis provident maxime, quod
-                                distinctio dolorem laborum natus molestias
-                                facere eius aliquid doloremque veritatis
-                                praesentium a. Aspernatur, in voluptatem quod
-                                quibusdam sapiente quasi sed omnis tempore
-                                recusandae harum asperiores nulla reprehenderit
-                                fugit, praesentium autem voluptatum architecto
-                                excepturi iure. Commodi odio perspiciatis
-                                placeat quasi quaerat tenetur ut!
+                                {{this.listCourse.moTaKhoaHoc}}
                               </p>
                             </v-card-text>
                           </v-col>
@@ -349,22 +269,28 @@
               variant="popout"
               v-model="panel"
               multiple
-              v-for="l in listStudyChapter"
-              :key="l.id"
             >
-              <v-expansion-panel :title="l.nameLesson" :value="l.idLesson">
-                <v-expansion-panel-text v-for="c in listLessons" :key="c.id">
+              <v-expansion-panel
+                v-for="(l, index) in listStudyChapter"
+                :key="index"
+                :title="l.tenChuong"
+                :value="l.id"
+              >
+                <v-expansion-panel-text
+                  v-for="(c, lessonIndex) in l.baiHocs"
+                  :key="lessonIndex"
+                >
                   <v-row>
                     <v-col
                       cols="7"
                       class="hover-lessons"
-                      @click="selectedId = c.idLesson"
+                      @click="selectedId = c.id"
                     >
                       <font-awesome-icon
                         icon="fa-solid fa-tv"
                         class="mr-3"
                       ></font-awesome-icon>
-                      {{ c.nameLesson }}
+                      {{ c.tenBaiHoc }}
                     </v-col>
                     <v-col cols="4">
                       <div v-if="c.resources == false">
@@ -449,12 +375,16 @@
 
 <script>
 import FooterItem from "../Header/FooterItem.vue";
+import { courseApi } from "../../apis/Course/courseApi";
+import { studyChapter } from "../../apis/StudyChapter/studyChapter";
 export default {
   components: {
     FooterItem,
   },
   data() {
     return {
+      courseApi: courseApi(),
+      studyChapterApi: studyChapter(),
       tienDo: 4,
       baiHoc: 32,
       fav: false,
@@ -481,152 +411,48 @@ export default {
           price: 443.992,
           stock: false,
         },
-        // {
-        //   id: 2,
-        //   image:
-        //     "https://appmaster.io/api/_files/hRaLG2N4DVjRZJQzCpN2zJ/download/",
-        //   nameCourse: "Khóa học Java",
-        //   dateStart: "28/09/2022",
-        //   price: 500.473,
-        //   stock: false,
-        // },
-        // {
-        //   id: 3,
-        //   image:
-        //     "https://code24h.com/pictures/picfullsizes/2018/08/12/vpn1534042332.jpg",
-        //   nameCourse: "Khóa học Vuejs",
-        //   dateStart: "28/09/2022",
-        //   price: 57.784,
-        //   stock: false,
-        // },
-        // {
-        //   id: 4,
-        //   image:
-        //     "https://amela.vn/wp-content/uploads/2021/08/reactjs-app-development-500x500-1.jpg",
-        //   nameCourse: "Khóa học ReactJs",
-        //   dateStart: "28/09/2022",
-        //   price: 784.758,
-        //   stock: false,
-        // },
-        // {
-        //   id: 5,
-        //   image:
-        //     "https://cdn.mcivietnam.com/nhanvien/media/Blog/python-trong-marketingjpegbd2kfe.jpeg",
-        //   nameCourse: "Khóa học Python",
-        //   dateStart: "28/09/2022",
-        //   price: 900.778,
-        //   stock: false,
-        // },
-        // {
-        //   id: 6,
-        //   image:
-        //     "https://cdn.mcivietnam.com/nhanvien/media/Blog/python-trong-marketingjpegbd2kfe.jpeg",
-        //   nameCourse: "Khóa học Python",
-        //   dateStart: "28/09/2022",
-        //   price: 900.778,
-        //   stock: false,
-        // },
-        // {
-        //   id: 7,
-        //   image:
-        //     "https://cdn.mcivietnam.com/nhanvien/media/Blog/python-trong-marketingjpegbd2kfe.jpeg",
-        //   nameCourse: "Khóa học Python",
-        //   dateStart: "28/09/2022",
-        //   price: 900.778,
-        //   stock: false,
-        // },
-        // {
-        //   id: 8,
-        //   image:
-        //     "https://cdn.mcivietnam.com/nhanvien/media/Blog/python-trong-marketingjpegbd2kfe.jpeg",
-        //   nameCourse: "Khóa học Python",
-        //   dateStart: "28/09/2022",
-        //   price: 900.778,
-        //   stock: false,
-        // },
-        // {
-        //   id: 9,
-        //   image:
-        //     "https://cdn.mcivietnam.com/nhanvien/media/Blog/python-trong-marketingjpegbd2kfe.jpeg",
-        //   nameCourse: "Khóa học Python",
-        //   dateStart: "28/09/2022",
-        //   price: 900.778,
-        //   stock: false,
-        // },
-        // {
-        //   id: 10,
-        //   image:
-        //     "https://cdn.mcivietnam.com/nhanvien/media/Blog/python-trong-marketingjpegbd2kfe.jpeg",
-        //   nameCourse: "Khóa học Python",
-        //   dateStart: "28/09/2022",
-        //   price: 900.778,
-        //   stock: false,
-        // },
-        // {
-        //   id: 11,
-        //   image:
-        //     "https://cdn.mcivietnam.com/nhanvien/media/Blog/python-trong-marketingjpegbd2kfe.jpeg",
-        //   nameCourse: "Khóa học Python",
-        //   dateStart: "28/09/2022",
-        //   price: 900.778,
-        //   stock: false,
-        // },
-        // {
-        //   id: 12,
-        //   image:
-        //     "https://cdn.mcivietnam.com/nhanvien/media/Blog/python-trong-marketingjpegbd2kfe.jpeg",
-        //   nameCourse: "Khóa học Python",
-        //   dateStart: "28/09/2022",
-        //   price: 900.778,
-        //   stock: false,
-        // },
       ],
-      listStudyChapter: [
-        {
-          idLesson: 1,
-          nameLesson: "C# Basic",
-        },
-        {
-          idLesson: 2,
-          nameLesson: "Java Basic",
-        },
-        {
-          idLesson: 3,
-          nameLesson: "SQL Server Basic",
-        },
-        {
-          idLesson: 4,
-          nameLesson: "Truy vấn SQL Server Basic",
-        },
-      ],
-      listLessons: [
-        {
-          idLesson: 1,
-          nameLesson: "Bài 1",
-          linkVideo: "https://www.youtube.com/embed/Ug4-1eLb29Y",
-          resources: false,
-          folder: "download tài nguyên",
-        },
-        {
-          idLesson: 2,
-          nameLesson: "Bài 2",
-          linkVideo: "https://www.youtube.com/embed/jWmaXCuCZbk",
-        },
-        {
-          idLesson: 3,
-          nameLesson: "Bài 3",
-          linkVideo: "https://www.youtube.com/embed/9_60Fl6g9xE",
-          resources: false,
-          folder: "download tài nguyên",
-        },
-        {
-          idLesson: 4,
-          nameLesson: "Bài 4",
-          linkVideo: "https://www.youtube.com/embed/4r8Cgnbk7fs",
-        },
-      ],
+      listStudyChapter: [],
+      lessonsInDesiredChapter: [],
+      listLessons: [],
       selectedId: null,
     };
+  },
+  async mounted() {
+    const id = this.$route.params.id;
+    try {
+      const res = await this.courseApi.getCourseId(id);
+      (this.listCourse = res.data),
+      console.log(this.listStudyChapter);
+    } catch (e) {
+      console.error("Error fetching course" + e.message);
+    }
+     try {
+      const res = await this.courseApi.getCourseId(id);
+      (this.listStudyChapter = res.data.chuongHocs),
+      console.log(this.listStudyChapter);
+    } catch (e) {
+      console.error("Error fetching course" + e.message);
+    }
+    try {
+      const res = await this.courseApi.getCourseId(id);
+      this.listLessons = res.data.chuongHocs;
+      for (let i = 0; i < this.listLessons.length; i++) {
+        const chapter = this.listLessons[i];
+        console.log("Chương ", i, ":", chapter);
+        const lessonArray = chapter.baiHocs;
+        console.log("Bài học trong chương ", i, ":", lessonArray);
+        for (var j = 0; j < lessonArray.length; j++) {
+          if (lessonArray[j] != null) {
+            console.log("nó đã vòa đây rồi");
+            console.log(lessonArray[j]);
+            this.lessonsInDesiredChapter.push(lessonArray[j]);
+            console.log("đây nhé");
+            console.log(this.lessonsInDesiredChapter);
+          }
+        }
+      }
+    } catch (e) {}
   },
   methods: {
     onMutate(card) {
@@ -635,8 +461,8 @@ export default {
   },
   computed: {
     selectedLesson() {
-      return this.listLessons.find(
-        (lesson) => lesson.idLesson === this.selectedId
+      return this.lessonsInDesiredChapter.find(
+        (lesson) => lesson.id === this.selectedId
       );
     },
   },
@@ -671,9 +497,8 @@ export default {
   width: 100%;
   padding-top: 340px;
 }
-.video-error p{
+.video-error p {
   font-size: 20px;
-
 }
 .content-item h2 {
   font-family: initial;

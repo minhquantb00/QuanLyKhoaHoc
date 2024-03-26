@@ -19,15 +19,15 @@
             <v-card class="pa-5">
               <label>
                 <span class="obligatory mr-2">*</span>
-                Tên thể loại khóa học
+                Tên loại bài viết
               </label>
               <v-text-field
                 class="mt-3"
                 :rules="rules"
-                v-model="inputCreateCourseTypes.tenLoaiKhoaHoc"
+                v-model="inputCreatePostTypes.tenLoaiBaiViet"
                 color="purple-accent-4"
                 variant="outlined"
-                placeholder="Tên thể loại khóa học"
+                placeholder="Tên loại bài viết"
               ></v-text-field>
               <v-card-actions>
                 <v-spacer></v-spacer>
@@ -39,8 +39,8 @@
                   color="purple-accent-4"
                   size="x-large"
                   variant="flat"
-                  @click="createCourseType"
-                  >Thêm thể loại khóa học</v-btn
+                  @click="createPostTypes"
+                  >Thêm loại bài viết</v-btn
                 >
                 <v-btn
                   class="text-none mt-4"
@@ -64,8 +64,8 @@
         </tr>
       </thead>
       <tbody>
-        <tr v-for="item in listCourseTypes" :key="item">
-          <td>{{ item.tenLoaiKhoaHoc }}</td>
+        <tr v-for="item in listPostTypes" :key="item">
+          <td>{{ item.tenLoaiBaiViet }}</td>
           <td>
             <router-link to="#">
               <v-btn
@@ -81,7 +81,7 @@
                       <input v-model="khoaHocId" type="hidden" />
                       <label>
                         <span class="obligatory mr-2">*</span>
-                        Tên loại khóa học
+                        Tên loại bài viết
                       </label>
                       <v-text-field
                         class="mt-3"
@@ -118,7 +118,12 @@
               </v-btn>
             </router-link>
             <router-link to="#">
-              <v-btn icon class="btn-delete" @click="deleteCoure(n.id)" variant="text">
+              <v-btn
+                icon
+                class="btn-delete"
+                @click="deleteCoure(n.id)"
+                variant="text"
+              >
                 <font-awesome-icon
                   icon="fa-regular fa-trash-can"
                 ></font-awesome-icon>
@@ -139,15 +144,16 @@
   </div>
 </template>
 <script>
-import { courseTypeApi } from "../../../apis/Course/courseTypeApi";
+import { postTypeApi } from "../../../apis/Post/postTypeApi";
 
 export default {
   data() {
     return {
-      courseTypeApiInstance: courseTypeApi(),
-      listCourseTypes: [],
-      inputCreateCourseTypes: {
-        tenLoaiKhoaHoc: "",
+      postTypeApi: postTypeApi(),
+      loading: false,
+      listPostTypes: [],
+      inputCreatePostTypes: {
+        tenLoaiBaiViet: "",
       },
       text: "",
       snackbar: false,
@@ -162,38 +168,32 @@ export default {
   },
   async mounted() {
     try {
-      const res = await this.courseTypeApiInstance.getAllCoursesType();
+      const res = await this.postTypeApi.getAllPostType();
       console.log(res);
-      this.listCourseTypes = res;
+      this.listPostTypes = res;
     } catch (e) {
       console.error("Error Fetching failed: " + e.message);
     }
   },
   methods: {
-    handleSearch(selectedKeys, confirm, dataIndex) {
-      confirm();
-      state.searchText = selectedKeys[0];
-      state.searchedColumn = dataIndex;
-    },
-    handleReset(clearFilters) {
-      clearFilters({
-        confirm: true,
-      });
-      state.searchText = "";
-    },
-    async createCourseType() {
-      const result = await this.courseTypeApiInstance.createCourseTypes(
-        this.inputCreateCourseTypes
+
+    async createPostTypes() {
+      const result = await this.postTypeApi.createPostTypes(
+        this.inputCreatePostTypes,
+        (this.loading = true)
       );
       if (result) {
-        this.text = "Thêm loại khóa học thành công";
+        this.text = "Thêm thể loại bài viết thành công";
         this.snackbar = true;
-        setTimeout(() => {
-          this.reloadPage();
-        }, 2000);
-      } else {
-        this.text = "Thêm thể loại khóa học thất bại";
+        setTimeout(()=>{
+            this.reloadPage()
+        },2000)
+      }else{
+        this.text = "Thêm thể loại bài viết thất bại";
         this.snackbar = true;
+        setTimeout(()=>{
+            this.reloadPage()
+        },2000)
       }
     },
     reloadPage() {

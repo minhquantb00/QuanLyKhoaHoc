@@ -73,13 +73,48 @@
                     v-model:value="value1"
                     class="input-ant mt-3 mb-5"
                   />
+                  <v-row>
+                    <v-col>
+                      <v-lable>Tỉnh, thành phố</v-lable>
+                      <v-select
+                        v-model="selectedTinh"
+                        :items="dataTinh"
+                        item-title="ten"
+                        label="Tỉnh, thành phố"
+                        variant="outlined"
+                        @change="onTinhChange"
+                        class="mt-3"
+                      >
+                        <template v-slot:item="{ props }">
+                          <v-list-item v-bind="props"></v-list-item>
+                        </template>
+                      </v-select>
+                    </v-col>
+                    <v-col>
+                      <v-lable>Quận, huyện</v-lable>
+                      <v-select
+                        v-model="selectedHuyen"
+                        @change="onHuyenChange"
+                        :items="filteredDataHuyen"
+                        item-title="ten"
+                        :disabled="!selectedTinh"
+                        label="Quận, huyện"
+                        variant="outlined"
+                        class="mt-3"
+                      >
+                        <template v-slot:item="{ props }">
+                          <v-list-item v-bind="props"></v-list-item>
+                        </template>
+                      </v-select>
+                    </v-col>
+                  </v-row>
                 </div>
               </v-col>
               <v-col>
-                <v-lable> Trang web</v-lable>
+                <v-lable>Instagram </v-lable>
                 <a-input
                   v-model:value="value"
-                  placeholder="URL"
+                  placeholder="Link instagram của bạn"
                   class="input-ant mt-3 mb-5"
                 />
                 <v-lable>Youtube</v-lable>
@@ -92,11 +127,25 @@
                 <v-lable> Facebook</v-lable>
 
                 <a-input
-                  class="input-ant mt-3"
+                  class="input-ant mt-3 mb-5"
                   v-model:value.lazy="value1"
                   autofocus
                   placeholder="Link facebok của bạn"
                 />
+                <v-lable>Phường, xã</v-lable>
+                <v-select
+                  v-model="selectedXa"
+                  :items="filteredDataXa"
+                  item-title="ten"
+                  label="Phường, xã"
+                  variant="outlined"
+                  :disabled="!selectedHuyen"
+                  class="mt-3"
+                >
+                  <template v-slot:item="{ props }">
+                    <v-list-item v-bind="props"></v-list-item>
+                  </template>
+                </v-select>
               </v-col>
             </v-row>
             <div class="descriptions-user mt-5">
@@ -109,8 +158,10 @@
                 aria-placeholder="Mô tả"
               ></ckeditor>
             </div>
-          </div></div
-      ></v-col>
+          </div>
+          <v-btn color="black" class="mt-6">Lưu</v-btn>
+        </div></v-col
+      >
     </v-row>
     <footer-item></footer-item>
   </div>
@@ -167,7 +218,50 @@ export default {
   data() {
     return {
       editor: ClassicEditor,
+      dataTinh: [
+        { id: 1, ten: "Tỉnh Vĩnh Phúc" },
+        { id: 2, ten: "Tỉnh Thái Bình" },
+        // Thêm các tỉnh khác vào đây
+      ],
+      dataHuyen: [
+        { tinhId: 1, id: 1, ten: "Huyện Vĩnh Tường" },
+        { tinhId: 2, id: 2, ten: "Huyện Đông Hưng" },
+        // Thêm các huyện khác vào đây
+      ],
+      dataXa: [
+        { huyenId: 1, id: 1, ten: "Xã Lý Nhân" },
+        { huyenId: 2, id: 2, ten: "Xã Hồng Bạch" },
+        // Thêm các xã khác vào đây
+      ],
+      selectedTinh: null,
+      selectedHuyen: null,
+      selectedXa: null,
     };
+  },
+  computed: {
+    filteredDataHuyen() {
+      if (!this.selectedTinh) {
+        return [];
+        console.log(this.selectedTinh);
+      } else {
+        return this.dataHuyen.filter(
+          (huyen) => huyen.tinhId === this.selectedTinh.id
+        );
+      }
+    },
+    filteredDataXa() {
+      if (!this.selectedHuyen) return [];
+      return this.dataXa.filter((xa) => xa.huyenId === this.selectedHuyen.id);
+    },
+  },
+  methods: {
+    onTinhChange() {
+      this.selectedHuyen = null;
+      this.selectedXa = null;
+    },
+    onHuyenChange() {
+      this.selectedXa = null;
+    },
   },
 };
 </script>

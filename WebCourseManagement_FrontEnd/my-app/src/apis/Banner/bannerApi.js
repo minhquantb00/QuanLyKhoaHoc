@@ -6,13 +6,13 @@ axios.defaults.baseURL = "https://localhost:7046/api";
 const authorization = localStorage.getItem("accessToken")
   ? localStorage.getItem("accessToken")
   : "";
-export const studyChapter = defineStore("studyChapter", {
+export const bannerApi = defineStore("banner", {
   actions: {
-    createStudyChapter(params) {
+    createBanner(params) {
       return new Promise((resolve, reject) => {
         axios
           .post(
-            "/user/ThemChuongHoc",
+            "/admin/TaoBanner",
             { ...params },
             {
               headers: {
@@ -25,37 +25,38 @@ export const studyChapter = defineStore("studyChapter", {
           .catch((error) => reject(error));
       });
     },
-    getAllStudyChapter() {
+    deleteBanner(id) {
       return new Promise((resolve, reject) => {
         axios
-          .get("/user/GetAlls")
+          .delete(`/user/XoaBanner/${id}`, {
+            headers: {
+              Authorization: `Bearer ${authorization}`,
+            },
+          })
           .then((res) => {
             if (res.status === 200) {
+              // Sửa từ response thành res
               resolve(res.data);
-              console.log(res);
-            }else{
-              reject(error)
+            } else {
+              reject(res); // Sử dụng res thay vì error
             }
           })
           .catch((error) => reject(error));
       });
-      
     },
-    getStudyChapterById(id) {
+    getAllBanner() {
       return new Promise((resolve, reject) => {
         axios
-          .get(`/user/GetChuongHocById/${id}`)
+          .get("/user/GetAllsBanner")
           .then((res) => {
             if (res.status === 200) {
               resolve(res.data);
-              console.log(res);
-            }else{
-              reject(error)
+            } else {
+              reject(error);
             }
           })
           .catch((error) => reject(error));
       });
-      
     },
   },
 });

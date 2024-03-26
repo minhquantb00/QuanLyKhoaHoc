@@ -53,16 +53,18 @@
                     cover
                   > -->
                 <iframe
+                  v-if="listCourseApi.trailerKhoaHoc"
                   :src="this.listCourseApi.trailerKhoaHoc"
                   frameborder="0"
                   style="height: 230px; width: 390px"
                 ></iframe>
-                <!-- <v-img
+                <v-img
+                  v-else
                   :src="this.listCourseApi.anhKhoaHoc"
                   style="height: 230px; width: 390px"
                   alt=""
                   cover
-                /> -->
+                />
                 <v-card-title class="mt-4"
                   ><span style="font-size: 30px">
                     {{ formatCurrency(this.listCourseApi.giaKhoaHoc) }}
@@ -136,7 +138,6 @@
     </div>
     <div class="container" id="content-course">
       <div class="body-detail-product">
-
         <v-container>
           <div class="request">
             <v-row>

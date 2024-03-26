@@ -9,12 +9,9 @@
         interval="2000"
       >
         <v-carousel-item
-          src="https://img-c.udemycdn.com/notices/featured_carousel_slide/image/5bf6274c-4a57-42ce-93d6-9775b06730be.jpg"
-          cover
-        ></v-carousel-item>
-
-        <v-carousel-item
-          src="https://img-c.udemycdn.com/notices/featured_carousel_slide/image/450dec77-8a3c-4286-98af-fe252fd26166.jpg"
+          v-for="b in listBanner"
+          :key="b"
+          :src="b.anhBanner"
           cover
         ></v-carousel-item>
       </v-carousel>
@@ -170,7 +167,7 @@
       <div v-else class="list-course">
         <div class="" elevation="4">
           <v-slide-group v-model="model" center-active show-arrows>
-            <v-slide-group-item v-for="e in listCourePropose" :key="e.id">
+            <v-slide-group-item v-for="e in listPost" :key="e">
               <div class="pa-4">
                 <v-hover v-slot="{ isHovering, props }">
                   <v-card
@@ -181,17 +178,17 @@
                   >
                     <v-img
                       height="300"
-                      src="https://tuhoclaptrinh.edu.vn/upload/post/15/95/81/tu-hoc-lap-trinh-ruby-534086.jpg"
+                      :src="e.anhBaiViet"
                       cover
                     >
                       <v-expand-transition>
                         <div
                           v-if="isHovering"
-                          class="d-flex transition-fast-in-fast-out bg-grey-darken-1 v-card--reveal text-h2"
+                          class="d-flex transition-fast-in-fast-out bg-grey-darken-4 v-card--reveal text-h2"
                           style="height: 100%"
                         >
                           <router-link
-                            to="/detail-product"
+                            :to="`/post-client/${e.id}`"
                             class="link-detail-product"
                           >
                             <v-btn
@@ -219,14 +216,19 @@
 <script>
 import { useRouter } from "vue-router";
 import { courseApi } from "../../apis/Course/courseApi";
+import { bannerApi } from "../../apis/Banner/bannerApi";
+import {postApi} from "../../apis/Post/postApi"
 export default {
   data() {
     return {
       router: useRouter(),
       apiCourse: courseApi(),
+      bannerApi: bannerApi(),
+      postApi: postApi(),
       loading: true,
       listCourse: [],
-
+      listBanner: [],
+      listPost:[],
       listCourseHot: [
         {
           id: 1,
@@ -447,11 +449,24 @@ export default {
 
   async mounted() {
     setTimeout(() => {
-      this.loading = false; // Tắt loading khi dữ liệu đã được load
+      this.loading = false;
     }, 2500);
     try {
       const result = await this.apiCourse.getAllCourses();
       this.listCourse = result;
+    } catch (e) {
+      console.error("Fetching faild", e);
+    }
+    try {
+      const result = await this.bannerApi.getAllBanner();
+      this.listBanner = result;
+    } catch (e) {
+      console.error("Fetching faild", e);
+    }
+    try {
+      const result = await this.postApi.getAllPostUser();
+      this.listPost = result;
+      console.log(this.listPost);
     } catch (e) {
       console.error("Fetching faild", e);
     }
