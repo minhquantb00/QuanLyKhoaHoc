@@ -78,7 +78,7 @@ namespace WebCourseManagement_Business.Implements
                     GiaKhoaHoc = request.GiaKhoaHoc,
                     LoaiKhoaHocId = request.LoaiKhoaHocId,
                     PhanTramGiamGia = request.PhanTramGiamGia == 0 ? 0 : request.PhanTramGiamGia,
-                    GiaKhoaHocThucTe = request.PhanTramGiamGia == 0 ? request.GiaKhoaHoc : request.GiaKhoaHoc - request.GiaKhoaHoc * request.PhanTramGiamGia,
+                    GiaKhoaHocThucTe = request.PhanTramGiamGia == null  ? request.GiaKhoaHoc : (request.GiaKhoaHoc - request.GiaKhoaHoc * request.PhanTramGiamGia),
                     MoTaKhoaHoc = request.MoTaKhoaHoc,
                     NgayTao = DateTime.Now,
                     NguoiTaoId = nguoiTaoId,
