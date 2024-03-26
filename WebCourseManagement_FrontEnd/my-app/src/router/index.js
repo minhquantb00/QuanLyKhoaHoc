@@ -138,7 +138,7 @@ const routes = [
     component: () => import("../views/User/UserProfilePage.vue"),
   },
   {
-    path: "/post-client",
+    path: "/post-client/:id",
     name: "post-client",
     component: () => import("../views/Post/PostClient.vue"),
   },

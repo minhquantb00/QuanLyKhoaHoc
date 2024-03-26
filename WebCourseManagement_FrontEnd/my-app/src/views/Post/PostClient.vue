@@ -12,9 +12,9 @@
               <div v-else class="fixel-commet">
                 <div class="user">
                   <v-list-item
-                    prepend-avatar="https://cdn.vuetifyjs.com/images/john.jpg"
-                    subtitle="Founder of Vuetify"
-                    title="John Leider"
+                    :prepend-avatar="this.listPost.nguoiTaoBaiViet.anhDaiDien"
+                    :title="this.listPost.nguoiTaoBaiViet.hoVaTen"
+                    subtitle="Tác giả bài viết"
                   >
                   </v-list-item>
                 </div>
@@ -23,8 +23,8 @@
                   <v-col>
                     <v-icon
                       icon="mdi-heart-outline"
-                      hover
                       variant="text"
+                      @click="clickLike"
                     ></v-icon>
                     <span class="ml-2">1153</span>
                   </v-col>
@@ -36,6 +36,7 @@
                           icon="mdi-chat-outline"
                           hover
                           variant="text"
+                          @click="clickComment"
                         ></v-icon>
                         <span class="ml-2">53</span>
                       </template>
@@ -253,34 +254,14 @@
                   <v-skeleton-loader type="paragraph"></v-skeleton-loader>
                 </div>
                 <h1 v-else>
-                  Tổng hợp các sản phẩm của học viên tại MyBugs 👏👏
+                  {{ this.listPost.tieuDe }}
                 </h1>
-                <div v-if="loadingPost" class="mt-10" style="width: 300px">
-                  <v-skeleton-loader
-                    type="list-item-avatar"
-                  ></v-skeleton-loader>
-                </div>
-                <div v-else class="post">
-                  <div class="user-post mt-10">
-                    <v-row>
-                      <v-col cols="1">
-                        <v-avatar
-                          color="surface-variant"
-                          image="https://cdn.vuetifyjs.com/images/john.jpg"
-                          size="70"
-                        ></v-avatar>
-                      </v-col>
-                      <v-col cols="3">
-                        <div class="content-name-user mt-6">
-                          <h5>Trần Văn Dương</h5>
-                        </div>
-                      </v-col>
-                    </v-row>
-                  </div>
-                </div>
               </div>
               <div v-if="loadingPost" class="mt-10">
                 <v-skeleton-loader type="card"></v-skeleton-loader>
+                <v-skeleton-loader type="article"></v-skeleton-loader>
+                <v-skeleton-loader type="article"></v-skeleton-loader>
+                <v-skeleton-loader type="article"></v-skeleton-loader>
                 <v-skeleton-loader type="article"></v-skeleton-loader>
               </div>
               <div v-else class="card-post mt-10">
@@ -288,80 +269,19 @@
                   <v-img
                     class="align-end text-white"
                     height="400"
-                    src="https://mega.com.vn/media/news/2605_hinh-nen-anime-may-tinh8.jpg"
+                    :src="this.listPost.anhBaiViet"
                     cover
                   >
-                    <v-card-title style="color: #e0e0e0"
-                      >Top 10 Australian beaches</v-card-title
-                    >
+                    <v-card-title style="color: #e0e0e0">{{
+                      this.listPost.tieuDe
+                    }}</v-card-title>
                   </v-img>
 
                   <v-card-subtitle class="pt-4">
                     <!-- {{ item.date }} -->
                   </v-card-subtitle>
 
-                  <div>
-                    <div>
-                      Lorem ipsum dolor sit amet consectetur adipisicing elit.
-                      Modi commodi earum tenetur. Asperiores dolorem placeat ab
-                      nobis iusto culpa, autem molestias molestiae quidem
-                      pariatur. Debitis beatae expedita nam facere perspiciatis.
-                      Lorem ipsum dolor sit amet consectetur adipisicing elit.
-                      Repellendus ducimus cupiditate rerum officiis consequuntur
-                      laborum doloremque quaerat ipsa voluptates, nobis nam quis
-                      nulla ullam at corporis, similique ratione quasi illo!
-                      Lorem ipsum dolor sit amet consectetur adipisicing elit.
-                      Rem quae autem blanditiis laborum nihil repellat
-                      consectetur, minus nostrum aperiam provident perferendis
-                      vitae quaerat. Dolorem veritatis sit harum ipsum omnis
-                      temporibus? Ducimus possimus necessitatibus aliquid illo,
-                      sunt blanditiis voluptatem quisquam repellat laboriosam
-                      provident fugiat qui doloremque maiores aliquam maxime
-                      quam vel sit adipisci. Eaque saepe aperiam tempora dolorum
-                      blanditiis tempore deleniti. Dolorem maxime optio
-                      provident delectus. Rerum quas earum tenetur consectetur,
-                      architecto sed ab sunt error incidunt odit autem quia
-                      optio impedit nesciunt. Magnam maiores numquam temporibus
-                      aperiam quasi! Odit, quod. Nulla nostrum eius omnis
-                      molestiae veniam illum, veritatis iure eaque sit
-                      perferendis quasi, quia commodi officia cupiditate libero
-                      eligendi ea accusantium est accusamus voluptatem nemo eos
-                      id cum! Similique, explicabo. Laboriosam, rerum repellat?
-                      Eveniet facere numquam libero? Inventore nulla ipsum
-                      nostrum exercitationem voluptate amet iusto asperiores
-                      quis animi rerum. Culpa blanditiis magnam sed et maxime
-                      repellat minima ab placeat facere? Atque voluptate,
-                      sapiente fugiat dolorum molestiae explicabo debitis
-                      quibusdam iusto ipsam ab beatae iste quia ullam. Rerum,
-                      architecto ipsam provident, amet autem nobis placeat
-                      veritatis doloribus nam officia necessitatibus corporis?
-                      At minus in molestias voluptatem quis quasi error mollitia
-                      suscipit debitis. Similique, quo quaerat! Assumenda, est
-                      expedita officiis cumque debitis magni blanditiis. In enim
-                      harum exercitationem atque? Ipsum, ratione ex? Cum
-                      expedita facere iste porro, eligendi dolores obcaecati
-                      consectetur nemo, adipisci similique et ex. Omnis vel
-                      quidem debitis eaque quasi deleniti aspernatur. Aperiam,
-                      debitis. Quas eius hic nesciunt atque tempore. Temporibus
-                      repudiandae nisi eius consequatur veritatis reprehenderit
-                      hic provident neque nobis labore nostrum quis praesentium
-                      doloribus ratione error facere maiores inventore, deserunt
-                      repellat reiciendis velit nam! Officia, dolores et!
-                      Repellat. Dignissimos, necessitatibus quasi aperiam quae
-                      minima consequuntur nobis fugiat esse explicabo quaerat
-                      ratione ipsa ad iste possimus animi nulla veritatis eaque
-                      voluptatem repudiandae. Ea ad quia natus placeat maiores
-                      magni. Reiciendis, commodi veniam adipisci illo quaerat
-                      officiis debitis qui quod provident beatae incidunt? Ullam
-                      quae rerum iure adipisci esse dolorem ab veniam distinctio
-                      necessitatibus fugiat. Temporibus nulla recusandae esse
-                      corporis. Perspiciatis pariatur quisquam reprehenderit
-                      magni enim ratione eos ea, laboriosam sequi vitae,
-                      molestiae nisi odit quidem voluptas corporis incidunt
-                      autem quaerat saepe animi ex soluta, deserunt iste.
-                      Reiciendis, nisi voluptates.
-                    </div>
-                  </div>
+                  <div v-html="this.listPost.moTa"></div>
                 </div>
               </div>
             </v-col>
@@ -386,6 +306,8 @@
 <script>
 import HeaderItem from "../Header/HeaderItem.vue";
 import FooterItem from "../Header/FooterItem.vue";
+import { postApi } from "../../apis/Post/postApi";
+import { useRouter } from "vue-router";
 
 export default {
   el: "#scroll",
@@ -395,6 +317,12 @@ export default {
   },
   data() {
     return {
+      postApi: postApi(),
+      router: useRouter(),
+
+      userInfo: localStorage.getItem("userInfo")
+        ? JSON.parse(localStorage.getItem("userInfo"))
+        : null,
       fav: true,
       menu: false,
       message: false,
@@ -403,6 +331,7 @@ export default {
       loadingPost: true,
       scrollInvoked: 0,
       bars: [{ class: "" }],
+      listPost: [],
       listComments: [
         {
           id: 1,
@@ -456,9 +385,17 @@ export default {
     };
   },
   async mounted() {
+    const id = this.$route.params.id;
     setTimeout(() => {
       this.loadingPost = false;
     }, 2000);
+    try {
+      const res = await this.postApi.getAllPostId(id);
+      this.listPost = res.data;
+      console.log(this.listPost);
+    } catch (e) {
+      console.error("Error Fetching " + e.message);
+    }
   },
   methods: {
     onScroll() {
@@ -468,6 +405,18 @@ export default {
       // Kiểm tra xem con trỏ có di chuyển ra khỏi vùng của drawer không
       if (!event.currentTarget.contains(event.relatedTarget)) {
         event.preventDefault();
+      }
+    },
+    async clickLike() {
+      if (this.userInfo == null) {
+        console.log("Vào đấy");
+        this.router.push({ path: "/login" });
+      }
+    },
+    async clickComment() {
+      if (this.userInfo == null) {
+        console.log("Vào đấy");
+        this.router.push({ path: "/login" });
       }
     },
   },

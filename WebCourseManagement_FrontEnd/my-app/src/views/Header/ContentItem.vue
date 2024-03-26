@@ -167,7 +167,7 @@
       <div v-else class="list-course">
         <div class="" elevation="4">
           <v-slide-group v-model="model" center-active show-arrows>
-            <v-slide-group-item v-for="e in listCourePropose" :key="e.id">
+            <v-slide-group-item v-for="e in listPost" :key="e">
               <div class="pa-4">
                 <v-hover v-slot="{ isHovering, props }">
                   <v-card
@@ -178,17 +178,17 @@
                   >
                     <v-img
                       height="300"
-                      src="https://tuhoclaptrinh.edu.vn/upload/post/15/95/81/tu-hoc-lap-trinh-ruby-534086.jpg"
+                      :src="e.anhBaiViet"
                       cover
                     >
                       <v-expand-transition>
                         <div
                           v-if="isHovering"
-                          class="d-flex transition-fast-in-fast-out bg-grey-darken-1 v-card--reveal text-h2"
+                          class="d-flex transition-fast-in-fast-out bg-grey-darken-4 v-card--reveal text-h2"
                           style="height: 100%"
                         >
                           <router-link
-                            to="/detail-product"
+                            :to="`/post-client/${e.id}`"
                             class="link-detail-product"
                           >
                             <v-btn
@@ -217,15 +217,18 @@
 import { useRouter } from "vue-router";
 import { courseApi } from "../../apis/Course/courseApi";
 import { bannerApi } from "../../apis/Banner/bannerApi";
+import {postApi} from "../../apis/Post/postApi"
 export default {
   data() {
     return {
       router: useRouter(),
       apiCourse: courseApi(),
       bannerApi: bannerApi(),
+      postApi: postApi(),
       loading: true,
       listCourse: [],
       listBanner: [],
+      listPost:[],
       listCourseHot: [
         {
           id: 1,
@@ -457,6 +460,13 @@ export default {
     try {
       const result = await this.bannerApi.getAllBanner();
       this.listBanner = result;
+    } catch (e) {
+      console.error("Fetching faild", e);
+    }
+    try {
+      const result = await this.postApi.getAllPostUser();
+      this.listPost = result;
+      console.log(this.listPost);
     } catch (e) {
       console.error("Fetching faild", e);
     }

@@ -102,13 +102,13 @@ export default {
     async pheDuyetBaiViet(id) {
       const result = await this.postApi.pheDuyetBaiViet(id);
       if (result) {
-        this.text = "Phê duyệt thành công";
+        this.text = "Phê duyệt thất bại";
         this.snackbar = true;
         setTimeout(() => {
           this.reloadPage();
         }, 2000);
       }else{
-        this.text = "Phê duyệt thất bại";
+        this.text = "Phê duyệt thành công";
         this.snackbar = true;
         setTimeout(() => {
           this.reloadPage();
