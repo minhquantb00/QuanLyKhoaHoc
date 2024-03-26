@@ -14,7 +14,7 @@
                   {{ this.listCourseApi.tieuDeKhoaHoc }}
                 </h1>
                 <h5 class="my-4">
-                  <!-- Số lượng học viên: {{ lc.numberOfPeopleEnrolled }} -->
+                  Số lượng học viên: {{ this.listCourseApi.soHocVienHocKhoaHoc }}
                   <font-awesome-icon
                     class="mx-1"
                     icon="fa-solid fa-user-group"
@@ -254,6 +254,7 @@
                                 icon="fa-solid fa-user-group"
                               ></font-awesome-icon>
                               <!-- gắn học viên vào đây -->
+                              {{this.listCourseApi.soHocVienHocKhoaHoc}}
                               <span>học viên</span>
                             </v-title>
                           </div>
@@ -263,6 +264,7 @@
                                 icon="fa-solid fa-circle-play"
                               ></font-awesome-icon>
                               <!-- gắn khoa học  -->
+                              {{this.listCourseApi.length}}
                               <span>khóa học</span>
                             </v-title>
                           </div>

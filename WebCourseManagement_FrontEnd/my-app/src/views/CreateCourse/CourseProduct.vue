@@ -64,6 +64,18 @@
                           ></v-text-field>
                           <label>
                             <span class="obligatory mr-2">*</span>
+                            Phần trăm giảm giá
+                          </label>
+                          <v-text-field
+                            class="mt-3"
+                            :rules="requireFieldRule"
+                            color="purple-accent-4"
+                            variant="outlined"
+                            placeholder="Giá khóa học"
+                            v-model="inputCreateCourse.phanTramGiamGia"
+                          ></v-text-field>
+                          <label>
+                            <span class="obligatory mr-2">*</span>
                             Video giới thiệu khóa học
                           </label>
                           <v-text-field
@@ -177,7 +189,10 @@
                             {{ formatDate(n.ngayTao) }}
                           </v-card-subtitle>
                           <v-card-title class="text-p"
-                            >Giá: {{ formatCurrency(n.giaKhoaHoc) }}
+                            >Giá: {{ formatCurrency(n.giaKhoaHocThucTe) }}
+                          </v-card-title>
+                          <v-card-title class="text-p"
+                            >Giá gốc: {{ formatCurrency(n.giaKhoaHoc) }}
                           </v-card-title>
                           <v-card-actions>
                             <v-spacer></v-spacer>

@@ -46,7 +46,7 @@
     </div>
     <v-container fluid>
       <v-row dense>
-        <v-col v-for="card in listBanner" :key="card" :cols="card.flex">
+        <v-col cols="4" v-for="card in listBanner" :key="card">
           <v-card>
             <v-img
               :src="card.anhBanner"

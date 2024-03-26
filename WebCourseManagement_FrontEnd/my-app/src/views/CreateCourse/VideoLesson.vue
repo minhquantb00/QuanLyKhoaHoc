@@ -145,7 +145,8 @@
                           </v-col>
                           <v-col cols="3">
                             <p class="text-data ml-4 mt-3">
-                              <!-- Học viên: {{ c.student }} -->
+                              Học viên:
+                              {{ this.listCourse.soHocVienHocKhoaHoc }}
                               <font-awesome-icon
                                 icon="fa-solid fa-user-group"
                               ></font-awesome-icon>
@@ -153,13 +154,14 @@
                           </v-col>
                           <v-col cols="3">
                             <p class="text-data mt-3">
-                              <!-- Bài giảng: {{ c.course }} -->
+                              Bài giảng: {{ this.numberLesson.length }}
                               <font-awesome-icon
                                 icon="fa-solid fa-tv"
                               ></font-awesome-icon>
                             </p>
                             <p class="text-data">
-                              <!-- Video: Tổng số {{ c.time }} giờ -->
+                              Video: Tổng số
+                              {{ this.listCourse.tongThoiGianKhoaHoc }} giờ
                             </p>
                           </v-col>
                         </v-row>
@@ -177,9 +179,8 @@
                                 :key="n"
                                 :class="n === +content + 1 && 'mb-0'"
                                 class="text-data"
-                              >
-                                {{this.listCourse.moTaKhoaHoc}}
-                              </p>
+                                v-html="this.listCourse.moTaKhoaHoc"
+                              ></p>
                             </v-card-text>
                           </v-col>
                         </v-row>
@@ -413,6 +414,7 @@ export default {
         },
       ],
       listStudyChapter: [],
+      numberLesson: [],
       lessonsInDesiredChapter: [],
       listLessons: [],
       selectedId: null,
@@ -422,15 +424,14 @@ export default {
     const id = this.$route.params.id;
     try {
       const res = await this.courseApi.getCourseId(id);
-      (this.listCourse = res.data),
-      console.log(this.listStudyChapter);
+      (this.listCourse = res.data), console.log(this.listStudyChapter);
     } catch (e) {
       console.error("Error fetching course" + e.message);
     }
-     try {
+    try {
       const res = await this.courseApi.getCourseId(id);
       (this.listStudyChapter = res.data.chuongHocs),
-      console.log(this.listStudyChapter);
+        console.log(this.listStudyChapter);
     } catch (e) {
       console.error("Error fetching course" + e.message);
     }
@@ -449,6 +450,7 @@ export default {
             this.lessonsInDesiredChapter.push(lessonArray[j]);
             console.log("đây nhé");
             console.log(this.lessonsInDesiredChapter);
+            this.numberLesson = this.lessonsInDesiredChapter;
           }
         }
       }
