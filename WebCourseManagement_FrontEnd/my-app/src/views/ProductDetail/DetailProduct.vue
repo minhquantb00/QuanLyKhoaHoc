@@ -67,10 +67,10 @@
                 />
                 <v-card-title class="mt-4"
                   ><span style="font-size: 30px">
-                    {{ formatCurrency(this.listCourseApi.giaKhoaHoc) }}
+                    {{ formatCurrency(this.listCourseApi.giaKhoaHocThucTe) }}
                   </span>
                   <span
-                    style="text-decoration-line: line-through; font-size: 16px"
+                    style="text-decoration-line: line-through; font-size: 16px; color:grey"
                     class="ma-6"
                   >
                     {{ formatCurrency(this.listCourseApi.giaKhoaHoc) }}
@@ -206,10 +206,11 @@
                         icon="fa-solid fa-users"
                       ></font-awesome-icon>
                       <!-- sô học viên  -->
+                      {{lc.soHocVienHocKhoaHoc}}
                     </v-col>
                     <v-col cols="2">
-                      <p>{{ lc.giaKhoaHoc }} đ</p>
-                      <p class="price-table">{{ lc.giaKhoaHoc }} đ</p>
+                      <p>{{ formatCurrency(lc.giaKhoaHocThucTe) }} </p>
+                      <p class="price-table">{{ formatCurrency(lc.giaKhoaHoc) }}</p>
                     </v-col>
                   </v-row>
                   <hr />
