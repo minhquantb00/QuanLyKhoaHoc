@@ -249,7 +249,7 @@ namespace WebCourseManagement_API.Controllers
             int id = int.Parse(HttpContext.User.FindFirst("Id").Value);
             return Ok(await _thichBinhLuanBaiHocService.ThichBinhLuanBaiHoc(id, request));
         }
-        [HttpGet("InputBaiViet")]
+        [HttpGet("GetAllsBaiViet")]
         public async Task<IActionResult> GetAllsBaiViet([FromQuery] InputBaiViet? input)
         {
             return Ok(await _baiVietService.GetAlls(input));
