@@ -27,6 +27,7 @@ using WebCourseManagement_Models.ResponseModels.DataKhoaHoc;
 using WebCourseManagement_Models.ResponseModels.DataKhoaHocCuaNguoiDung;
 using WebCourseManagement_Models.ResponseModels.DataLoaiKhoaHoc;
 using WebCourseManagement_Models.ResponseModels.DataNguoiDung;
+using WebCourseManagement_Models.ResponseModels.DataNguoiDungHoanThanhBaiHoc;
 using WebCourseManagement_Models.ResponseModels.DataTestCase;
 using WebCourseManagement_Models.Responses;
 using WebCourseManagement_Repositories.HandlePagination;
@@ -378,6 +379,11 @@ namespace WebCourseManagement_API.Controllers
         public async Task<IActionResult> GetAllsBanner()
         {
             return Ok(await _bannerService.GetAlls());
+        }
+        [HttpPut("CapNhatTrangThaiBaiHocCuaNguoiDung/{nguoiDungHoanThanhBaiHocId}")]
+        public async Task<IActionResult> CapNhatTrangThaiBaiHocCuaNguoiDung([FromRoute] int nguoiDungHoanThanhBaiHocId)
+        {
+            return Ok(await _baiHocService.CapNhatTrangThaiBaiHocCuaNguoiDung(nguoiDungHoanThanhBaiHocId));
         }
     }
 }

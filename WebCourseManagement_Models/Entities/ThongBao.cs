@@ -10,7 +10,7 @@ namespace WebCourseManagement_Models.Entities
     {
         public int NguoiDungId { get; set; }
         public virtual NguoiDung? NguoiDung { get; set; }
-        public int NguoiDungGuiThongBaoId { get; set; }
+        public int? NguoiDungGuiThongBaoId { get; set; }
         public bool DaXemThongBao { get; set; } = false;
         public string NoiDungThongBao { get; set; }
         public DateTime ThoiGianThongBao { get; set; }

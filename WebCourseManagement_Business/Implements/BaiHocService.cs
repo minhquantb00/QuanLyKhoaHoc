@@ -12,6 +12,7 @@ using WebCourseManagement_Models.Entities;
 using WebCourseManagement_Models.RequestModels.BaiHocRequests;
 using WebCourseManagement_Models.RequestModels.InputRequests;
 using WebCourseManagement_Models.ResponseModels.DataBaiHoc;
+using WebCourseManagement_Models.ResponseModels.DataNguoiDungHoanThanhBaiHoc;
 using WebCourseManagement_Models.Responses;
 using WebCourseManagement_Repositories.HandlePagination;
 
@@ -23,12 +24,16 @@ namespace WebCourseManagement_Business.Implements
         private readonly ResponseObject<DataResponseBaiHoc> _responseObject;
         private readonly BaiHocConverter _converter;
         private readonly IHttpContextAccessor _httpContextAccessor;
-        public BaiHocService(AppDbContext context, BaiHocConverter converter, ResponseObject<DataResponseBaiHoc> responseObject, IHttpContextAccessor httpContextAccessor)
+        private readonly ResponseObject<DataResponseNguoiDungHoanThanhBaiHoc> _responseObjectBaiHoc;
+        private readonly NguoiDungHoanThanhBaiHocConverter _nguoiDungHoanThanhBaiHocConverter;
+        public BaiHocService(AppDbContext context, BaiHocConverter converter, ResponseObject<DataResponseBaiHoc> responseObject, IHttpContextAccessor httpContextAccessor, ResponseObject<DataResponseNguoiDungHoanThanhBaiHoc> responseObjectBaiHoc, NguoiDungHoanThanhBaiHocConverter nguoiDungHoanThanhBaiHocConverter)
         {
             _context = context;
             _responseObject = responseObject;
             _converter = converter;
             _httpContextAccessor = httpContextAccessor;
+            _responseObjectBaiHoc = responseObjectBaiHoc;
+            _nguoiDungHoanThanhBaiHocConverter = nguoiDungHoanThanhBaiHocConverter;
         }
         public async Task<PageResult<DataResponseBaiHoc>> GetAlls(InputBaiHoc input, int pageSize, int pageNumber)
         {
@@ -159,6 +164,31 @@ namespace WebCourseManagement_Business.Implements
             khoaHoc.TongThoiGianKhoaHoc = chuongHoc.TongThoiGianHocTrongChuong;
             _context.SaveChanges();
             return "Xóa bài học thành công";
+        }
+
+        public async Task<ResponseObject<DataResponseNguoiDungHoanThanhBaiHoc>> CapNhatTrangThaiBaiHocCuaNguoiDung(int nguoiDungHoanThanhBaiHocId)
+        {
+            try
+            {
+                var queryItem = await _context.nguoiDungHoanThanhBaiHocs.SingleOrDefaultAsync(x => x.Id == nguoiDungHoanThanhBaiHocId);
+                if(queryItem == null)
+                {
+                    return _responseObjectBaiHoc.ResponseError(StatusCodes.Status404NotFound, "Không tìm thấy bản ghi", null);
+                }
+                if(queryItem.DaHoanThanh == true)
+                {
+                    return _responseObjectBaiHoc.ResponseError(StatusCodes.Status400BadRequest, "Bài học đã hoàn thành trước đó", null);
+                }
+                queryItem.DaHoanThanh = true;
+                queryItem.ThoiGianHoanThanh = DateTime.Now;
+                _context.SaveChanges();
+                return _responseObjectBaiHoc.ResponseSuccess("Cập nhật trạng thái bài học của người dùng thành công", _nguoiDungHoanThanhBaiHocConverter.EntityToDTO(queryItem));
+                
+
+            }catch(Exception ex)
+            {
+                return _responseObjectBaiHoc.ResponseError(StatusCodes.Status500InternalServerError, ex.Message, null);
+            }
         }
     }
 }

@@ -125,6 +125,37 @@ namespace WebCourseManagement_Business.Implements
                     _context.SaveChanges();
                     hoaDon.KhoaHoc.SoHocVienHocKhoaHoc = _context.khoaHocCuaNguoiDungs.Count(x => x.KhoaHocId == hoaDon.KhoaHocId);
                     _context.SaveChanges();
+                    var khoaHoc = _context.khoaHocs.Include(x => x.ChuongHocs).ThenInclude(x => x.BaiHocs).AsNoTracking().SingleOrDefault(x => x.Id == khoaHocCuaNguoiDung.KhoaHocId);
+                    var listChuongHoc = khoaHoc.ChuongHocs.ToList();
+                    List<BaiHoc> listBaiHoc = new List<BaiHoc>();
+                    listChuongHoc.ForEach(x =>
+                    {
+                        listBaiHoc.AddRange(x.BaiHocs);
+                    });
+                    listBaiHoc.ForEach(x =>
+                    {
+                        NguoiDungHoanThanhBaiHoc item = new NguoiDungHoanThanhBaiHoc
+                        {
+                            BaiHocId = x.Id,
+                            DaHoanThanh = false,
+                            NguoiDungId = hoaDon.NguoiDungId,
+                            ThoiGianMoBaiHoc = DateTime.Now
+                        };
+                        _context.nguoiDungHoanThanhBaiHocs.Add(item);
+                    });
+                    _context.SaveChanges();
+                    ThongBao thongBao = new ThongBao
+                    {
+                        AnhThongBao = hoaDon?.KhoaHoc?.AnhKhoaHoc != "" ? hoaDon.KhoaHoc.AnhKhoaHoc : "",
+                        DaXemThongBao = false,
+                        HeThongThongBao = true,
+                        LinkThongBao = "",
+                        NguoiDungId = hoaDon.NguoiDungId,
+                        NoiDungThongBao = $"Bạn đã hoàn thành đăng ký khóa học {hoaDon.KhoaHoc.TieuDeKhoaHoc}! Hãy vào học nào",
+                        ThoiGianThongBao = DateTime.Now
+                    };
+                    _context.thongBaos.Add(thongBao);
+                    _context.SaveChanges();
                     return "Giao dịch thành công đơn hàng " + hoaDon.Id;
                 }
                 else

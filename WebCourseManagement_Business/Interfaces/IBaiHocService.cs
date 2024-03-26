@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using WebCourseManagement_Models.RequestModels.BaiHocRequests;
 using WebCourseManagement_Models.RequestModels.InputRequests;
 using WebCourseManagement_Models.ResponseModels.DataBaiHoc;
+using WebCourseManagement_Models.ResponseModels.DataNguoiDungHoanThanhBaiHoc;
 using WebCourseManagement_Models.Responses;
 using WebCourseManagement_Repositories.HandlePagination;
 
@@ -18,5 +19,6 @@ namespace WebCourseManagement_Business.Interfaces
         Task<string> XoaBaiHoc(int baiHocId);
         Task<ResponseObject<DataResponseBaiHoc>> GetBaiHocById(int baiHocId);
         Task<PageResult<DataResponseBaiHoc>> GetAlls(InputBaiHoc input, int pageSize, int pageNumber);
+        Task<ResponseObject<DataResponseNguoiDungHoanThanhBaiHoc>> CapNhatTrangThaiBaiHocCuaNguoiDung(int nguoiDungHoanThanhBaiHocId);
     }
 }

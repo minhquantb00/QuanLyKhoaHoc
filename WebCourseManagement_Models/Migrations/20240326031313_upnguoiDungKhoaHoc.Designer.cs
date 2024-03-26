@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using WebCourseManagement_Models.DataContexts;
 
@@ -11,9 +12,11 @@ using WebCourseManagement_Models.DataContexts;
 namespace WebCourseManagement_Models.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    partial class AppDbContextModelSnapshot : ModelSnapshot
+    [Migration("20240326031313_upnguoiDungKhoaHoc")]
+    partial class upnguoiDungKhoaHoc
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -326,23 +329,6 @@ namespace WebCourseManagement_Models.Migrations
                     b.HasIndex("NguoiTraLoiId");
 
                     b.ToTable("cauTraLois");
-                });
-
-            modelBuilder.Entity("WebCourseManagement_Models.Entities.ChinhSachVaQuyenRiengTu", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<string>("MoTaChinhSach")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("chinhSachVaQuyenRiengTus");
                 });
 
             modelBuilder.Entity("WebCourseManagement_Models.Entities.ChuongHoc", b =>
@@ -888,9 +874,6 @@ namespace WebCourseManagement_Models.Migrations
 
                     b.Property<int>("NguoiDungId")
                         .HasColumnType("int");
-
-                    b.Property<DateTime?>("ThoiGianHoanThanh")
-                        .HasColumnType("datetime2");
 
                     b.Property<DateTime>("ThoiGianMoBaiHoc")
                         .HasColumnType("datetime2");
