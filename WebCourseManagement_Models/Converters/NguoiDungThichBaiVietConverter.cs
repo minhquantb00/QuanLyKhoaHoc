@@ -24,7 +24,8 @@ namespace WebCourseManagement_Models.Converters
             {
                 Id = nguoiDungThichBaiViet.Id,
                 NguoiDung = _converter.EntityToDTO(nguoiDungThichBaiViet.NguoiDung),
-                ThoiGianThich = nguoiDungThichBaiViet.ThoiGianThich
+                ThoiGianThich = nguoiDungThichBaiViet.ThoiGianThich,
+                DaThich = nguoiDungThichBaiViet.DaThich
             };
         }
     }

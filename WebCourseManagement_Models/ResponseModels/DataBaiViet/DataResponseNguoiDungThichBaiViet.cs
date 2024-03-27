@@ -12,5 +12,6 @@ namespace WebCourseManagement_Models.ResponseModels.DataBaiViet
     {
         public DataResponseNguoiDung? NguoiDung { get; set; }
         public DateTime ThoiGianThich { get; set; }
+        public bool? DaThich { get; set; }
     }
 }
