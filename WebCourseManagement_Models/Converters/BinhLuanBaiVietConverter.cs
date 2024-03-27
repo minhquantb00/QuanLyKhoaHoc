@@ -27,7 +27,7 @@ namespace WebCourseManagement_Models.Converters
             {
                 NoiDungBinhLuan = binhLuanBaiViet.NoiDungBinhLuan,
                 Id = binhLuanBaiViet.Id,
-                NguoiBinhLuan = _nguoiDungConverter.EntityToDTO(binhLuanBaiViet.NguoiBinhLuan),
+                NguoiBinhLuan = _nguoiDungConverter.EntityToDTO(_context.nguoiDungs.SingleOrDefault(x => x.Id == binhLuanBaiViet.NguoiBinhLuanId)),
                 SoLuotThich = binhLuanBaiViet.SoLuotThich,
                 SoLuotTraLoiBinhLuan = binhLuanBaiViet.SoLuotTraLoiBinhLuan,
                 ThoiGianTao = binhLuanBaiViet.ThoiGianTao,
