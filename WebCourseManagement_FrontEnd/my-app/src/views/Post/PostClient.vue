@@ -22,11 +22,14 @@
                 <v-row>
                   <v-col>
                     <v-icon
-                      icon="mdi-heart-outline"
+                    color="red"
+                      :icon="likeIcon"
                       variant="text"
-                      @click="clickLike"
+                      @click="clickLike(this.listPost.id)"
                     ></v-icon>
-                    <span class="ml-2">1153</span>
+                    <span class="ml-2">
+                      {{this.listPost.id}}
+                    </span>
                   </v-col>
                   <v-col>
                     <v-dialog max-width="800">
@@ -329,9 +332,11 @@ export default {
       hints: true,
       drawer: null,
       loadingPost: true,
+      isLiked: false ,
       scrollInvoked: 0,
       bars: [{ class: "" }],
       listPost: [],
+      baiVietId: null,
       listComments: [
         {
           id: 1,
@@ -384,6 +389,12 @@ export default {
       ],
     };
   },
+   computed: {
+    likeIcon() {
+      // Xác định biểu tượng nên hiển thị dựa trên trạng thái isLiked
+      return this.isLiked ? 'mdi-heart' : 'mdi-heart-outline';
+    }
+  },
   async mounted() {
     const id = this.$route.params.id;
     setTimeout(() => {
@@ -407,12 +418,17 @@ export default {
         event.preventDefault();
       }
     },
-    async clickLike() {
+    async clickLike(id) {
       if (this.userInfo == null) {
         console.log("Vào đấy");
         this.router.push({ path: "/login" });
+      } else {
+        const result = await this.postApi.likePost(id);
+        console.log(result);
+         this.isLiked = !this.isLiked;
       }
     },
+
     async clickComment() {
       if (this.userInfo == null) {
         console.log("Vào đấy");

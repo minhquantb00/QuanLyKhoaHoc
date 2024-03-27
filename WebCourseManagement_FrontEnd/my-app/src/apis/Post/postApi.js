@@ -121,7 +121,11 @@ export const postApi = defineStore("post", {
     likePost(params){
       return new Promise((resolve, reject) => {
         axios
-          .post("/user/LikeBaiViet", {...params})
+          .post("/user/LikeBaiViet", {...params},{
+            headers: {
+              Authorization: `Bearer ${authorization}`,
+            },
+          })
           .then((res) => {
             if (res.status === 200) {
               resolve(res.data);

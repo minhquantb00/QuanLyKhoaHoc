@@ -72,7 +72,16 @@
                     {{ processDescription(n.moTaKhoaHoc) }}
                   </v-card-subtitle>
                   <v-card-title class="text-p"
-                    >Giá: {{ formatCurrency(n.giaKhoaHoc) }}
+                    >Giá: {{ formatCurrency(n.giaKhoaHocThucTe) }}
+                    <span
+                      style="
+                        text-decoration-line: line-through;
+                        font-size: 14px;
+                        color: grey;
+                      "
+                    >
+                      {{ formatCurrency(n.giaKhoaHoc) }}
+                    </span>
                   </v-card-title>
                   <v-card-actions>
                     <v-rating
@@ -128,24 +137,45 @@
       <div v-else class="list-course mt-7">
         <div elevation="4">
           <v-slide-group v-model="model" center-active show-arrows>
-            <v-slide-group-item
-              v-for="n in listCourseHot"
-              :key="n.id"
-              v-slot="{ toggle }"
-            >
-              <v-card class="ma-2 course-item" @click="toggle" width="283">
-                <v-img :src="n.image" height="200px" cover />
-                <h4>{{ n.nameCourse }}</h4>
-                <p>{{ n.description }}</p>
-                <v-rating
-                  v-model="rating"
-                  size
-                  class="my-2"
-                  active-color="orange"
-                  color="orange-lighten-1"
-                ></v-rating>
-                <p class="ma-2">{{ n.price }}</p>
-              </v-card>
+            <v-slide-group-item v-for="n in listCourse" :key="n.id" class="">
+              <router-link
+                :to="`/detail-product/${n.id}`"
+                @click="handleRouterLinkClick(n.id)"
+                style="text-decoration: none"
+              >
+                <v-card class="mb-5 ma-2" width="283">
+                  <v-img height="200" :src="n.anhKhoaHoc" cover></v-img>
+
+                  <v-card-title class="text-h5">{{
+                    n.tieuDeKhoaHoc
+                  }}</v-card-title>
+
+                  <v-card-subtitle>
+                    {{ processDescription(n.moTaKhoaHoc) }}
+                  </v-card-subtitle>
+                  <v-card-title class="text-p"
+                    >Giá: {{ formatCurrency(n.giaKhoaHocThucTe) }}
+                    <span
+                      style="
+                        text-decoration-line: line-through;
+                        font-size: 14px;
+                        color: grey;
+                      "
+                    >
+                      {{ formatCurrency(n.giaKhoaHoc) }}
+                    </span>
+                  </v-card-title>
+                  <v-card-actions>
+                    <v-rating
+                      v-model="rating"
+                      size
+                      class="my-2"
+                      active-color="orange"
+                      color="orange-lighten-1"
+                    ></v-rating>
+                  </v-card-actions>
+                </v-card>
+              </router-link>
             </v-slide-group-item>
           </v-slide-group>
         </div>
@@ -176,11 +206,7 @@
                     width="565"
                     v-bind="props"
                   >
-                    <v-img
-                      height="300"
-                      :src="e.anhBaiViet"
-                      cover
-                    >
+                    <v-img height="300" :src="e.anhBaiViet" cover>
                       <v-expand-transition>
                         <div
                           v-if="isHovering"
@@ -201,6 +227,9 @@
                           </router-link>
                         </div>
                       </v-expand-transition>
+                      <v-card-title style="color: #e0e0e0">{{
+                        e.tieuDe
+                      }}</v-card-title>
                     </v-img>
                   </v-card>
                 </v-hover>
@@ -217,7 +246,7 @@
 import { useRouter } from "vue-router";
 import { courseApi } from "../../apis/Course/courseApi";
 import { bannerApi } from "../../apis/Banner/bannerApi";
-import {postApi} from "../../apis/Post/postApi"
+import { postApi } from "../../apis/Post/postApi";
 export default {
   data() {
     return {
@@ -228,222 +257,9 @@ export default {
       loading: true,
       listCourse: [],
       listBanner: [],
-      listPost:[],
-      listCourseHot: [
-        {
-          id: 1,
-          image:
-            "https://tenten.vn/tin-tuc/wp-content/uploads/2022/06/Java-Script-4.jpg",
-          nameCourse: "Khóa học Javascript",
-          description:
-            "JavaScript là ngôn ngữ lập trình website phổ biến hiện nay,...",
-          rating: 3,
-          price: "397.000 VNĐ",
-        },
-        {
-          id: 2,
-          image:
-            "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRSYqtlZ8hRs-1a_Wdsa-x-rSmWNxNNiaJCaA&usqp=CAU",
-          nameCourse: "Khóa học NodeJs",
-          description: "Node.js là một hệ thống phần mềm,...",
-          rating: 3,
-          price: "397.000 VNĐ",
-        },
-        {
-          id: 3,
-          image:
-            "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQZ4sRkWyi-2VPwALEpD6a-rzUJ9W3I1gc_dg&usqp=CAU",
-          nameCourse: "Khóa học PHP",
-          description: "PHP là một ngôn ngữ lập trình kịch bản,...",
-          rating: 3,
-          price: "397.000 VNĐ",
-        },
-        {
-          id: 4,
-          image:
-            "https://amela.vn/wp-content/uploads/2021/08/reactjs-app-development-500x500-1.jpg",
-          nameCourse: "Khóa học ReactJs",
-          description: "ReacJs là một thư viện JavaScript mã nguồn mở,...",
-          rating: 3,
-          price: "397.000 VNĐ",
-        },
-        {
-          id: 5,
-          image:
-            "https://cdn.mcivietnam.com/nhanvien/media/Blog/python-trong-marketingjpegbd2kfe.jpeg",
-          nameCourse: "Khóa học Python",
-          description:
-            "Python là một ngôn ngữ lập trình bậc cao, đa mục đích,...",
-          rating: 3,
-          price: "397.000 VNĐ",
-        },
-      ],
-      listPostHot: [
-        {
-          id: 1,
-          image:
-            "https://tenten.vn/tin-tuc/wp-content/uploads/2022/06/Java-Script-4.jpg",
-          nameCourse: "Khóa học Javascript",
-          description:
-            "JavaScript là ngôn ngữ lập trình website phổ biến hiện nay,...",
-          rating: 3,
-          price: "397.000 VNĐ",
-        },
-        {
-          id: 2,
-          image:
-            "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRSYqtlZ8hRs-1a_Wdsa-x-rSmWNxNNiaJCaA&usqp=CAU",
-          nameCourse: "Khóa học NodeJs",
-          description: "Node.js là một hệ thống phần mềm,...",
-          rating: 3,
-          price: "397.000 VNĐ",
-        },
-        {
-          id: 3,
-          image:
-            "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQZ4sRkWyi-2VPwALEpD6a-rzUJ9W3I1gc_dg&usqp=CAU",
-          nameCourse: "Khóa học PHP",
-          description: "PHP là một ngôn ngữ lập trình kịch bản,...",
-          rating: 3,
-          price: "397.000 VNĐ",
-        },
-        {
-          id: 4,
-          image:
-            "https://amela.vn/wp-content/uploads/2021/08/reactjs-app-development-500x500-1.jpg",
-          nameCourse: "Khóa học ReactJs",
-          description: "ReacJs là một thư viện JavaScript mã nguồn mở,...",
-          rating: 3,
-          price: "397.000 VNĐ",
-        },
-        {
-          id: 5,
-          image:
-            "https://cdn.mcivietnam.com/nhanvien/media/Blog/python-trong-marketingjpegbd2kfe.jpeg",
-          nameCourse: "Khóa học Python",
-          description:
-            "Python là một ngôn ngữ lập trình bậc cao, đa mục đích,...",
-          rating: 3,
-          price: "397.000 VNĐ",
-        },
-      ],
-      listCourePropose: [
-        {
-          id: 1,
-          description:
-            "Java là một ngôn ngữ lập trình thuần hướng đối tượng,...",
-          courseTitle: "Khóa học BA",
-          imageCourse:
-            "https://appmaster.io/api/_files/hRaLG2N4DVjRZJQzCpN2zJ/download/",
-          numberOfLessons: 15,
-          chapterNumber: 3,
-          totalStudyTime: 90,
-          numberOfPeopleEnrolled: 123,
-          pricepriceHasDecreased: "299.000",
-          price: "1.690.000",
-          numberOfStudentsWhoHaveCompleted: 100,
-          courseStatus: 1,
-          typeCourse: 1,
-          linkVideo:
-            "https://www.youtube.com/embed/3gtOAlcovoQ?list=PL33lvabfss1yGrOutFR03OZoqm91TSsvs",
-        },
-        {
-          id: 2,
-          description:
-            "Java là một ngôn ngữ lập trình thuần hướng đối tượng,...",
-          courseTitle: "Khóa học truy vấn SQL Server",
-          imageCourse:
-            "https://appmaster.io/api/_files/hRaLG2N4DVjRZJQzCpN2zJ/download/",
-          numberOfLessons: 15,
-          chapterNumber: 3,
-          totalStudyTime: 90,
-          numberOfPeopleEnrolled: 123,
-          pricepriceHasDecreased: "299.000",
-          price: "1.690.000",
-          numberOfStudentsWhoHaveCompleted: 100,
-          courseStatus: 1,
-          typeCourse: 1,
-          linkVideo:
-            "https://www.youtube.com/embed/3gtOAlcovoQ?list=PL33lvabfss1yGrOutFR03OZoqm91TSsvs",
-        },
-        {
-          id: 3,
-          description:
-            "Java là một ngôn ngữ lập trình thuần hướng đối tượng,...",
-          courseTitle: "Khóa học Angular",
-          imageCourse:
-            "https://appmaster.io/api/_files/hRaLG2N4DVjRZJQzCpN2zJ/download/",
-          numberOfLessons: 15,
-          chapterNumber: 3,
-          totalStudyTime: 90,
-          numberOfPeopleEnrolled: 123,
-          pricepriceHasDecreased: "299.000",
-          price: "1.690.000",
-          numberOfStudentsWhoHaveCompleted: 100,
-          courseStatus: 1,
-          typeCourse: 1,
-          linkVideo:
-            "https://www.youtube.com/embed/3gtOAlcovoQ?list=PL33lvabfss1yGrOutFR03OZoqm91TSsvs",
-        },
-        {
-          id: 4,
-          description:
-            "Java là một ngôn ngữ lập trình thuần hướng đối tượng,...",
-          courseTitle:
-            "Business Analyst (BA) for Practitioners (BA thực chiến)",
-          imageCourse:
-            "https://appmaster.io/api/_files/hRaLG2N4DVjRZJQzCpN2zJ/download/",
-          numberOfLessons: 15,
-          chapterNumber: 3,
-          totalStudyTime: 90,
-          numberOfPeopleEnrolled: 123,
-          pricepriceHasDecreased: "299.000",
-          price: "1.690.000",
-          numberOfStudentsWhoHaveCompleted: 100,
-          courseStatus: 1,
-          typeCourse: 1,
-          linkVideo:
-            "https://www.youtube.com/embed/3gtOAlcovoQ?list=PL33lvabfss1yGrOutFR03OZoqm91TSsvs",
-        },
-        {
-          id: 5,
-          description:
-            "Java là một ngôn ngữ lập trình thuần hướng đối tượng,...",
-          courseTitle: "Khóa học Java",
-          imageCourse:
-            "https://appmaster.io/api/_files/hRaLG2N4DVjRZJQzCpN2zJ/download/",
-          numberOfLessons: 15,
-          chapterNumber: 3,
-          totalStudyTime: 90,
-          numberOfPeopleEnrolled: 123,
-          pricepriceHasDecreased: "299.000",
-          price: "1.690.000",
-          numberOfStudentsWhoHaveCompleted: 100,
-          courseStatus: 1,
-          typeCourse: 1,
-          linkVideo:
-            "https://www.youtube.com/embed/3gtOAlcovoQ?list=PL33lvabfss1yGrOutFR03OZoqm91TSsvs",
-        },
-        {
-          id: 6,
-          description:
-            "Java là một ngôn ngữ lập trình thuần hướng đối tượng,...",
-          courseTitle: "Khóa học Java",
-          imageCourse:
-            "https://appmaster.io/api/_files/hRaLG2N4DVjRZJQzCpN2zJ/download/",
-          numberOfLessons: 15,
-          chapterNumber: 3,
-          totalStudyTime: 90,
-          numberOfPeopleEnrolled: 123,
-          pricepriceHasDecreased: "299.000",
-          price: "1.690.000",
-          numberOfStudentsWhoHaveCompleted: 100,
-          courseStatus: 1,
-          typeCourse: 1,
-          linkVideo:
-            "https://www.youtube.com/embed/3gtOAlcovoQ?list=PL33lvabfss1yGrOutFR03OZoqm91TSsvs",
-        },
-      ],
+      listPost: [],
+      listCourseHot: [],
+      listCourePropose: [],
     };
   },
 

@@ -161,7 +161,7 @@ export default {
           }
 
           const userInfo = JSON.parse(localStorage.getItem("userInfo")); // Lấy userInfo từ localStorage và parse thành đối tượng JSON
-
+          console.log("User info đây mhjes");
           console.log(userInfo);
           console.log("user");
           if (userInfo.role === "Admin") {
