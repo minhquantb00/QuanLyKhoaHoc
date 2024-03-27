@@ -23,7 +23,7 @@ namespace WebCourseManagement_Models.Converters
             return new DataResponseNguoiDungThichBaiViet
             {
                 Id = nguoiDungThichBaiViet.Id,
-                NguoiDung = _converter.EntityToDTO(nguoiDungThichBaiViet.NguoiDung),
+                NguoiDung = _converter.EntityToDTO(_context.nguoiDungs.SingleOrDefault(x => x.Id == nguoiDungThichBaiViet.NguoiDungId)),
                 ThoiGianThich = nguoiDungThichBaiViet.ThoiGianThich,
                 DaThich = nguoiDungThichBaiViet.DaThich
             };
