@@ -385,5 +385,10 @@ namespace WebCourseManagement_API.Controllers
         {
             return Ok(await _baiHocService.CapNhatTrangThaiBaiHocCuaNguoiDung(nguoiDungHoanThanhBaiHocId));
         }
+        [HttpGet("GetNguoiDungThichBaiVietById/{thichBaiVietId}")]
+        public async Task<IActionResult> GetNguoiDungThichBaiVietById([FromRoute] int thichBaiVietId)
+        {
+            return Ok(await _thichBaiVietService.GetNguoiDungThichBaiVietById(thichBaiVietId));
+        }
     }
 }

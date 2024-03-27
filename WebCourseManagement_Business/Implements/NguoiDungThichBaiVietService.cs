@@ -5,19 +5,29 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using WebCourseManagement_Business.Interfaces;
+using WebCourseManagement_Models.Converters;
 using WebCourseManagement_Models.DataContexts;
 using WebCourseManagement_Models.Entities;
 using WebCourseManagement_Models.RequestModels.ThichBaiVietRequests;
+using WebCourseManagement_Models.ResponseModels.DataBaiViet;
 
 namespace WebCourseManagement_Business.Implements
 {
     public class NguoiDungThichBaiVietService : INguoiDungThichBaiVietService
     {
         private readonly AppDbContext _context;
-        public NguoiDungThichBaiVietService(AppDbContext context)
+        private readonly NguoiDungThichBaiVietConverter _converter;
+        public NguoiDungThichBaiVietService(AppDbContext context, NguoiDungThichBaiVietConverter converter)
         {
             _context = context;
+            _converter = converter;
         }
+
+        public async Task<DataResponseNguoiDungThichBaiViet> GetNguoiDungThichBaiVietById(int thichBaiVietId)
+        {
+            return _converter.EntityToDTO(await _context.nguoiDungThichBaiViets.SingleOrDefaultAsync(x => x.Id == thichBaiVietId));
+        }
+
         public async Task<string> LikeBaiViet(int nguoiDungId, Request_ThichBaiViet request)
         {
             try
