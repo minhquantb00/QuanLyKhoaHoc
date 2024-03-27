@@ -194,9 +194,14 @@ namespace WebCourseManagement_Business.Implements
             try
             {
                 var nguoiDung = await _context.nguoiDungs.SingleOrDefaultAsync(x => x.Id == nguoiDungId);
+                var baiViet = await _context.baiViets.SingleOrDefaultAsync(x => x.Id == request.BaiVietId);
                 if (string.IsNullOrWhiteSpace(request.NoiDungBinhLuan))
                 {
                     return _responseObjectBinhLuan.ResponseError(StatusCodes.Status400BadRequest, "Vui lòng nhập bình luận", null);
+                }
+                if(baiViet == null)
+                {
+                    return _responseObjectBinhLuan.ResponseError(StatusCodes.Status404NotFound, "Bài viết không tồn tại", null);
                 }
                 BinhLuanBaiViet binhLuan = new BinhLuanBaiViet
                 {
@@ -211,6 +216,8 @@ namespace WebCourseManagement_Business.Implements
                 };
                 _context.binhLuanBaiViets.Add(binhLuan);
                 _context.SaveChanges();
+                baiViet.SoLuotBinhLuan = _context.binhLuanBaiViets.Count(x => x.BaiVietId == request.BaiVietId);
+                _context.SaveChanges();
                 return _responseObjectBinhLuan.ResponseSuccess("Tạo bình luận thành công", _binhLuanBaiVietConverter.EntityToDTO(binhLuan));
             }catch(Exception ex)
             {
@@ -223,7 +230,8 @@ namespace WebCourseManagement_Business.Implements
             try
             {
                 var nguoiDung = await _context.nguoiDungs.SingleOrDefaultAsync(x => x.Id == nguoiDungId);
-                var binhLuanGoc = await _context.binhLuanBaiHocs.SingleOrDefaultAsync(x => x.Id == request.BinhLuanGocId);
+                var binhLuanGoc = await _context.binhLuanBaiViets.SingleOrDefaultAsync(x => x.Id == request.BinhLuanGocId);
+                var baiViet = await _context.baiViets.SingleOrDefaultAsync(x => x.Id == binhLuanGoc.BaiVietId);
                 if (binhLuanGoc == null)
                 {
                     return _responseObjectBinhLuan.ResponseError(StatusCodes.Status404NotFound, "Bình luận không tồn tại", null);
@@ -246,6 +254,8 @@ namespace WebCourseManagement_Business.Implements
                 };
                 _context.binhLuanBaiViets.Add(binhLuan);
                 _context.SaveChanges();
+                baiViet.SoLuotBinhLuan = _context.binhLuanBaiViets.Count(x => x.BaiVietId == baiViet.Id);
+                _context.SaveChanges();
                 return _responseObjectBinhLuan.ResponseSuccess("Trả lời bình luận thành công", _binhLuanBaiVietConverter.EntityToDTO(binhLuan));
             }
             catch(Exception ex)
@@ -261,6 +271,7 @@ namespace WebCourseManagement_Business.Implements
                 var binhLuan = await _context.binhLuanBaiViets.SingleOrDefaultAsync(x => x.Id == binhLuanId);
                 var currentUser = _httpContextAccessor.HttpContext.User;
                 var userId = currentUser.FindFirst("Id").Value;
+                var baiViet = await _context.baiViets.SingleOrDefaultAsync(x => x.Id == binhLuan.BaiVietId);
                 if (binhLuan == null)
                 {
                     return "Bình luận không tồn tại";
@@ -272,6 +283,8 @@ namespace WebCourseManagement_Business.Implements
                 binhLuan.TrangThaiBinhLuanId = 2;
                 binhLuan.IsActive = false;
                 binhLuan.ThoiGianXoa = DateTime.Now;
+                _context.SaveChanges();
+                baiViet.SoLuotBinhLuan = _context.binhLuanBaiViets.Count(x => x.BaiVietId == baiViet.Id);
                 _context.SaveChanges();
                 return "Xóa bình luận thành công";
             }catch(Exception ex)
