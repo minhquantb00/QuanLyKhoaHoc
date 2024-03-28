@@ -275,7 +275,7 @@ namespace WebCourseManagement_API.Controllers
         }
         [HttpDelete("XoaBaiViet/{baiVietId}")]
         [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
-        public async Task<IActionResult> XoaBaiViet([FromBody] int baiVietId)
+        public async Task<IActionResult> XoaBaiViet([FromRoute] int baiVietId)
         {
             return Ok(await _baiVietService.XoaBaiViet(baiVietId));
         }
