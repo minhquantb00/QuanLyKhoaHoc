@@ -80,6 +80,24 @@ export const postApi = defineStore("post", {
           .catch((error) => reject(error));
       });
     },
+    xoaBaiViet(id) {
+      return new Promise((resolve, reject) => {
+        axios
+          .delete(`/user/XoaBaiViet/${id}`, {
+            headers: {
+              Authorization: `Bearer ${authorization}`,
+            },
+          })
+          .then((res) => {
+            if (res.status === 200) {
+              resolve(res.data);
+            } else {
+              reject(res);
+            }
+          })
+          .catch((error) => reject(error));
+      });
+    },
     async pheDuyetBaiViet(id) {
       const authToken = `Bearer ${authorization}`;
       console.log(authToken);
@@ -94,6 +112,20 @@ export const postApi = defineStore("post", {
       return new Promise((resolve, reject) => {
         axios
           .get("/user/GetAllsBaiViet")
+          .then((res) => {
+            if (res.status === 200) {
+              resolve(res.data);
+            } else {
+              reject(error);
+            }
+          })
+          .catch((error) => reject(error));
+      });
+    },
+    getAllPostUserId(userId) {
+      return new Promise((resolve, reject) => {
+        axios
+          .get(`/user/GetBaiVietByIdNguoiDung/${userId}`)
           .then((res) => {
             if (res.status === 200) {
               resolve(res.data);

@@ -269,9 +269,13 @@
               Các khóa học của tôi ({{ this.listCourePropose.length }})
             </h5>
             <div class="list-course">
-              <v-sheet class="" elevation="4">
+              <div class="" elevation="4">
                 <v-slide-group v-model="model" center-active show-arrows>
-                  <v-slide-group-item v-for="e in listCourePropose" :key="e">
+                  <v-slide-group-item
+                    v-for="e in listCourePropose"
+                    :key="e"
+                    v-if="this.listCourePropose.length > 0"
+                  >
                     <router-link
                       :to="`/detail-product/${e.id}`"
                       class="link-detail-product pa-4"
@@ -324,16 +328,30 @@
                       </v-card>
                     </router-link>
                   </v-slide-group-item>
+                  <div v-else>
+                    <div
+                      class="text-h5 pa-4 mt-5"
+                      style="color: #e0e0e0; text-align: center"
+                    >
+                      No data available
+                    </div>
+                  </div>
                 </v-slide-group>
-              </v-sheet>
+              </div>
             </div>
           </div>
           <div class="card-course-profile mt-10">
-            <h5 class="ml-4">Các bài viết của tôi ()</h5>
+            <h5 class="ml-4">
+              Các bài viết của tôi ({{ this.listPost.length }})
+            </h5>
             <div class="list-course">
-              <v-sheet class="" elevation="4">
+              <div class="" elevation="4">
                 <v-slide-group v-model="model" center-active show-arrows>
-                  <v-slide-group-item v-for="e in listCourePropose" :key="e.id">
+                  <v-slide-group-item
+                    v-for="e in listPost"
+                    :key="e"
+                    v-if="this.listPost.length > 0"
+                  >
                     <div class="pa-4">
                       <v-hover v-slot="{ isHovering, props }">
                         <v-card
@@ -342,11 +360,7 @@
                           width="550"
                           v-bind="props"
                         >
-                          <v-img
-                            height="300"
-                            src="https://tuhoclaptrinh.edu.vn/upload/post/15/95/81/tu-hoc-lap-trinh-ruby-534086.jpg"
-                            cover
-                          >
+                          <v-img height="300" :src="e.anhBaiViet" cover>
                             <v-expand-transition>
                               <div
                                 v-if="isHovering"
@@ -354,17 +368,59 @@
                                 style="height: 100%"
                               >
                                 <router-link
-                                  to="/detail-product"
+                                  :to="`/post-client/${e.id}`"
                                   class="link-detail-product"
                                 >
                                   <v-btn
                                     class="text-h6 mb-4"
-                                    color="grey-lighten-5"
+                                    color="blue"
                                     size="x-large"
                                     variant="flat"
-                                    >Xem bài viết</v-btn
-                                  >
+                                    icon=" mdi-eye"
+                                  ></v-btn>
                                 </router-link>
+
+                                <div class="pa-4 text-center">
+                                  <v-dialog v-model="dialog" max-width="300">
+                                    <template
+                                      v-slot:activator="{
+                                        props: activatorProps,
+                                      }"
+                                    >
+                                      <v-btn
+                                        class="text-h6 mb-4 ml-4"
+                                        color="red"
+                                        size="x-large"
+                                        variant="flat"
+                                        icon="mdi-trash-can-outline"
+                                        v-bind="activatorProps"
+                                      ></v-btn>
+                                    </template>
+
+                                    <v-card>
+                                      <v-card-text class="mb-4 text-center">
+                                        <v-title class="text-h6">
+                                          Bạn muốn xóa bài viết
+                                        </v-title>
+                                        <v-btn
+                                          text="Hủy"
+                                          color="primary"
+                                          variant="tonal"
+                                          class="mr-5 mt-4"
+                                          @click="dialog = false"
+                                        ></v-btn>
+
+                                        <v-btn
+                                          color="red"
+                                          text="Xóa"
+                                          class="mt-4"
+                                          variant="tonal"
+                                          @click="deletePost(e.id)"
+                                        ></v-btn>
+                                      </v-card-text>
+                                    </v-card>
+                                  </v-dialog>
+                                </div>
                               </div>
                             </v-expand-transition>
                           </v-img>
@@ -372,8 +428,16 @@
                       </v-hover>
                     </div>
                   </v-slide-group-item>
+                  <div v-else>
+                    <div
+                      class="text-h5 pa-4 mt-5"
+                      style="color: #e0e0e0; text-align: center"
+                    >
+                      No data available
+                    </div>
+                  </div>
                 </v-slide-group>
-              </v-sheet>
+              </div>
             </div>
           </div>
         </v-container>
@@ -412,6 +476,7 @@ export default {
       editor: ClassicEditor,
       text: "",
       snackbar: false,
+      dialog: false,
       router: useRouter(),
       postApi: postApi(),
       courseApi: courseApi(),
@@ -427,6 +492,7 @@ export default {
         LoaiBaiVietId: null,
       },
       listPostTypes: [],
+      listPost: [],
       teacherProfile: [
         {
           id: 1,
@@ -520,6 +586,7 @@ export default {
   },
   async mounted() {
     const id = this.$route.params.id;
+    console.log(id);
     try {
       const res = await this.courseApi.getAllCoursesByUserId(id);
       console.log(res);
@@ -531,6 +598,15 @@ export default {
     try {
       const res = await this.postTypeApi.getAllPostType();
       this.listPostTypes = res;
+      console.log(this.listPostTypes);
+    } catch (e) {
+      console.error("Error fetching failed" + e.message);
+    }
+    try {
+      const userId = id;
+      const res = await this.postApi.getAllPostUserId(userId);
+      this.listPost = res;
+      console.log(this.listPost);
     } catch (e) {
       console.error("Error fetching failed" + e.message);
     }
@@ -575,6 +651,23 @@ export default {
       } else {
         this.text = "Gửi bài viết thất bại";
         this.snackbar = true;
+      }
+    },
+
+    async deletePost(idPost) {
+      const deleteBaiViet = await this.postApi.xoaBaiViet(idPost);
+      if (deleteBaiViet) {
+        this.text = "Xóa bài viết thành công";
+        this.snackbar = true;
+        setTimeout(() => {
+          this.reloadPage();
+        }, 2000);
+      } else {
+        this.text = "Xóa bài thất bại";
+        this.snackbar = true;
+        setTimeout(() => {
+          this.reloadPage();
+        }, 2000);
       }
     },
     formatDate(dateString) {

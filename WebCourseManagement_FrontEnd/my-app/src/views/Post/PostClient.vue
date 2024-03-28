@@ -42,22 +42,22 @@
                           @click="clickComment"
                         ></v-icon>
                         <span class="ml-2">
-                          {{this.listPost.soLuotBinhLuan}}
+                          {{ this.listPost.soLuotBinhLuan }}
                         </span>
                       </template>
 
                       <template v-slot:default="{}">
                         <div style="background: white" class="pa-4">
                           <v-card
-                            class="overflow-y-auto mb-6 pa-2"
+                            class="overflow-y-auto bg-blue-lighten-5 mb-6 pa-2"
                             height="700"
                             v-scroll.self="onScroll"
                           >
                             <v-row>
                               <v-col cols="6">
-                                <div class="comment-user-post">
+                                <!-- <div class="comment-user-post">
                                   <v-card
-                                    color="grey-lighten-4"
+                                    color="light-blue-lighten-4"
                                     class="mt-6 rounded-shaped"
                                     :prepend-avatar="p.nguoiBinhLuan.anhDaiDien"
                                     width="350"
@@ -65,7 +65,6 @@
                                     :key="p"
                                   >
                                     <template v-slot:title>
-                                      <!-- gắn người bỉnh luận vào đây -->
                                       {{ p.nguoiBinhLuan.hoVaTen }}
                                     </template>
 
@@ -73,7 +72,69 @@
                                       {{ p.noiDungBinhLuan }}
                                     </v-card-text>
                                   </v-card>
-                                </div>
+                                </div> -->
+                                <a-comment>
+                                  <template #actions>
+                                    <span key="comment-basic-like">
+                                      <a-tooltip title="Like">
+                                        <template v-if="action === 'liked'">
+                                          <LikeFilled @click="like" />
+                                        </template>
+                                        <template v-else>
+                                          <LikeOutlined @click="like" />
+                                        </template>
+                                      </a-tooltip>
+                                      <span
+                                        style="padding-left: 8px; cursor: auto"
+                                      >
+                                        {{ likes }}
+                                      </span>
+                                    </span>
+                                    <span key="comment-basic-dislike">
+                                      <a-tooltip title="Dislike">
+                                        <template v-if="action === 'disliked'">
+                                          <DislikeFilled @click="dislike" />
+                                        </template>
+                                        <template v-else>
+                                          <DislikeOutlined @click="dislike" />
+                                        </template>
+                                      </a-tooltip>
+                                      <span
+                                        style="padding-left: 8px; cursor: auto"
+                                      >
+                                        {{ dislikes }}
+                                      </span>
+                                    </span>
+                                    <span key="comment-basic-reply-to"
+                                      >Reply to</span
+                                    >
+                                  </template>
+                                  <template #author><a>Han Solo</a></template>
+                                  <template #avatar>
+                                    <a-avatar
+                                      src="https://joeschmoe.io/api/v1/random"
+                                      alt="Han Solo"
+                                    />
+                                  </template>
+                                  <template #content>
+                                    <p>
+                                      We supply a series of design principles,
+                                      practical patterns and high quality design
+                                      resources (Sketch and Axure), to help
+                                      people create their product prototypes
+                                      beautifully and efficiently.
+                                    </p>
+                                  </template>
+                                  <template #datetime>
+                                    <a-tooltip
+                                      :title="
+                                        dayjs().format('YYYY-MM-DD HH:mm:ss')
+                                      "
+                                    >
+                                      <span>{{ dayjs().fromNow() }}</span>
+                                    </a-tooltip>
+                                  </template>
+                                </a-comment>
                               </v-col>
                               <v-col cols="6"> </v-col>
                             </v-row>
@@ -90,15 +151,16 @@
                                     sm="12"
                                   >
                                     <v-card
-                                      color="grey-lighten-4"
+                                      color="light-blue-lighten-4"
                                       class="rounded-shaped"
                                       height="200px"
-                                      v-for="i in listComments" :key="i"
+                                      v-for="i in listComments"
+                                      :key="i"
                                     >
-                                      <v-toolbar color="grey-lighten-4">
+                                      <v-toolbar color="light-blue-lighten-4">
                                         <div class="comment-user-post">
                                           <v-card
-                                            color="purple-accent-2"
+                                            color="light-blue-lighten-5"
                                             class="rounded-shaped"
                                             :prepend-avatar="
                                               i.nguoiBinhLuan.anhDaiDien
@@ -125,7 +187,7 @@
                                           :close-on-content-click="false"
                                           location="end"
                                         >
-                                        {{i.noiDungBinhLuan}}
+                                          {{ i.noiDungBinhLuan }}
                                           <template
                                             v-slot:activator="{ props }"
                                           >
@@ -248,7 +310,7 @@
                                         variant="text"
                                         icon=" mdi-send-outline"
                                         @click="createComments"
-                                        :disabled="!noiDungBinhLuan.trim()" 
+                                        :disabled="!noiDungBinhLuan.trim()"
                                       ></v-btn>
                                     </v-col>
                                   </v-row>
@@ -319,6 +381,25 @@
     <FooterItem class="mt-10"></FooterItem>
   </div>
 </template>
+<script setup>
+import dayjs from 'dayjs';
+import { ref } from 'vue';
+import relativeTime from 'dayjs/plugin/relativeTime';
+dayjs.extend(relativeTime);
+const likes = ref(0);
+const dislikes = ref(0);
+const action = ref();
+const like = () => {
+  likes.value = 1;
+  dislikes.value = 0;
+  action.value = 'liked';
+};
+const dislike = () => {
+  likes.value = 0;
+  dislikes.value = 1;
+  action.value = 'disliked';
+};
+</script>
 <script>
 import HeaderItem from "../Header/HeaderItem.vue";
 import FooterItem from "../Header/FooterItem.vue";
@@ -349,7 +430,7 @@ export default {
       scrollInvoked: 0,
       bars: [{ class: "" }],
       listPost: [],
-      listCommentByIdPost:[],
+      listCommentByIdPost: [],
       likeCount: 0,
       listPostInvoked: [],
       clickLove: {
@@ -366,7 +447,6 @@ export default {
       // Cập nhật giá trị likeCount khi giá trị của listPost.soLuotThich thay đổi
       this.likeCount = newVal;
     },
-
   },
 
   async mounted() {

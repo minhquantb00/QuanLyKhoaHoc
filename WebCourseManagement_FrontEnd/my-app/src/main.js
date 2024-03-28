@@ -13,12 +13,15 @@ import { DatePicker } from "ant-design-vue";
 import { Layout } from "ant-design-vue";
 import { Spin } from "ant-design-vue";
 import { Table } from "ant-design-vue";
+import { Comment } from "ant-design-vue";
 import { Menu } from "ant-design-vue";
 import { Select } from "ant-design-vue";
 import { Modal } from "ant-design-vue";
 import { Input } from "ant-design-vue";
+import { Tooltip } from "ant-design-vue";
 import { Upload } from "ant-design-vue";
 import { Form } from "ant-design-vue";
+import{Icon} from "@ant-design/icons-vue";
 import { Checkbox } from "ant-design-vue";
 // import {echart} from "echarts";
 // import {monacoEditor} from "monaco-editor"
@@ -128,11 +131,14 @@ createApp(App)
   .use(store)
   .use(DatePicker)
   .use(Layout)
+  .use(Icon)
   .use(vuetify)
   .use(Breadcrumb)
   .use(Modal)
   .use(Menu)
+  .use(Comment)
   .use(Form)
+  .use(Tooltip)
   .use(Checkbox)
   .use(Upload)
   .use(echarts)

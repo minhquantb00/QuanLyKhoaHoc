@@ -105,6 +105,11 @@ const routes = [
     component: () => import("../views/Home/Test.vue"),
   },
   {
+    path: "/test-chat",
+    name: "test-chat",
+    component: () => import("../views/Home/TestChat.vue"),
+  },
+  {
     path: "/comment",
     name: "comment",
     component: () => import("../views/CreateCourse/CommentsCourse.vue"),

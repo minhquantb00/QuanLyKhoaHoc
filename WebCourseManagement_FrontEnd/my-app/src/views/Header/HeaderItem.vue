@@ -31,7 +31,7 @@
                     />
                   </template>
 
-                  <template v-slot:default="{ isActive }">
+                  <template v-slot:default="{}">
                     <v-card v-if="listSearch && listSearch.length > 0">
                       <!-- Kiểm tra nếu có dữ liệu -->
                       <v-row>
@@ -346,7 +346,7 @@
                               :to="`/public-records/${userInfo.Id}`"
                               class="header-content-user-link"
                             >
-                              <v-list-item >Hồ sơ công khai</v-list-item>
+                              <v-list-item>Hồ sơ công khai</v-list-item>
                             </router-link>
                             <router-link
                               to="/profile-user"
@@ -436,7 +436,7 @@ export default {
         this.router.push({ path: "/login" });
       }
     },
-      async publicRecods() {
+    async publicRecods() {
       console.log("Vào đấy");
       if (this.userInfo) {
         this.router.push({ path: "/public-records" });
