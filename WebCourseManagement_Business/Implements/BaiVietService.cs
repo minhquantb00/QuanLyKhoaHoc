@@ -420,5 +420,11 @@ namespace WebCourseManagement_Business.Implements
         {
             return _context.baiViets.Where(x => x.TrangThaiBaiVietId == 1).Select(x => _baiVietConverter.EntityToDTO(x));
         }
+
+        public async Task<IQueryable<DataResponseBaiViet>> GetBaiVietByIdNguoiDung(int nguoiDungId)
+        {
+            var query = _context.baiViets.Where(x => x.NguoiTaoBaiVietId == nguoiDungId && x.TrangThaiBaiVietId == 2).Select(x => _baiVietConverter.EntityToDTO(x)).AsQueryable();
+            return query;
+        }
     }
 }

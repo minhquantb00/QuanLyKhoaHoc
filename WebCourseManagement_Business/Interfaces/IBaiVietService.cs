@@ -29,6 +29,7 @@ namespace WebCourseManagement_Business.Interfaces
         Task<IQueryable<DataResponseLoaiBaiViet>> GetAllsLoaiBaiViet(string? tenLoaiBaiViet);
         Task<ResponseObject<DataResponseLoaiBaiViet>> GetLoaiBaiVietById(int loaiBaiVietId);
         Task<IQueryable<DataResponseBaiViet>> GetAllBaiVietChuaDuocDuyet();
+        Task<IQueryable<DataResponseBaiViet>> GetBaiVietByIdNguoiDung(int nguoiDungId);
 
     }
 }
