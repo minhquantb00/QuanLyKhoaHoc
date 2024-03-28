@@ -22,13 +22,13 @@
                 <v-row>
                   <v-col>
                     <v-icon
-                    color="red"
+                      color="red"
                       :icon="likeIcon"
                       variant="text"
                       @click="clickLike(this.listPost.id)"
                     ></v-icon>
                     <span class="ml-2">
-                      {{this.listPost.id}}
+                      {{ this.likeCount }}
                     </span>
                   </v-col>
                   <v-col>
@@ -41,7 +41,9 @@
                           variant="text"
                           @click="clickComment"
                         ></v-icon>
-                        <span class="ml-2">53</span>
+                        <span class="ml-2">
+                          {{this.listPost.soLuotBinhLuan}}
+                        </span>
                       </template>
 
                       <template v-slot:default="{}">
@@ -57,17 +59,18 @@
                                   <v-card
                                     color="grey-lighten-4"
                                     class="mt-6 rounded-shaped"
-                                    :prepend-avatar="p.nguoiDung"
+                                    :prepend-avatar="p.nguoiBinhLuan.anhDaiDien"
                                     width="350"
-                                    v-for="p in listComments"
-                                    :key="p.id"
+                                    v-for="p in listCommentByIdPost"
+                                    :key="p"
                                   >
-                                    <template v-slot:title>{{
-                                      p.name
-                                    }}</template>
+                                    <template v-slot:title>
+                                      <!-- gắn người bỉnh luận vào đây -->
+                                      {{ p.nguoiBinhLuan.hoVaTen }}
+                                    </template>
 
                                     <v-card-text>
-                                      {{ p.comments }}
+                                      {{ p.noiDungBinhLuan }}
                                     </v-card-text>
                                   </v-card>
                                 </div>
@@ -90,35 +93,39 @@
                                       color="grey-lighten-4"
                                       class="rounded-shaped"
                                       height="200px"
+                                      v-for="i in listComments" :key="i"
                                     >
                                       <v-toolbar color="grey-lighten-4">
                                         <div class="comment-user-post">
                                           <v-card
                                             color="purple-accent-2"
                                             class="rounded-shaped"
-                                            prepend-avatar="https://cdn.vuetifyjs.com/images/john.jpg"
+                                            :prepend-avatar="
+                                              i.nguoiBinhLuan.anhDaiDien
+                                            "
                                             width="350"
                                           >
-                                            <template v-slot:title
-                                              >Trần Văn Dương</template
-                                            >
+                                            <template v-slot:title>
+                                              {{ i.nguoiBinhLuan.hoVaTen }}
+                                            </template>
                                           </v-card>
                                         </div>
 
-                                        <div
+                                        <avatar
                                           color="grey-lighten-4"
                                           class="rounded-shaped"
                                           prepend-avatar="https://cdn.vuetifyjs.com/images/john.jpg"
                                           width="350"
                                         >
                                           <!-- <template v-slot:title>Trần Văn Dương</template> -->
-                                        </div>
+                                        </avatar>
                                         <v-spacer></v-spacer>
                                         <v-menu
                                           v-model="menu"
                                           :close-on-content-click="false"
                                           location="end"
                                         >
+                                        {{i.noiDungBinhLuan}}
                                           <template
                                             v-slot:activator="{ props }"
                                           >
@@ -211,11 +218,14 @@
                           <div class="comment">
                             <v-row location="bottom">
                               <v-col cols="1">
-                                <v-avatar
-                                  color="surface-variant"
-                                  image="https://cdn.vuetifyjs.com/images/john.jpg"
-                                  size="50"
-                                ></v-avatar>
+                                <!-- <div
+                                  class="bg-secondary rounded-circle d-inline-block"
+                                > -->
+                                <v-img
+                                  class="rounded-circle"
+                                  :src="this.userInfo.Image"
+                                ></v-img>
+                                <!-- </div> -->
                               </v-col>
                               <v-col cols="11">
                                 <!-- <v-text-field class="rounded-pill"></v-text-field> -->
@@ -229,6 +239,7 @@
                                         type="text"
                                         class="input-content-comment"
                                         placeholder="Bạn đang nghĩ gì"
+                                        v-model="noiDungBinhLuan"
                                       />
                                     </v-col>
                                     <v-col cols="2">
@@ -236,6 +247,8 @@
                                         color="purple"
                                         variant="text"
                                         icon=" mdi-send-outline"
+                                        @click="createComments"
+                                        :disabled="!noiDungBinhLuan.trim()" 
                                       ></v-btn>
                                     </v-col>
                                   </v-row>
@@ -332,71 +345,34 @@ export default {
       hints: true,
       drawer: null,
       loadingPost: true,
-      isLiked: false ,
+      isLiked: false,
       scrollInvoked: 0,
       bars: [{ class: "" }],
       listPost: [],
+      listCommentByIdPost:[],
+      likeCount: 0,
+      listPostInvoked: [],
+      clickLove: {
+        baiVietId: null,
+      },
       baiVietId: null,
-      listComments: [
-        {
-          id: 1,
-          comments: "Bài này hay",
-          nguoiDung: " https://cdn.vuetifyjs.com/images/john.jpg",
-          name: "Trần Văn Dương",
-        },
-        {
-          id: 2,
-          comments: "Bài này hay",
-          nguoiDung: " https://cdn.vuetifyjs.com/images/john.jpg",
-          name: "Trần Văn Dương",
-        },
-        {
-          id: 3,
-          comments: "Bài này hay",
-          nguoiDung: " https://cdn.vuetifyjs.com/images/john.jpg",
-          name: "Trần Văn Dương",
-        },
-        {
-          id: 3,
-          comments: "Bài này hay",
-          nguoiDung: " https://cdn.vuetifyjs.com/images/john.jpg",
-          name: "Trần Văn Dương",
-        },
-        {
-          id: 3,
-          comments: "Bài này hay",
-          nguoiDung: " https://cdn.vuetifyjs.com/images/john.jpg",
-          name: "Trần Văn Dương",
-        },
-        {
-          id: 3,
-          comments: "Bài này hay",
-          nguoiDung: " https://cdn.vuetifyjs.com/images/john.jpg",
-          name: "Trần Văn Dương",
-        },
-        {
-          id: 3,
-          comments: "Bài này hay",
-          nguoiDung: " https://cdn.vuetifyjs.com/images/john.jpg",
-          name: "Trần Văn Dương",
-        },
-        {
-          id: 3,
-          comments: "Bài này hay",
-          nguoiDung: " https://cdn.vuetifyjs.com/images/john.jpg",
-          name: "Trần Văn Dương",
-        },
-      ],
+      noiDungBinhLuan: "",
+      listLike: [],
+      listComments: [],
     };
   },
-   computed: {
-    likeIcon() {
-      // Xác định biểu tượng nên hiển thị dựa trên trạng thái isLiked
-      return this.isLiked ? 'mdi-heart' : 'mdi-heart-outline';
-    }
+  watch: {
+    "listPost.soLuotThich": function (newVal, oldVal) {
+      // Cập nhật giá trị likeCount khi giá trị của listPost.soLuotThich thay đổi
+      this.likeCount = newVal;
+    },
+
   },
+
   async mounted() {
     const id = this.$route.params.id;
+    const userInfo = JSON.parse(localStorage.getItem("userInfo"));
+
     setTimeout(() => {
       this.loadingPost = false;
     }, 2000);
@@ -407,13 +383,32 @@ export default {
     } catch (e) {
       console.error("Error Fetching " + e.message);
     }
+    try {
+      const res = await this.postApi.getAllPostId(id);
+      this.listCommentByIdPost = res.data.binhLuanBaiViets;
+      console.log(this.listCommentByIdPost);
+    } catch (e) {
+      console.error("Error Fetching " + e.message);
+    }
+    try {
+      const response = await this.postApi.getAllPostId(id);
+      this.listLike = response.data.nguoiDungThichBaiViets;
+      for (let i = 0; i < this.listLike.length; i++) {
+        const like = this.listLike[i];
+        if (like.nguoiDung.id == userInfo.Id) {
+          const likeArray = like.daThich;
+          this.isLiked = likeArray;
+        }
+      }
+    } catch (e) {
+      console.error("Error Fetching " + e.message);
+    }
   },
   methods: {
     onScroll() {
       this.scrollInvoked++;
     },
     disableScroll(event) {
-      // Kiểm tra xem con trỏ có di chuyển ra khỏi vùng của drawer không
       if (!event.currentTarget.contains(event.relatedTarget)) {
         event.preventDefault();
       }
@@ -423,9 +418,13 @@ export default {
         console.log("Vào đấy");
         this.router.push({ path: "/login" });
       } else {
-        const result = await this.postApi.likePost(id);
-        console.log(result);
-         this.isLiked = !this.isLiked;
+        console.log(id);
+        this.clickLove.baiVietId = id;
+        const result = await this.postApi.likePost(this.clickLove);
+        const response = await this.postApi.getAllPostId(id);
+        this.likeCount = response.data.soLuotThich;
+
+        this.isLiked = !this.isLiked;
       }
     },
 
@@ -434,6 +433,28 @@ export default {
         console.log("Vào đấy");
         this.router.push({ path: "/login" });
       }
+    },
+
+    async createComments() {
+      const id = this.$route.params.id;
+      const params = {
+        baiVietId: id,
+        noiDungBinhLuan: this.noiDungBinhLuan,
+      };
+      if (!this.noiDungBinhLuan.trim()) {
+        return; // Nếu rỗng thì không thực hiện gì cả
+      }
+      const res = await this.postApi.createComments(params);
+      this.noiDungBinhLuan = "";
+      const comments = await this.postApi.getAllPostId(id);
+      this.listComments = comments.data.binhLuanBaiViets;
+    },
+  },
+  computed: {
+    likeIcon() {
+      // Xác định biểu tượng nên hiển thị dựa trên trạng thái isLiked
+      console.log(this.isLiked);
+      return this.isLiked ? "mdi-heart" : "mdi-heart-outline";
     },
   },
 };
