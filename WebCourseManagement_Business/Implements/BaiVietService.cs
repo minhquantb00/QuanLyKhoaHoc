@@ -426,5 +426,17 @@ namespace WebCourseManagement_Business.Implements
             var query = _context.baiViets.Where(x => x.NguoiTaoBaiVietId == nguoiDungId && x.TrangThaiBaiVietId == 2).Select(x => _baiVietConverter.EntityToDTO(x)).AsQueryable();
             return query;
         }
+
+        public async Task<ResponseObject<DataResponseBaiViet>> TuChoiBaiViet(int baiVietId)
+        {
+            var baiViet = await _context.baiViets.SingleOrDefaultAsync(x => x.Id == baiVietId);
+            if(baiViet == null)
+            {
+                return _responseObject.ResponseError(StatusCodes.Status404NotFound, "Không tìm thấy bài viết", null);
+            }
+            baiViet.TrangThaiBaiVietId = 3;
+            _context.SaveChanges();
+            return _responseObject.ResponseSuccess("Đã từ chối duyệt bài viết", _baiVietConverter.EntityToDTO(baiViet));
+        }
     }
 }
