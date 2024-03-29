@@ -48,6 +48,7 @@
                             color="grey-darken-4"
                             variant="tonal"
                             :value="this.id"
+                            @click="inputAddLesson.chuongHocId = c.id"
                           >
                             Thêm bài học</v-btn
                           >
@@ -56,13 +57,10 @@
                         <template v-slot:default="{ isActive }">
                           <div>
                             <v-card :title="c.nameCourse" class="pa-5">
-                              <v-text-field
-                                class="mt-3"
+                              <input
+                              type="hidden"
                                 v-model="inputAddLesson.chuongHocId"
-                                color="purple-accent-4"
-                                variant="outlined"
-                                placeholder="id chương học"
-                              ></v-text-field>
+                              />
                               <label>
                                 <span class="obligatory mr-2">*</span>
                                 Tên bài học

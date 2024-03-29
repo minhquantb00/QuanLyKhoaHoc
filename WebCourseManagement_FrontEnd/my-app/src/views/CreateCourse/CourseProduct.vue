@@ -209,7 +209,7 @@
                               <v-divider></v-divider>
 
                               <div class="text-center mb-6">
-                                <v-btn icon class="mr-3 btn-create">
+                                <v-btn icon class="mr-3 btn-create" @click="inputCreateStudyChapter.khoaHocId = n.id">
                                   <font-awesome-icon
                                     icon="fa-solid fa-plus"
                                   ></font-awesome-icon>
@@ -220,10 +220,12 @@
                                   >
                                     <template v-slot:default="{ isActive }">
                                       <v-card class="pa-5">
-                                        <v-text-field
+                                        <input
+                                        type="hidden"
                                           v-model="
                                             inputCreateStudyChapter.khoaHocId
                                           "
+                                          readonly
                                         />
                                         <label>
                                           <span class="obligatory mr-2">*</span>
@@ -796,6 +798,9 @@ export default {
     const userInfo = localStorage.getItem("userInfo");
   },
   methods: {
+    updateKhoaHocId(khoaHocId) {
+      this.inputCreateStudyChapter.khoaHocId = khoaHocId;
+    },
     hanldeImageChange(event) {
       const file = event.target.files[0];
       const maxSizeInBytes = 2 * 1024 * 1024; // 2MB
@@ -900,12 +905,12 @@ export default {
         this.$router.push("/error"); // Điều hướng đến trang lỗi nếu cần
       }
     },
-    async createStudyChapter() {
+    async createStudyChapter() {  
       const userInfo = JSON.parse(localStorage.getItem("userInfo"));
       try {
         const result = await this.studyChapter.createStudyChapter(
           this.inputCreateStudyChapter,
-          console.log(this.inputCreateStudyChapter),
+          console.log(this.inputCreateStudyChapter.khoaHocId),
           (this.loading = true)
         );
         console.log(result);
