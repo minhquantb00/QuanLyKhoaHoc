@@ -21,7 +21,7 @@ import { Input } from "ant-design-vue";
 import { Tooltip } from "ant-design-vue";
 import { Upload } from "ant-design-vue";
 import { Form } from "ant-design-vue";
-import{Icon} from "@ant-design/icons-vue";
+// import{Icon} from "@ant-design/icons-vue";
 import { Checkbox } from "ant-design-vue";
 // import {echart} from "echarts";
 // import {monacoEditor} from "monaco-editor"
@@ -131,7 +131,7 @@ createApp(App)
   .use(store)
   .use(DatePicker)
   .use(Layout)
-  .use(Icon)
+  // .use(Icon)
   .use(vuetify)
   .use(Breadcrumb)
   .use(Modal)
